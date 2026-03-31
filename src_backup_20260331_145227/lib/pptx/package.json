@@ -1,0 +1,32 @@
+{
+  "name": "@alecia/pptx-generator",
+  "version": "1.0.0",
+  "description": "Générateur de présentations PowerPoint pour Alecia - Conseil en gestion de patrimoine",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [
+    "pptx",
+    "powerpoint",
+    "presentation",
+    "alecia",
+    "finance",
+    "wealth-management"
+  ],
+  "author": "Alecia",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}

@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --alecia-navy: #0a1628;
+    --alecia-navy-light: #1a2a42;
+    --alecia-navy-lighter: #2a3a52;
+    --alecia-pink: #e91e63;
+    --alecia-pink-light: #f06292;
+    --alecia-pink-dark: #c2185b;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-sans antialiased bg-alecia-navy text-white;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-alecia-navy-light rounded;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-alecia-navy-lighter rounded hover:bg-alecia-pink/50 transition-colors;
+  }
+
+  /* Text selection */
+  ::selection {
+    @apply bg-alecia-pink/30 text-white;
+  }
+}
+
+@layer components {
+  /* Primary button */
+  .btn-primary {
+    @apply px-6 py-3 bg-alecia-pink text-white font-medium rounded-xl 
+           hover:bg-alecia-pink-dark transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-alecia-pink/50 
+           disabled:opacity-50 disabled:cursor-not-allowed
+           shadow-lg shadow-alecia-pink/20;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply px-6 py-3 bg-alecia-navy-light text-white font-medium rounded-xl 
+           hover:bg-alecia-navy-lighter transition-all duration-200 
+           border border-alecia-navy-lighter/50
+           focus:outline-none focus:ring-2 focus:ring-alecia-navy-lighter/50
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply px-6 py-3 bg-transparent text-white font-medium rounded-xl 
+           hover:bg-white/5 transition-all duration-200 
+           border border-white/20 hover:border-white/40
+           focus:outline-none focus:ring-2 focus:ring-white/20;
+  }
+
+  /* Dark card */
+  .card-dark {
+    @apply bg-alecia-navy-light rounded-xl border border-alecia-navy-lighter/30 
+           shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+
+  /* Form input */
+  .input-field {
+    @apply w-full px-4 py-3 bg-alecia-navy text-white rounded-xl 
+           border border-alecia-navy-lighter/50 
+           focus:border-alecia-pink focus:ring-2 focus:ring-alecia-pink/20 
+           focus:outline-none transition-all duration-200
+           placeholder:text-alecia-gray-400;
+  }
+
+  /* Textarea */
+  .textarea-field {
+    @apply w-full px-4 py-3 bg-alecia-navy text-white rounded-xl 
+           border border-alecia-navy-lighter/50 
+           focus:border-alecia-pink focus:ring-2 focus:ring-alecia-pink/20 
+           focus:outline-none transition-all duration-200 resize-none
+           placeholder:text-alecia-gray-400;
+  }
+}
+
+@layer utilities {
+  /* Layout transition */
+  .transition-layout {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Screen reader only */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Glass effect */
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-alecia-pink to-alecia-pink-light bg-clip-text text-transparent;
+  }
+
+  /* Divider */
+  .divider {
+    @apply h-px bg-gradient-to-r from-transparent via-alecia-navy-lighter to-transparent;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-pink {
+    @apply badge bg-alecia-pink/20 text-alecia-pink border border-alecia-pink/30;
+  }
+
+  .badge-navy {
+    @apply badge bg-alecia-navy-lighter/50 text-alecia-gray-300 border border-alecia-navy-lighter;
+  }
+
+  /* Border width utilities */
+  .border-3 {
+    border-width: 3px;
+  }
+}

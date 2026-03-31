@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Alecia brand styles */
+:root {
+  --alecia-navy: #0a1628;
+  --alecia-navy-light: #1a2a42;
+  --alecia-navy-lighter: #2a3a52;
+  --alecia-gold: #c9a84c;
+  --alecia-gold-light: #d4b76a;
+  --alecia-gold-lighter: #dfc688;
+}
+
+/* Base layer customizations */
+@layer base {
+  html {
+    font-family:
+      'Inter',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-alecia-navy text-white rounded-lg font-semibold hover:bg-alecia-navy/90 transition-colors;
+  }
+
+  .btn-accent {
+    @apply px-4 py-2 bg-alecia-gold text-white rounded-lg font-semibold hover:bg-alecia-gold/90 transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-alecia-navy focus:ring-2 focus:ring-alecia-navy/10 transition-all;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-alecia {
+    @apply bg-gradient-to-br from-alecia-navy to-alecia-navy-light;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Selection color */
+::selection {
+  @apply bg-alecia-gold/30 text-alecia-navy;
+}

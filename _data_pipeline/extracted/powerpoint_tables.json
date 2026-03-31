@@ -1,0 +1,1743 @@
+{
+  "presentation_info": {
+    "author": "Louise Pini",
+    "subject": "",
+    "title": "PowerPoint Presentation"
+  },
+  "slides": [
+    {
+      "slide_number": 1,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 2,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 3,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 4,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 5,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 6,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 7,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 8,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 9,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 10,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 11,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 12,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 13,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 14,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 15,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 16,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 17,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 18,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 19,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 20,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 21,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 22,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 23,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 24,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 25,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 26,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 4,
+          "data": [
+            [
+              "En k€",
+              "2022",
+              "2023",
+              "2024"
+            ],
+            [
+              "Trésorerie & équivalents",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Emprunts et dettes financières diverses",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Emprunts bancaires",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Trésorerie (Dette) nette",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Capitaux propres",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "rows": 6,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 27,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 28,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 29,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 30,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 8,
+          "data": [
+            [
+              "Date",
+              "Cible(s)",
+              "Acquéreur(s)",
+              "Détails sur l’opération",
+              "VE (m€)",
+              "CA (m€)",
+              "VE / CA",
+              "VE / EBITDA"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "rows": 11,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 31,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 8,
+          "data": [
+            [
+              "Date",
+              "Cible(s)",
+              "Acquéreur(s)",
+              "Détails sur l’opération",
+              "VE (m€)",
+              "CA (m€)",
+              "VE / CA",
+              "VE / EBITDA"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "rows": 13,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 32,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 8,
+          "data": [
+            [
+              "Date",
+              "Cible(s)",
+              "Acquéreur(s)",
+              "Détails sur l’opération",
+              "VE (m€)",
+              "CA (m€)",
+              "VE / CA",
+              "VE / EBITDA"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "rows": 13,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 33,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 4,
+          "data": [
+            [
+              "Secteurs",
+              "Fourchette basse",
+              "Moyenne",
+              "Fourchette haute"
+            ],
+            [
+              "Développement de logiciels",
+              "6,7x",
+              "7,7x",
+              "8,3x"
+            ],
+            [
+              "Services de santé & Produits pharmaceutiques",
+              "6,8x",
+              "7,5x",
+              "8,2x"
+            ],
+            [
+              "Services informatiques",
+              "6,5x",
+              "7,2x",
+              "7,7x"
+            ],
+            [
+              "Services aux entreprises",
+              "4,6x",
+              "5,3x",
+              "5,9x"
+            ],
+            [
+              "Agro-alimentaire",
+              "4,3x",
+              "5,1x",
+              "5,8x"
+            ],
+            [
+              "E-commerce",
+              "4,0x",
+              "4,9x",
+              "5,6x"
+            ],
+            [
+              "Industrie & Production",
+              "4,3x",
+              "4,9x",
+              "5,6x"
+            ],
+            [
+              "Distribution",
+              "3,8x",
+              "4,5x",
+              "5,1x"
+            ],
+            [
+              "Médias, Marketing & Communication",
+              "3,9x",
+              "4,7x",
+              "5,5x"
+            ],
+            [
+              "Hôtellerie & Tourisme",
+              "3,7x",
+              "4,4x",
+              "4,8x"
+            ],
+            [
+              "Automobile, Transport & Logistique",
+              "3,5x",
+              "4,4x",
+              "5,0x"
+            ],
+            [
+              "Commerce de gros",
+              "3,6x",
+              "4,1x",
+              "4,4x"
+            ],
+            [
+              "Construction & Technologie d’installation",
+              "3,3x",
+              "3,8x",
+              "4,4x"
+            ]
+          ],
+          "rows": 14,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 34,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 10,
+          "data": [
+            [
+              "Secteur",
+              "Multiple moyen VE / EBITDA",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "S1 2021",
+              "S2 2021",
+              "S1 2022",
+              "S2 2022",
+              "S1 2023",
+              "S2 2023",
+              "S1 2024",
+              "S2\n2024",
+              "S1 2025"
+            ],
+            [
+              "Tous secteurs confondus",
+              "5,4x",
+              "5,4x",
+              "5,4x",
+              "5,4x",
+              "5,3x",
+              "5,3x",
+              "5,4x",
+              "5,3x",
+              "5,25x"
+            ],
+            [
+              "Automobile, Transport & Logistique",
+              "4,3x",
+              "4,4x",
+              "4,3x",
+              "4,2x",
+              "4,1x",
+              "4,3x",
+              "4,5x",
+              "4,3x",
+              "4,4x"
+            ],
+            [
+              "Distribution",
+              "5,0x",
+              "5,0x",
+              "5,1x",
+              "4,9x",
+              "4,7x",
+              "4,8x",
+              "4,8x",
+              "4,7x",
+              "4,5x"
+            ]
+          ],
+          "rows": 5,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 35,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 10,
+          "data": [
+            [
+              "Secteur",
+              "Multiple moyen VE / EBITDA",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "S1 2021",
+              "S2 2021",
+              "S1 2022",
+              "S2 2022",
+              "S1 2023",
+              "S2 2023",
+              "S1 2024",
+              "S2 2024",
+              "S1 2025"
+            ],
+            [
+              "Développement de logiciels",
+              "7,5x",
+              "7,5x",
+              "7,6x",
+              "7,7x",
+              "7,6x",
+              "7,7x",
+              "7,8x",
+              "7,5x",
+              "7,7x"
+            ],
+            [
+              "Services de santé & Produits pharmaceutiques",
+              "7,7x",
+              "7,6x",
+              "7,5x",
+              "7,5x",
+              "7,5x",
+              "7,4x",
+              "7,5x",
+              "7,4x",
+              "7,5x"
+            ],
+            [
+              "Services informatiques",
+              "7,5x",
+              "7,5x",
+              "7,6x",
+              "7,5x",
+              "7,4x",
+              "7,3x",
+              "7,4x",
+              "7,3x",
+              "7,2x"
+            ],
+            [
+              "Services aux entreprises",
+              "5,6x",
+              "5,4x",
+              "5,4x",
+              "5,2x",
+              "5,3x",
+              "5,5x",
+              "5,5x",
+              "5,4x",
+              "5,3x"
+            ],
+            [
+              "Agro-alimentaire",
+              "5,9x",
+              "5,9x",
+              "6,0x",
+              "5,7x",
+              "5,6x",
+              "5,6x",
+              "5,5x",
+              "5,2x",
+              "5,1x"
+            ],
+            [
+              "E-commerce",
+              "6,1x",
+              "6,0x",
+              "6,0x",
+              "5,9x",
+              "5,6x",
+              "5,4x",
+              "5,2x",
+              "5,0x",
+              "4,9x"
+            ],
+            [
+              "Industrie & Production",
+              "5,2x",
+              "5,1x",
+              "5,1x",
+              "4,9x",
+              "4,9x",
+              "5,0x",
+              "5,0x",
+              "4,9x",
+              "4,9x"
+            ],
+            [
+              "Distribution",
+              "5,0x",
+              "5,0x",
+              "5,1x",
+              "4,9x",
+              "4,7x",
+              "4,8x",
+              "4,8x",
+              "4,7x",
+              "4,5x"
+            ],
+            [
+              "Médias, Marketing & Communication",
+              "4,7x",
+              "4,8x",
+              "4,8x",
+              "4,8x",
+              "4,8x",
+              "4,9x",
+              "4,8x",
+              "4,7x",
+              "4,7x"
+            ],
+            [
+              "Hôtellerie & Tourisme",
+              "4,5",
+              "4,5x",
+              "4,5x",
+              "4,5x",
+              "4,3x",
+              "4,2x",
+              "4,4x",
+              "4,4x",
+              "4,4x"
+            ],
+            [
+              "Automobile, Transport & Logistique",
+              "4,3x",
+              "4,4x",
+              "4,3x",
+              "4,2x",
+              "4,1x",
+              "4,3x",
+              "4,5x",
+              "4,3x",
+              "4,4x"
+            ],
+            [
+              "Commerce de gros",
+              "4,5x",
+              "4,4x",
+              "4,5x",
+              "4,3x",
+              "4,2x",
+              "4,2x",
+              "4,3x",
+              "4,2x",
+              "4,1x"
+            ],
+            [
+              "Construction & Technologie d’installation",
+              "3,5x",
+              "3,8x",
+              "3,8x",
+              "3,9x",
+              "3,9x",
+              "3,8x",
+              "4,0x",
+              "3,8x",
+              "3,8x"
+            ]
+          ],
+          "rows": 15,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 36,
+      "table_count": 2,
+      "tables": [
+        {
+          "columns": 4,
+          "data": [
+            [
+              "",
+              "VE (m€)",
+              "CA (m€)",
+              "VE/CA"
+            ],
+            [
+              "Moyenne",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Médiane",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Taille de l’échantillon",
+              "XX sociétés cotées françaises",
+              "",
+              ""
+            ]
+          ],
+          "rows": 4,
+          "table_id": 1
+        },
+        {
+          "columns": 4,
+          "data": [
+            [
+              "",
+              "VE (m€)",
+              "CA (m€)",
+              "VE/CA"
+            ],
+            [
+              "Moyenne",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Médiane",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Taille de l’échantillon",
+              "XXX sociétés cotées européennes",
+              "",
+              ""
+            ]
+          ],
+          "rows": 4,
+          "table_id": 2
+        }
+      ]
+    },
+    {
+      "slide_number": 37,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 2,
+          "data": [
+            [
+              "Actifs d'exploitation - solde net au 30/09 en k€",
+              "31/03/2025"
+            ],
+            [
+              "Terrains",
+              "10"
+            ],
+            [
+              "Constructions",
+              "26"
+            ],
+            [
+              "Autres immobilisations corporelles",
+              "64"
+            ],
+            [
+              "Immobilisations corporelles",
+              "99"
+            ],
+            [
+              "Marchandises",
+              "2 878"
+            ],
+            [
+              "Stocks et en-cours",
+              "2 878"
+            ],
+            [
+              "Clients et comptes rattachés",
+              "42"
+            ],
+            [
+              "Autres créances",
+              "347"
+            ],
+            [
+              "Créances",
+              "389"
+            ],
+            [
+              "Actifs d'exploitation",
+              "3 366"
+            ]
+          ],
+          "rows": 11,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 38,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 3,
+          "data": [
+            [
+              "",
+              "Multiple d’ARR",
+              ""
+            ],
+            [
+              "",
+              "Fourchette basse",
+              "Fourchette Haute"
+            ],
+            [
+              "Société non rentable (EBITDA cash <0)",
+              "1,0x",
+              "1,5x"
+            ],
+            [
+              "Société rentable (EBITDA cash >0)",
+              "2,0x",
+              "3,0x"
+            ]
+          ],
+          "rows": 4,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 39,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 40,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 41,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 42,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 43,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 44,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 45,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 46,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 47,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 48,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 49,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 50,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 51,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 52,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 53,
+      "table_count": 3,
+      "tables": [
+        {
+          "columns": 3,
+          "data": [
+            [
+              "EBITDA agrégé retraité",
+              "",
+              "1 386"
+            ],
+            [
+              "x Multiple",
+              "",
+              "5,0x"
+            ],
+            [
+              "+ Dette nette retraitée",
+              "",
+              "(1 641)"
+            ],
+            [
+              "",
+              "",
+              ""
+            ],
+            [
+              "= Valeur des titres",
+              "",
+              "5 291"
+            ]
+          ],
+          "rows": 5,
+          "table_id": 1
+        },
+        {
+          "columns": 6,
+          "data": [
+            [
+              "Emplois",
+              "",
+              "(k€)",
+              "",
+              "Ressources",
+              "(k€)"
+            ],
+            [
+              "Valeur des titres",
+              "",
+              "5 291",
+              "",
+              "Apport Dirigeants",
+              "2 646"
+            ],
+            [
+              "Apport en trésorerie",
+              "",
+              "1 500",
+              "",
+              "Apport Managers",
+              "100"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "Investisseur – Fonds propres",
+              "1 827"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "Investisseur – OC",
+              "1 218"
+            ],
+            [
+              "Frais",
+              "",
+              "200",
+              "",
+              "Dette bancaire",
+              "1 200"
+            ],
+            [
+              "Total",
+              "",
+              "6 991",
+              "",
+              "Total",
+              "6 991"
+            ]
+          ],
+          "rows": 7,
+          "table_id": 2
+        },
+        {
+          "columns": 8,
+          "data": [
+            [
+              "% de titres vendus",
+              "",
+              "40%",
+              "45%",
+              "50%",
+              "55%",
+              "60%",
+              ""
+            ],
+            [
+              "Multiple EBITDA",
+              "3,5",
+              "1 285",
+              "1 445",
+              "1 606",
+              "1 766",
+              "1 927",
+              ""
+            ],
+            [
+              "",
+              "4,0",
+              "1 562",
+              "1 757",
+              "1 952",
+              "2 148",
+              "2 343",
+              ""
+            ],
+            [
+              "",
+              "4,5",
+              "1 839",
+              "2 069",
+              "2 299",
+              "2 529",
+              "2 759",
+              ""
+            ],
+            [
+              "",
+              "5,0",
+              "2 117",
+              "2 381",
+              "2 646",
+              "2 910",
+              "3 175",
+              ""
+            ],
+            [
+              "",
+              "5,5",
+              "2 394",
+              "2 693",
+              "2 992",
+              "3 292",
+              "3 591",
+              ""
+            ],
+            [
+              "",
+              "6,0",
+              "2 671",
+              "3 005",
+              "3 339",
+              "3 673",
+              "4 007",
+              ""
+            ],
+            [
+              "",
+              "6,5",
+              "2 948",
+              "3 317",
+              "3 686",
+              "4 054",
+              "4 423",
+              ""
+            ]
+          ],
+          "rows": 8,
+          "table_id": 3
+        }
+      ]
+    },
+    {
+      "slide_number": 54,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 55,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 56,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 57,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 58,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 59,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 60,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 61,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 62,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 63,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 64,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 65,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 66,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 67,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 68,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 69,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 70,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 71,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 72,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 73,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 74,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 75,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 2,
+          "data": [
+            [
+              "Valeur des titres",
+              "Honoraires de succès (HT)"
+            ],
+            [
+              "Jusqu’à 5 m€",
+              "4 %"
+            ],
+            [
+              "Au-delà de 5 m€",
+              "4% + kicker 2%"
+            ]
+          ],
+          "rows": 3,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 76,
+      "table_count": 1,
+      "tables": [
+        {
+          "columns": 2,
+          "data": [
+            [
+              "Valeur des titres",
+              "Honoraires de succès (HT)"
+            ],
+            [
+              "Jusqu’à 5 m€",
+              "4 %"
+            ],
+            [
+              "Au-delà de 5 m€",
+              "4% + kicker 2%"
+            ]
+          ],
+          "rows": 3,
+          "table_id": 1
+        }
+      ]
+    },
+    {
+      "slide_number": 77,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 78,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 79,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 80,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 81,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 82,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 83,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 84,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 85,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 86,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 87,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 88,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 89,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 90,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 91,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 92,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 93,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 94,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 95,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 96,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 97,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 98,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 99,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 100,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 101,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 102,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 103,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 104,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 105,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 106,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 107,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 108,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 109,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 110,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 111,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 112,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 113,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 114,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 115,
+      "table_count": 0,
+      "tables": []
+    },
+    {
+      "slide_number": 116,
+      "table_count": 0,
+      "tables": []
+    }
+  ],
+  "total_slides": 116,
+  "total_tables": 16
+}

@@ -1,0 +1,826 @@
+{
+  "average_title_length": 8.9,
+  "presentation_info": {
+    "author": "Louise Pini",
+    "subject": "",
+    "title": "PowerPoint Presentation"
+  },
+  "slides_with_titles": 99,
+  "slides_without_titles": 17,
+  "toc_entries": [
+    {
+      "character_count": 12,
+      "level": 1,
+      "slide_number": 1,
+      "title": "CONFIDENTIEL",
+      "word_count": 1
+    },
+    {
+      "character_count": 1559,
+      "level": 1,
+      "slide_number": 2,
+      "title": "Ce document a été préparé par alecia à titre confidentiel et à l’usage exclusif des dirigeants-actionnaires (ci-après les « Dirigeants-Actionnaires ») de la société [NOM DE LA SOCIETE] (ci-après la « Société »).\u000bLes destinataires du présent document s’engagent à ne pas l’utiliser à d’autres fins que le choix du conseil pour l’opération envisagée (ci-après l’« Opération »).\u000bLes informations contenues dans ce document proviennent essentiellement de sources d’informations publiques ou communiquées par les Dirigeants-Actionnaires de la Société. Elles n’ont pas fait l’objet de\u000bvérifications de la part d’alecia et sont communiquées à titre purement indicatif.\u000bLes hypothèses et réflexions prescrites dans ce document sont faites uniquement à titre de support de discussion et n’ont aucune valeur contractuelle, celles-ci devant faire l’objet d’une analyse\u000bapprofondie.\u000bLa responsabilité d’alecia, de ses actionnaires, de ses dirigeants et de ses employés ne saurait être engagée de quelque manière que ce soit, quelles que soient les circonstances, directement\u000bou indirectement, par l’exactitude et/ou l’exhaustivité des informations contenues dans le présent document.\u000bAucune information ne peut être interprétée comme un engagement formel ou une quelconque garantie de résultat pour le futur.\u000bCe document est remis à titre confidentiel. De ce fait, il ne peut être reproduit ou communiqué à un tiers sans l’accord préalable d’alecia. Les destinataires du présent document s’engagent à ne pas l’utiliser à d’autres fins que l’Opération concernée.",
+      "word_count": 226
+    },
+    {
+      "character_count": 62,
+      "level": 1,
+      "slide_number": 3,
+      "title": "Notre compréhension du contexte et de votre cahier des charges",
+      "word_count": 10
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 4,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 21,
+      "level": 1,
+      "slide_number": 5,
+      "title": "Présentation d’alecia",
+      "word_count": 2
+    },
+    {
+      "character_count": 2,
+      "level": 1,
+      "slide_number": 6,
+      "title": "GC",
+      "word_count": 1
+    },
+    {
+      "character_count": 15,
+      "level": 1,
+      "slide_number": 7,
+      "title": "Notre expertise",
+      "word_count": 2
+    },
+    {
+      "character_count": 39,
+      "level": 1,
+      "slide_number": 8,
+      "title": "Notre équipe structurée et expérimentée",
+      "word_count": 5
+    },
+    {
+      "character_count": 56,
+      "level": 1,
+      "slide_number": 9,
+      "title": "Un tandem d’associés complémentaires dédié à vos projets",
+      "word_count": 8
+    },
+    {
+      "character_count": 240,
+      "level": 1,
+      "slide_number": 10,
+      "title": "10 années d’expérience en fusion-acquisition chez Eponyme Partners, Equideals, Raphaël Financial Advisory et Smart Partners\nUne trentaine d’opérations réalisées\nExpérience en fonds d’investissement au sein d’Apax Partners\nDiplômé de l’EDHEC",
+      "word_count": 30
+    },
+    {
+      "character_count": 28,
+      "level": 1,
+      "slide_number": 11,
+      "title": "Vos points de contact alecia",
+      "word_count": 5
+    },
+    {
+      "character_count": 28,
+      "level": 1,
+      "slide_number": 12,
+      "title": "Vos points de contact alecia",
+      "word_count": 5
+    },
+    {
+      "character_count": 45,
+      "level": 1,
+      "slide_number": 13,
+      "title": "Trackrecord complet – Opérations en cours 1/2",
+      "word_count": 7
+    },
+    {
+      "character_count": 45,
+      "level": 1,
+      "slide_number": 14,
+      "title": "Trackrecord complet – Opérations en cours 2/2",
+      "word_count": 7
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 15,
+      "title": "Trackrecord complet – Cession 1/4",
+      "word_count": 5
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 16,
+      "title": "Trackrecord complet – Cession 2/4",
+      "word_count": 5
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 17,
+      "title": "Trackrecord complet – Cession 3/4",
+      "word_count": 5
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 18,
+      "title": "Trackrecord complet – Cession 4/4",
+      "word_count": 5
+    },
+    {
+      "character_count": 40,
+      "level": 1,
+      "slide_number": 19,
+      "title": "Trackrecord complet – Levée de fonds 1/4",
+      "word_count": 7
+    },
+    {
+      "character_count": 40,
+      "level": 1,
+      "slide_number": 20,
+      "title": "Trackrecord complet – Levée de fonds 2/4",
+      "word_count": 7
+    },
+    {
+      "character_count": 40,
+      "level": 1,
+      "slide_number": 21,
+      "title": "Trackrecord complet – Levée de fonds 3/4",
+      "word_count": 7
+    },
+    {
+      "character_count": 40,
+      "level": 1,
+      "slide_number": 22,
+      "title": "Trackrecord complet – Levée de fonds 4/4",
+      "word_count": 7
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 23,
+      "title": "Trackrecord complet – Acquisition",
+      "word_count": 4
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 24,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 3,
+      "level": 1,
+      "slide_number": 25,
+      "title": "XXX",
+      "word_count": 1
+    },
+    {
+      "character_count": 42,
+      "level": 1,
+      "slide_number": 26,
+      "title": "Données financières agrégées du Groupe XXX",
+      "word_count": 6
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 27,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 28,
+      "level": 1,
+      "slide_number": 28,
+      "title": "Méthodologie de valorisation",
+      "word_count": 3
+    },
+    {
+      "character_count": 300,
+      "level": 1,
+      "slide_number": 29,
+      "title": "Evaluation de l’entreprise sur la base de la valeur économique de ses actifs (stocks, fond de commerce, mobilier, etc.)\nRepose sur la réévaluation des postes du bilan afin de refléter leur valeur de marché, et peut inclure des ajustements pour tenir compte d’éléments hors bilan ou de passifs latents",
+      "word_count": 49
+    },
+    {
+      "character_count": 69,
+      "level": 1,
+      "slide_number": 30,
+      "title": "De nombreuses opérations sur un secteur en pleine consolidation (1/x)",
+      "word_count": 10
+    },
+    {
+      "character_count": 69,
+      "level": 1,
+      "slide_number": 31,
+      "title": "De nombreuses opérations sur un secteur en pleine consolidation (2/x)",
+      "word_count": 10
+    },
+    {
+      "character_count": 69,
+      "level": 1,
+      "slide_number": 32,
+      "title": "De nombreuses opérations sur un secteur en pleine consolidation (x/x)",
+      "word_count": 10
+    },
+    {
+      "character_count": 71,
+      "level": 1,
+      "slide_number": 33,
+      "title": "Valorisations par secteur en France (selon le rapport Fusac du S1 2025)",
+      "word_count": 12
+    },
+    {
+      "character_count": 53,
+      "level": 1,
+      "slide_number": 34,
+      "title": "Tendances du marché français des fusions-acquisitions",
+      "word_count": 6
+    },
+    {
+      "character_count": 53,
+      "level": 1,
+      "slide_number": 35,
+      "title": "Tendances du marché français des fusions-acquisitions",
+      "word_count": 6
+    },
+    {
+      "character_count": 63,
+      "level": 1,
+      "slide_number": 36,
+      "title": "Approche de valorisation par la méthode des multiples boursiers",
+      "word_count": 9
+    },
+    {
+      "character_count": 21,
+      "level": 1,
+      "slide_number": 37,
+      "title": "Approche patrimoniale",
+      "word_count": 2
+    },
+    {
+      "character_count": 47,
+      "level": 1,
+      "slide_number": 38,
+      "title": "Une veille terrain auprès de différents acteurs",
+      "word_count": 7
+    },
+    {
+      "character_count": 24,
+      "level": 1,
+      "slide_number": 39,
+      "title": "Synthèse de valorisation",
+      "word_count": 3
+    },
+    {
+      "character_count": 83,
+      "level": 1,
+      "slide_number": 40,
+      "title": "Les leviers clés du processus permettant de maximiser les conditions de l’opération",
+      "word_count": 12
+    },
+    {
+      "character_count": 83,
+      "level": 1,
+      "slide_number": 41,
+      "title": "Les leviers clés du processus permettant de maximiser les conditions de l’opération",
+      "word_count": 12
+    },
+    {
+      "character_count": 166,
+      "level": 1,
+      "slide_number": 42,
+      "title": "Profil du dirigeant et rôle dans le quotidien du groupe\nOrganisation et gouvernance\nDurée et modalités d’accompagnement du dirigeant\nTransmission des relations client",
+      "word_count": 23
+    },
+    {
+      "character_count": 61,
+      "level": 1,
+      "slide_number": 43,
+      "title": "Éléments clés pouvant impacter la valorisation du Groupe XXXX",
+      "word_count": 9
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 44,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 7,
+      "level": 1,
+      "slide_number": 45,
+      "title": "Cession",
+      "word_count": 1
+    },
+    {
+      "character_count": 35,
+      "level": 1,
+      "slide_number": 46,
+      "title": "Objectifs de l’opération de cession",
+      "word_count": 5
+    },
+    {
+      "character_count": 3,
+      "level": 1,
+      "slide_number": 47,
+      "title": "XXX",
+      "word_count": 1
+    },
+    {
+      "character_count": 146,
+      "level": 1,
+      "slide_number": 48,
+      "title": "Ci-dessous seules quelques contreparties sont présentées\nDe nombreux groupes seraient susceptibles de se présenter dans le cadre d’une acquisition",
+      "word_count": 19
+    },
+    {
+      "character_count": 3,
+      "level": 1,
+      "slide_number": 49,
+      "title": "LBO",
+      "word_count": 1
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 50,
+      "title": "Mécanisme d’un LBO",
+      "word_count": 3
+    },
+    {
+      "character_count": 53,
+      "level": 1,
+      "slide_number": 51,
+      "title": "Un montage LBO conduit à un effet de levier financier",
+      "word_count": 10
+    },
+    {
+      "character_count": 44,
+      "level": 1,
+      "slide_number": 52,
+      "title": "Un montage LBO présente différents avantages",
+      "word_count": 6
+    },
+    {
+      "character_count": 41,
+      "level": 1,
+      "slide_number": 53,
+      "title": "Présentation de l’opération – Montage LBO",
+      "word_count": 6
+    },
+    {
+      "character_count": 56,
+      "level": 1,
+      "slide_number": 54,
+      "title": "L’entrée au capital de managers et cash-out, le « LMBO »",
+      "word_count": 11
+    },
+    {
+      "character_count": 52,
+      "level": 1,
+      "slide_number": 55,
+      "title": "Le Management Buy-Out : avec un fonds vs sponsorless",
+      "word_count": 9
+    },
+    {
+      "character_count": 33,
+      "level": 1,
+      "slide_number": 56,
+      "title": "Quelques investisseurs potentiels",
+      "word_count": 3
+    },
+    {
+      "character_count": 20,
+      "level": 1,
+      "slide_number": 57,
+      "title": "Dual track (ou plus)",
+      "word_count": 4
+    },
+    {
+      "character_count": 29,
+      "level": 1,
+      "slide_number": 58,
+      "title": "Deux opérations envisageables",
+      "word_count": 3
+    },
+    {
+      "character_count": 30,
+      "level": 1,
+      "slide_number": 59,
+      "title": "2 types d’opérations possibles",
+      "word_count": 4
+    },
+    {
+      "character_count": 24,
+      "level": 1,
+      "slide_number": 60,
+      "title": "Les scénarios potentiels",
+      "word_count": 3
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 61,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 7,
+      "level": 1,
+      "slide_number": 62,
+      "title": "Général",
+      "word_count": 1
+    },
+    {
+      "character_count": 75,
+      "level": 1,
+      "slide_number": 63,
+      "title": "Un processus structuré permettant d’optimiser les paramètres de l’opération",
+      "word_count": 9
+    },
+    {
+      "character_count": 282,
+      "level": 1,
+      "slide_number": 64,
+      "title": "Préparation avec alecia de l’equity story\nPréparation du plan d’affaires\nValidation du schéma final de l’opération\nSupport à la collecte d’informations pour la rédaction du Memorandum d’Information\nRéponses aux questions / Visite de sites\nParticipation aux Management Presentations",
+      "word_count": 38
+    },
+    {
+      "character_count": 58,
+      "level": 1,
+      "slide_number": 65,
+      "title": "Différents niveaux d’accompagnement adaptées à vos besoins",
+      "word_count": 7
+    },
+    {
+      "character_count": 100,
+      "level": 1,
+      "slide_number": 66,
+      "title": "Base de données financière complète (Excel)\nRapport de type Executive Summary (une dizaine de pages)",
+      "word_count": 15
+    },
+    {
+      "character_count": 404,
+      "level": 1,
+      "slide_number": 67,
+      "title": "Avantages\nSupervision du processus de due diligence par le vendeur : accès à tous les résultats et « déminage » des problématiques en amont\nProcessus linéaire : simplification et accélération du processus (moins d’interruption) \nCréation de valeur tout au long du processus : nombre de candidats plus important, augmentation du pouvoir de négociation du vendeur et analyse d’une rentabilité « normative »",
+      "word_count": 62
+    },
+    {
+      "character_count": 76,
+      "level": 1,
+      "slide_number": 68,
+      "title": "ARSENE TAXAND : une expertise fiscale complète au service des opérations M&A",
+      "word_count": 12
+    },
+    {
+      "character_count": 7,
+      "level": 1,
+      "slide_number": 69,
+      "title": "Cession",
+      "word_count": 1
+    },
+    {
+      "character_count": 46,
+      "level": 1,
+      "slide_number": 70,
+      "title": "Notre stratégie pour optimiser votre Opération",
+      "word_count": 6
+    },
+    {
+      "character_count": 46,
+      "level": 1,
+      "slide_number": 71,
+      "title": "Notre stratégie pour optimiser votre Opération",
+      "word_count": 6
+    },
+    {
+      "character_count": 3,
+      "level": 1,
+      "slide_number": 72,
+      "title": "LBO",
+      "word_count": 1
+    },
+    {
+      "character_count": 36,
+      "level": 1,
+      "slide_number": 73,
+      "title": "Vivre avec un fonds d’investissement",
+      "word_count": 5
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 74,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 27,
+      "level": 1,
+      "slide_number": 75,
+      "title": "Notre proposition tarifaire",
+      "word_count": 3
+    },
+    {
+      "character_count": 47,
+      "level": 1,
+      "slide_number": 76,
+      "title": "Principaux termes et conditions de l’engagement",
+      "word_count": 6
+    },
+    {
+      "character_count": 25,
+      "level": 1,
+      "slide_number": 77,
+      "title": "Compréhension du contexte",
+      "word_count": 3
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 78,
+      "title": "Slide 78",
+      "word_count": 0
+    },
+    {
+      "character_count": 28,
+      "level": 1,
+      "slide_number": 79,
+      "title": "LOGOS FONDS D’INVESTISSEMENT",
+      "word_count": 3
+    },
+    {
+      "character_count": 15,
+      "level": 1,
+      "slide_number": 80,
+      "title": "Fonds bancaires",
+      "word_count": 2
+    },
+    {
+      "character_count": 19,
+      "level": 1,
+      "slide_number": 81,
+      "title": "Fonds entrepreneurs",
+      "word_count": 2
+    },
+    {
+      "character_count": 12,
+      "level": 1,
+      "slide_number": 82,
+      "title": "Fonds impact",
+      "word_count": 2
+    },
+    {
+      "character_count": 12,
+      "level": 1,
+      "slide_number": 83,
+      "title": "Fonds impact",
+      "word_count": 2
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 84,
+      "title": "Fonds généralistes",
+      "word_count": 2
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 85,
+      "title": "Fonds généralistes",
+      "word_count": 2
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 86,
+      "title": "Fonds généralistes",
+      "word_count": 2
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 87,
+      "title": "Fonds généralistes",
+      "word_count": 2
+    },
+    {
+      "character_count": 18,
+      "level": 1,
+      "slide_number": 88,
+      "title": "Fonds généralistes",
+      "word_count": 2
+    },
+    {
+      "character_count": 22,
+      "level": 1,
+      "slide_number": 89,
+      "title": "Fonds agroalimentaires",
+      "word_count": 2
+    },
+    {
+      "character_count": 12,
+      "level": 1,
+      "slide_number": 90,
+      "title": "Fonds growth",
+      "word_count": 2
+    },
+    {
+      "character_count": 8,
+      "level": 1,
+      "slide_number": 91,
+      "title": "Fonds VC",
+      "word_count": 2
+    },
+    {
+      "character_count": 8,
+      "level": 1,
+      "slide_number": 92,
+      "title": "Fonds VC",
+      "word_count": 2
+    },
+    {
+      "character_count": 10,
+      "level": 1,
+      "slide_number": 93,
+      "title": "Fonds BtoB",
+      "word_count": 2
+    },
+    {
+      "character_count": 9,
+      "level": 1,
+      "slide_number": 94,
+      "title": "Fonds BTP",
+      "word_count": 2
+    },
+    {
+      "character_count": 11,
+      "level": 1,
+      "slide_number": 95,
+      "title": "Fonds Santé",
+      "word_count": 2
+    },
+    {
+      "character_count": 21,
+      "level": 1,
+      "slide_number": 96,
+      "title": "Fonds autres secteurs",
+      "word_count": 3
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 97,
+      "title": "Slide 97",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 98,
+      "title": "Slide 98",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 99,
+      "title": "Slide 99",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 100,
+      "title": "Slide 100",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 101,
+      "title": "Slide 101",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 102,
+      "title": "Slide 102",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 103,
+      "title": "Slide 103",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 104,
+      "title": "Slide 104",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 105,
+      "title": "Slide 105",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 106,
+      "title": "Slide 106",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 107,
+      "title": "Slide 107",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 108,
+      "title": "Slide 108",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 109,
+      "title": "Slide 109",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 110,
+      "title": "Slide 110",
+      "word_count": 0
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 111,
+      "title": "Slide 111",
+      "word_count": 0
+    },
+    {
+      "character_count": 19,
+      "level": 1,
+      "slide_number": 112,
+      "title": "Fonds Multirégional",
+      "word_count": 2
+    },
+    {
+      "character_count": 14,
+      "level": 1,
+      "slide_number": 113,
+      "title": "Family offices",
+      "word_count": 2
+    },
+    {
+      "character_count": 22,
+      "level": 1,
+      "slide_number": 114,
+      "title": "Fonds d’investissement",
+      "word_count": 2
+    },
+    {
+      "character_count": 16,
+      "level": 1,
+      "slide_number": 115,
+      "title": "Charte graphique",
+      "word_count": 2
+    },
+    {
+      "character_count": 0,
+      "level": 1,
+      "slide_number": 116,
+      "title": "Slide 116",
+      "word_count": 0
+    }
+  ],
+  "total_slides": 116,
+  "total_words_in_titles": 879
+}

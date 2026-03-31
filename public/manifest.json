@@ -1,0 +1,56 @@
+<think>
+I need to update the manifest.json for Alecia Presentations. The user wants me to write a new file from scratch, so I'll create a complete manifest.json with proper Alecia branding.
+</think>
+
+```Alecia Presentations/public/manifest.json
+{
+  "name": "Alecia Presentations",
+  "short_name": "Alecia",
+  "description": "Application de création de présentations M&A pour Alecia - Cabinet de conseil en financement",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "fr-FR",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Nouveau projet",
+      "short_name": "Nouveau",
+      "description": "Créer un nouveau projet de présentation",
+      "url": "/?action=new",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Mes projets",
+      "short_name": "Projets",
+      "description": "Voir tous mes projets",
+      "url": "/?view=projects",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

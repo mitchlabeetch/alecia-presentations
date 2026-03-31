@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #1a3a5c;
+  --brand-light: #1e4570;
+  --accent: #c9a84c;
+  --surface: #f7f8fa;
+  --surface-2: #f0f2f5;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Auth button & input styles */
+.auth-button {
+  width: 100%;
+  padding: 10px 16px;
+  background: #1a3a5c;
+  color: white !important;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.auth-button:hover {
+  background: #152e4a;
+}
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.auth-input-field {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.auth-input-field:focus {
+  border-color: #1a3a5c;
+  box-shadow: 0 0 0 3px rgba(26,58,92,0.1);
+}
+
+body {
+  font-family:
+    "Inter Variable",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Thin, elegant scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1a3a5c;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1a3a5c;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+/* Slide thumbnail scale fix */
+.slide-thumbnail-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Auth form overrides */
+.french-auth-wrapper button[type="submit"] {
+  background: #1a3a5c !important;
+  color: white !important;
+}
+.french-auth-wrapper button[type="submit"]:hover {
+  background: #152e4a !important;
+}
+
+/* Panel tab active glow */
+.panel-tab-active {
+  box-shadow: inset 0 -2px 0 #1a3a5c;
+}
+
+/* Slide preview shadow */
+.slide-shadow {
+  box-shadow: 0 4px 24px rgba(26,58,92,0.12), 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* Smooth focus rings */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
+
+/* BlockNote editor overrides */
+.bn-container .bn-editor {
+  padding: 8px 12px !important;
+}
+.bn-container .ProseMirror {
+  min-height: inherit;
+}
+
+/* Tooltip */
+[title]:hover::after {
+  content: attr(title);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.15s ease-out;
+}
+
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}

@@ -1,0 +1,958 @@
+{
+  "color_palette": [
+    {
+      "hex": "#061a40",
+      "rgb": "6, 26, 64",
+      "usage_count": 946
+    },
+    {
+      "hex": "#ffffff",
+      "rgb": "255, 255, 255",
+      "usage_count": 67
+    },
+    {
+      "hex": "#fafafc",
+      "rgb": "250, 250, 252",
+      "usage_count": 49
+    },
+    {
+      "hex": "#b80c09",
+      "rgb": "184, 12, 9",
+      "usage_count": 35
+    },
+    {
+      "hex": "#0a2a68",
+      "rgb": "10, 42, 104",
+      "usage_count": 23
+    },
+    {
+      "hex": "#aab1be",
+      "rgb": "170, 177, 190",
+      "usage_count": 21
+    },
+    {
+      "hex": "#ecf0f6",
+      "rgb": "236, 240, 246",
+      "usage_count": 13
+    },
+    {
+      "hex": "#e6e8ec",
+      "rgb": "230, 232, 236",
+      "usage_count": 13
+    },
+    {
+      "hex": "#c00000",
+      "rgb": "192, 0, 0",
+      "usage_count": 11
+    },
+    {
+      "hex": "#92d050",
+      "rgb": "146, 208, 80",
+      "usage_count": 8
+    },
+    {
+      "hex": "#749ac7",
+      "rgb": "116, 154, 199",
+      "usage_count": 5
+    },
+    {
+      "hex": "#163e64",
+      "rgb": "22, 62, 100",
+      "usage_count": 5
+    },
+    {
+      "hex": "#bfd7ea",
+      "rgb": "191, 215, 234",
+      "usage_count": 4
+    },
+    {
+      "hex": "#fee9e8",
+      "rgb": "254, 233, 232",
+      "usage_count": 4
+    },
+    {
+      "hex": "#4370a7",
+      "rgb": "67, 112, 167",
+      "usage_count": 4
+    },
+    {
+      "hex": "#0e2841",
+      "rgb": "14, 40, 65",
+      "usage_count": 3
+    },
+    {
+      "hex": "#e3f2fd",
+      "rgb": "227, 242, 253",
+      "usage_count": 3
+    },
+    {
+      "hex": "#afabab",
+      "rgb": "175, 171, 171",
+      "usage_count": 2
+    },
+    {
+      "hex": "#19395e",
+      "rgb": "25, 57, 94",
+      "usage_count": 1
+    },
+    {
+      "hex": "#b0c5df",
+      "rgb": "176, 197, 223",
+      "usage_count": 1
+    },
+    {
+      "hex": "#ffff00",
+      "rgb": "255, 255, 0",
+      "usage_count": 1
+    },
+    {
+      "hex": "#6f7a8f",
+      "rgb": "111, 122, 143",
+      "usage_count": 1
+    },
+    {
+      "hex": "#8c95a6",
+      "rgb": "140, 149, 166",
+      "usage_count": 1
+    },
+    {
+      "hex": "#c8ccd5",
+      "rgb": "200, 204, 213",
+      "usage_count": 1
+    }
+  ],
+  "most_used_color": "#061a40",
+  "presentation_info": {
+    "author": "Louise Pini",
+    "subject": "",
+    "title": "PowerPoint Presentation"
+  },
+  "slides": [
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 1
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 2
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#061a40",
+        "#ecf0f6"
+      ],
+      "slide_number": 3
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 4
+    },
+    {
+      "color_count": 5,
+      "colors": [
+        "#ffffff",
+        "#fafafc",
+        "#061a40",
+        "#e6e8ec",
+        "#b80c09"
+      ],
+      "slide_number": 5
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 6
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#fafafc",
+        "#061a40",
+        "#c00000"
+      ],
+      "slide_number": 7
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 8
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#fafafc",
+        "#061a40",
+        "#ffffff"
+      ],
+      "slide_number": 9
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 10
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 11
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 12
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 13
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 14
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 15
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 16
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 17
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 18
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 19
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 20
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 21
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 22
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 23
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 24
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 25
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#fafafc",
+        "#061a40",
+        "#ffffff"
+      ],
+      "slide_number": 26
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 27
+    },
+    {
+      "color_count": 6,
+      "colors": [
+        "#0a2a68",
+        "#92d050",
+        "#fafafc",
+        "#061a40",
+        "#e6e8ec",
+        "#b80c09"
+      ],
+      "slide_number": 28
+    },
+    {
+      "color_count": 7,
+      "colors": [
+        "#0a2a68",
+        "#92d050",
+        "#ffffff",
+        "#fafafc",
+        "#061a40",
+        "#e6e8ec",
+        "#b80c09"
+      ],
+      "slide_number": 29
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#aab1be",
+        "#061a40"
+      ],
+      "slide_number": 30
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#aab1be",
+        "#061a40"
+      ],
+      "slide_number": 31
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#aab1be",
+        "#061a40"
+      ],
+      "slide_number": 32
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#aab1be",
+        "#061a40",
+        "#0a2a68"
+      ],
+      "slide_number": 33
+    },
+    {
+      "color_count": 4,
+      "colors": [
+        "#aab1be",
+        "#061a40",
+        "#0a2a68",
+        "#ffffff"
+      ],
+      "slide_number": 34
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#aab1be",
+        "#061a40",
+        "#ffffff"
+      ],
+      "slide_number": 35
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#aab1be",
+        "#061a40",
+        "#0a2a68"
+      ],
+      "slide_number": 36
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#061a40",
+        "#0a2a68",
+        "#ffffff"
+      ],
+      "slide_number": 37
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 38
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#c00000",
+        "#061a40",
+        "#0a2a68"
+      ],
+      "slide_number": 39
+    },
+    {
+      "color_count": 4,
+      "colors": [
+        "#0e2841",
+        "#061a40",
+        "#0a2a68",
+        "#ffffff"
+      ],
+      "slide_number": 40
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#061a40",
+        "#0a2a68",
+        "#ffffff"
+      ],
+      "slide_number": 41
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 42
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#c00000",
+        "#061a40",
+        "#ffffff"
+      ],
+      "slide_number": 43
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 44
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 45
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#bfd7ea",
+        "#749ac7",
+        "#061a40"
+      ],
+      "slide_number": 46
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#749ac7",
+        "#061a40",
+        "#0a2a68"
+      ],
+      "slide_number": 47
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#19395e",
+        "#061a40"
+      ],
+      "slide_number": 48
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 49
+    },
+    {
+      "color_count": 4,
+      "colors": [
+        "#fafafc",
+        "#061a40",
+        "#b80c09",
+        "#ffffff"
+      ],
+      "slide_number": 50
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#061a40",
+        "#b80c09",
+        "#ffffff"
+      ],
+      "slide_number": 51
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 52
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 53
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 54
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 55
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 56
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 57
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#163e64",
+        "#061a40"
+      ],
+      "slide_number": 58
+    },
+    {
+      "color_count": 4,
+      "colors": [
+        "#aab1be",
+        "#fafafc",
+        "#061a40",
+        "#0a2a68"
+      ],
+      "slide_number": 59
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 60
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 61
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 62
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#061a40",
+        "#ecf0f6"
+      ],
+      "slide_number": 63
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fafafc",
+        "#061a40"
+      ],
+      "slide_number": 64
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 65
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#fee9e8",
+        "#061a40"
+      ],
+      "slide_number": 66
+    },
+    {
+      "color_count": 4,
+      "colors": [
+        "#fafafc",
+        "#061a40",
+        "#b80c09",
+        "#ffffff"
+      ],
+      "slide_number": 67
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 68
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 69
+    },
+    {
+      "color_count": 6,
+      "colors": [
+        "#4370a7",
+        "#e3f2fd",
+        "#061a40",
+        "#afabab",
+        "#bfd7ea",
+        "#749ac7"
+      ],
+      "slide_number": 70
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#4370a7",
+        "#b0c5df",
+        "#061a40"
+      ],
+      "slide_number": 71
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 72
+    },
+    {
+      "color_count": 3,
+      "colors": [
+        "#c00000",
+        "#061a40",
+        "#ffffff"
+      ],
+      "slide_number": 73
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 74
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#061a40",
+        "#e6e8ec"
+      ],
+      "slide_number": 75
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#061a40",
+        "#e6e8ec"
+      ],
+      "slide_number": 76
+    },
+    {
+      "color_count": 1,
+      "colors": [
+        "#061a40"
+      ],
+      "slide_number": 77
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 78
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 79
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 80
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 81
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 82
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 83
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 84
+    },
+    {
+      "color_count": 2,
+      "colors": [
+        "#ffff00",
+        "#061a40"
+      ],
+      "slide_number": 85
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 86
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 87
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 88
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 89
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 90
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 91
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 92
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 93
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 94
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 95
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 96
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 97
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 98
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 99
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 100
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 101
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 102
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 103
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 104
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 105
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 106
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 107
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 108
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 109
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 110
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 111
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 112
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 113
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 114
+    },
+    {
+      "color_count": 14,
+      "colors": [
+        "#fafafc",
+        "#8c95a6",
+        "#6f7a8f",
+        "#4370a7",
+        "#e3f2fd",
+        "#aab1be",
+        "#061a40",
+        "#e6e8ec",
+        "#afabab",
+        "#c8ccd5",
+        "#163e64",
+        "#bfd7ea",
+        "#749ac7",
+        "#b80c09"
+      ],
+      "slide_number": 115
+    },
+    {
+      "color_count": 0,
+      "colors": [],
+      "slide_number": 116
+    }
+  ],
+  "slides_analyzed": 116,
+  "total_color_usage": 1222,
+  "total_colors": 24,
+  "total_slides": 116,
+  "unique_colors_count": 24
+}
