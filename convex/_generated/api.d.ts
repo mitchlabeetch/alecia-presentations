@@ -9,6 +9,7 @@
  */
 
 import type * as aiSettings from "../aiSettings.js";
+import type * as analytics from "../analytics.js";
 import type * as auth from "../auth.js";
 import type * as chat from "../chat.js";
 import type * as chatActions from "../chatActions.js";
@@ -17,6 +18,7 @@ import type * as comments from "../comments.js";
 import type * as exportAction from "../exportAction.js";
 import type * as exportPptx from "../exportPptx.js";
 import type * as http from "../http.js";
+import type * as importPptx from "../importPptx.js";
 import type * as presence from "../presence.js";
 import type * as projects from "../projects.js";
 import type * as prosemirrorSync from "../prosemirrorSync.js";
@@ -35,6 +37,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   aiSettings: typeof aiSettings;
+  analytics: typeof analytics;
   auth: typeof auth;
   chat: typeof chat;
   chatActions: typeof chatActions;
@@ -43,6 +46,7 @@ declare const fullApi: ApiFromModules<{
   exportAction: typeof exportAction;
   exportPptx: typeof exportPptx;
   http: typeof http;
+  importPptx: typeof importPptx;
   presence: typeof presence;
   projects: typeof projects;
   prosemirrorSync: typeof prosemirrorSync;

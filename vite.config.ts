@@ -29,15 +29,32 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom') || id.includes('react/')) return 'react-vendor';
+            // React core - keep first
+            if (id.includes('react-dom')) return 'react-vendor';
+            
+            // Editor: BlockNote + Tiptap + Prosemirror + Mantine (they share deps)
+            if (id.includes('@blocknote') || id.includes('@tiptap') || id.includes('prosemirror') || id.includes('@mantine') || id.includes('@remirror')) return 'editor-vendor';
+            
+            // UI animations and icons
             if (id.includes('framer-motion') || id.includes('lucide-react')) return 'ui-vendor';
+            
+            // Drag and drop
             if (id.includes('@dnd-kit')) return 'dnd-vendor';
-            if (id.includes('@blocknote') || id.includes('prosemirror')) return 'blocknote-vendor';
+            
+            // Convex backend
             if (id.includes('convex')) return 'convex-vendor';
+            
+            // AI/OpenAI
             if (id.includes('openai')) return 'ai-vendor';
+            
+            // pptxgenjs standalone
             if (id.includes('pptxgenjs')) return 'pptxgen-vendor';
+            
+            // Export libraries (html2canvas, jspdf, jszip)
             if (id.includes('html2canvas') || id.includes('jspdf') || id.includes('jszip')) return 'export-vendor';
-            if (id.includes('@tiptap')) return 'tiptap-vendor';
+            
+            // React hooks and utils
+            if (id.includes('react/')) return 'react-vendor';
           }
         },
       },

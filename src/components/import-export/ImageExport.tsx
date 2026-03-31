@@ -1,8 +1,3 @@
-<think>
-The user wants me to write the ImageExport.tsx file from scratch. I need to output the content wrapped in triple backticks with the file path.
-</think>
-
-```Alecia Presentations/src/components/import-export/ImageExport.tsx
 "use client";
 import { useState } from 'react';
 import { Doc } from '../../../convex/_generated/dataModel';
@@ -84,7 +79,7 @@ export function ImageExport({ slides, theme, projectName }: Props) {
       link.download = `${projectName.replace(/[^a-z0-9]/gi, '_')}_images.zip`;
       link.click();
 
-      toast.success(`${slides.length} images exportées avec succès !`);
+      toast.success(`${slides.length} images exportees avec succes !`);
     } catch (err) {
       console.error(err);
       toast.error("Erreur lors de l'export des images");

@@ -72,7 +72,7 @@ export const trackEvent = mutation({
     await ctx.db.insert('analyticsEvents', {
       ...args,
       timestamp: Date.now(),
-      environment: import.meta.env.MODE || 'development',
+      environment: 'production',
     });
   },
 });

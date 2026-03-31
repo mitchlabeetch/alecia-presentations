@@ -144,6 +144,8 @@ export function ProjectEditor({ projectId, onBack }: Props) {
   const bulkInsert = useMutation(api.slides.bulkInsert);
   const upsertSlide = useMutation(api.slides.upsert);
   const reorderSlides = useMutation(api.slides.reorder);
+  const duplicateSlide = useMutation(api.slides.duplicate);
+  const removeSlide = useMutation(api.slides.remove);
   const generateDeck = useMutation(api.chat.generateDeck);
 
   const [activeSlideIdx, setActiveSlideIdx] = useState(0);
@@ -152,6 +154,94 @@ export function ProjectEditor({ projectId, onBack }: Props) {
   const [showPresentation, setShowPresentation] = useState(false);
   const [showSaveTemplate, setShowSaveTemplate] = useState(false);
   const [generatingDeck, setGeneratingDeck] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+
+  const { undo, redo, canUndo, canRedo } = useUndoRedo();
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: 's',
+      modifiers: ['meta'],
+      description: 'Save project',
+      action: () => {
+        toast.success('Projet enregistré');
+      },
+    },
+    {
+      key: 'z',
+      modifiers: ['meta'],
+      description: 'Undo',
+      action: undo,
+    },
+    {
+      key: 'z',
+      modifiers: ['meta', 'shift'],
+      description: 'Redo',
+      action: redo,
+    },
+    {
+      key: 'd',
+      modifiers: ['meta'],
+      description: 'Duplicate slide',
+      action: async () => {
+        const selectedSlideId = slides[activeSlideIdx]?._id;
+        if (selectedSlideId) {
+          await duplicateSlide({ slideId: selectedSlideId });
+          toast.success('Diapositive dupliquée');
+        }
+      },
+    },
+    {
+      key: 'delete',
+      description: 'Delete slide',
+      action: async () => {
+        const selectedSlideId = slides[activeSlideIdx]?._id;
+        if (selectedSlideId && confirm('Supprimer cette diapositive ?')) {
+          await removeSlide({ slideId: selectedSlideId });
+          toast.success('Diapositive supprimée');
+        }
+      },
+    },
+    {
+      key: 'arrowup',
+      description: 'Previous slide',
+      action: () => {
+        setActiveSlideIdx(Math.max(0, activeSlideIdx - 1));
+      },
+    },
+    {
+      key: 'arrowdown',
+      description: 'Next slide',
+      action: () => {
+        setActiveSlideIdx(Math.min(slides.length - 1, activeSlideIdx + 1));
+      },
+    },
+    {
+      key: 'p',
+      modifiers: ['meta'],
+      description: 'Toggle presentation mode',
+      action: () => {
+        setShowPresentation(true);
+      },
+    },
+    {
+      key: 'escape',
+      description: 'Close / Exit',
+      action: () => {
+        setShowPresentation(false);
+        setActivePanel(null);
+      },
+    },
+    {
+      key: 'c',
+      modifiers: ['meta'],
+      description: 'Toggle comments panel',
+      action: () => {
+        setActivePanel(activePanel === 'chat' ? null : 'chat');
+      },
+    },
+  ]);
 
   // Track project opened
   useEffect(() => {
@@ -302,7 +392,14 @@ export function ProjectEditor({ projectId, onBack }: Props) {
 
           {/* Export */}
           {project && slides.length > 0 && (
-            <ExportButton slides={slides} theme={theme} projectName={project.name} />
+            <ExportButton
+              slides={slides}
+              theme={theme}
+              projectName={project.name}
+              onExport={(format, slideCount) => {
+                useAnalyticsStore.getState().trackEvent('export', { format, slideCount });
+              }}
+            />
           )}
 
           {/* Save as template */}
@@ -324,6 +421,16 @@ export function ProjectEditor({ projectId, onBack }: Props) {
           >
             <span>📋</span>
             <span className="hidden lg:block">Modèles</span>
+          </button>
+
+          {/* Keyboard shortcuts help */}
+          <button
+            onClick={() => setShowHelp(true)}
+            className="flex items-center gap-1 px-2 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
+            title="Raccourcis clavier (?)"
+          >
+            <span>⌨️</span>
+            <span className="hidden sm:block">Aide</span>
           </button>
 
           {/* Present */}
@@ -419,6 +526,20 @@ export function ProjectEditor({ projectId, onBack }: Props) {
               slideIndex={activeSlideIdx}
               totalSlides={slides.length}
               onDuplicated={setActiveSlideIdx}
+              onDuplicate={async () => {
+                const selectedSlideId = slides[activeSlideIdx]?._id;
+                if (selectedSlideId) {
+                  await duplicateSlide({ slideId: selectedSlideId });
+                  toast.success('Diapositive dupliquée');
+                }
+              }}
+              onDelete={async () => {
+                const selectedSlideId = slides[activeSlideIdx]?._id;
+                if (selectedSlideId && confirm('Supprimer cette diapositive ?')) {
+                  await removeSlide({ slideId: selectedSlideId });
+                  toast.success('Diapositive supprimée');
+                }
+              }}
             />
           ) : (
             <EmptyState
@@ -514,6 +635,7 @@ export function ProjectEditor({ projectId, onBack }: Props) {
       {showSaveTemplate && (
         <SaveTemplateModal slides={slides} onClose={() => setShowSaveTemplate(false)} />
       )}
+      {showHelp && <KeyboardShortcutsHelp isOpen={showHelp} onClose={() => setShowHelp(false)} />}
     </div>
   );
 }

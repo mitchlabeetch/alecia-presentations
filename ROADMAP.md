@@ -1,5 +1,17 @@
 Alecia Presentations/ROADMAP.md
-# PitchForge - Roadmap to Best-in-Class M&A Presentation Generator
+# Alecia Presentations (PitchForge) - Roadmap
+
+## 🚀 Deployment Status
+
+| Item | Status |
+|------|--------|
+| **Build** | ✅ Passing |
+| **Git Commit** | `a8a8937` |
+| **Convex Backend** | ✅ Deployed to `aleciaconvex.manuora.fr` |
+| **GitHub Actions** | Push to GitHub to trigger CI/CD |
+| **Deployment Date** | 2025-01-13 |
+
+---
 
 ## Overview
 

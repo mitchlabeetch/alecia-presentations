@@ -14,6 +14,7 @@ interface Props {
   slides: Doc<'slides'>[];
   theme: Theme;
   projectName: string;
+  onExport?: (format: string, slideCount: number) => void;
 }
 
 export function ExportButton({ slides, theme, projectName }: Props) {
@@ -68,6 +69,7 @@ export function ExportButton({ slides, theme, projectName }: Props) {
       document.body.removeChild(container);
       pdf.save(`${projectName.replace(/[^a-z0-9]/gi, '_')}.pdf`);
       toast.success('PDF exporté avec succès !');
+      onExport?.('pdf', slides.length);
     } catch (err) {
       console.error(err);
       toast.error("Erreur lors de l'export PDF");

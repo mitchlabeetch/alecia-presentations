@@ -1,6 +1,3 @@
-Alecia Presentations/src/hooks/usePWA.ts
-```
-```typescript
 import { useEffect, useState } from 'react';
 
 interface PWAState {
@@ -30,19 +27,16 @@ export function usePWA() {
   });
 
   useEffect(() => {
-    // Check if already installed
     if (typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches) {
       setState(prev => ({ ...prev, isInstalled: true }));
     }
 
-    // Handle online/offline
     const handleOnline = () => setState(prev => ({ ...prev, isOnline: true }));
     const handleOffline = () => setState(prev => ({ ...prev, isOnline: false }));
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Handle install prompt
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setState(prev => ({
@@ -51,7 +45,6 @@ export function usePWA() {
       }));
     };
 
-    // Handle service worker messages
     const handleServiceWorkerMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'SW_UPDATE_AVAILABLE') {
         setState(prev => ({ ...prev, updateAvailable: true }));
@@ -61,7 +54,6 @@ export function usePWA() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     navigator.serviceWorker?.addEventListener('message', handleServiceWorkerMessage);
 
-    // Check service worker status
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then(() => {
         setState(prev => ({ ...prev, serviceWorkerReady: true }));
@@ -69,7 +61,6 @@ export function usePWA() {
       });
     }
 
-    // Handle app installed
     const handleAppInstalled = () => {
       setState(prev => ({ ...prev, isInstalled: true, installPromptEvent: null }));
       console.log('App installed successfully');

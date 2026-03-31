@@ -157,6 +157,25 @@ alecia-presentations/
 ### Export
 - `POST /api/export/pptx/:presentationId` - Export PPTX
 
+## 🚀 Déploiement
+
+### Déploiement sur Coolify
+
+Voir [DEPLOY.md](./DEPLOY.md) pour le guide complet de déploiement.
+
+### Guide Coolify Détaillé
+
+Voir [COOLIFY_SETUP.md](./COOLIFY_SETUP.md) pour les instructions spécifiques à Coolify.
+
+### Variables d'Environnement
+
+```env
+VITE_CONVEX_URL=https://aleciaconvex.manuora.fr
+VITE_SENTRY_DSN=https://your-dsn@sentry.io/project
+```
+
+Voir [.env.example](./.env.example) pour un exemple complet.
+
 ## 🎨 Identité Visuelle
 
 - **Couleur principale** : Navy `#0a1628`

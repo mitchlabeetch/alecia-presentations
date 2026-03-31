@@ -36,25 +36,26 @@ export const Tabs: React.FC<TabsProps> = ({
     default: {
       container: 'bg-[#0d1a2d] rounded-xl p-1 border border-[#1e3a5f]',
       tab: 'rounded-lg transition-all duration-200',
-      active: 'bg-[#1e3a5f] text-white shadow-sm',
+      active: 'bg-[#c9a84c] text-[#0a1628] shadow-sm',
       inactive: 'text-gray-400 hover:text-gray-200 hover:bg-white/5',
     },
     pills: {
       container: 'gap-2',
       tab: 'rounded-full transition-all duration-200 border',
-      active: 'bg-[#e91e63] text-white border-[#e91e63]',
-      inactive: 'bg-transparent text-gray-400 border-[#1e3a5f] hover:border-[#3a5a7f] hover:text-gray-300',
+      active: 'bg-[#c9a84c] text-[#0a1628] border-[#c9a84c]',
+      inactive:
+        'bg-transparent text-gray-400 border-[#1e3a5f] hover:border-[#3a5a7f] hover:text-gray-300',
     },
     underline: {
       container: 'border-b border-[#1e3a5f]',
       tab: 'border-b-2 -mb-px transition-all duration-200 rounded-t-lg',
-      active: 'border-[#e91e63] text-white',
+      active: 'border-[#c9a84c] text-white',
       inactive: 'border-transparent text-gray-400 hover:text-gray-300 hover:border-[#3a5a7f]',
     },
     buttons: {
       container: 'gap-1 bg-[#0d1a2d] p-1 rounded-lg border border-[#1e3a5f]',
       tab: 'rounded-md transition-all duration-200',
-      active: 'bg-[#e91e63] text-white',
+      active: 'bg-[#c9a84c] text-[#0a1628]',
       inactive: 'text-gray-400 hover:text-white hover:bg-white/5',
     },
   };
@@ -80,20 +81,19 @@ export const Tabs: React.FC<TabsProps> = ({
           {tab.icon && <span className="w-4 h-4">{tab.icon}</span>}
           <span>{tab.label}</span>
           {tab.badge !== undefined && (
-            <span className={`
+            <span
+              className={`
               ml-1 px-1.5 py-0.5 text-xs rounded-full
-              ${activeTab === tab.id 
-                ? 'bg-white/20 text-white' 
-                : 'bg-[#1e3a5f] text-gray-400'
-              }
-            `}>
+              ${activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-[#1e3a5f] text-gray-400'}
+            `}
+            >
               {tab.badge}
             </span>
           )}
           {activeTab === tab.id && variant === 'underline' && (
             <motion.div
               layoutId="underline"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#e91e63]"
+              className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#c9a84c]"
               transition={{ duration: 0.2 }}
             />
           )}
@@ -133,7 +133,11 @@ export const TabPanel: React.FC<TabPanelProps> = ({
     );
   }
 
-  return <div className={className} {...props}>{children}</div>;
+  return (
+    <div className={className} {...props}>
+      {children}
+    </div>
+  );
 };
 
 export interface VerticalTabsProps extends Omit<TabsProps, 'variant'> {
@@ -164,9 +168,10 @@ export const VerticalTabs: React.FC<VerticalTabsProps> = ({
             flex items-center gap-3 rounded-lg font-medium text-left
             transition-all duration-200
             ${sizes[size]}
-            ${activeTab === tab.id 
-              ? 'bg-[#e91e63]/10 text-[#e91e63] border-l-2 border-[#e91e63]' 
-              : 'text-gray-400 hover:text-gray-200 hover:bg-white/5 border-l-2 border-transparent'
+            ${
+              activeTab === tab.id
+                ? 'bg-[#c9a84c]/10 text-[#c9a84c] border-l-2 border-[#c9a84c]'
+                : 'text-gray-400 hover:text-gray-200 hover:bg-white/5 border-l-2 border-transparent'
             }
             ${tab.disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
           `}
@@ -174,13 +179,16 @@ export const VerticalTabs: React.FC<VerticalTabsProps> = ({
           {tab.icon && <span className="w-5 h-5">{tab.icon}</span>}
           <span className="flex-1">{tab.label}</span>
           {tab.badge !== undefined && (
-            <span className={`
+            <span
+              className={`
               px-2 py-0.5 text-xs rounded-full
-              ${activeTab === tab.id 
-                ? 'bg-[#e91e63]/20 text-[#e91e63]' 
-                : 'bg-[#1e3a5f] text-gray-400'
+              ${
+                activeTab === tab.id
+                  ? 'bg-[#c9a84c]/20 text-[#c9a84c]'
+                  : 'bg-[#1e3a5f] text-gray-400'
               }
-            `}>
+            `}
+            >
               {tab.badge}
             </span>
           )}

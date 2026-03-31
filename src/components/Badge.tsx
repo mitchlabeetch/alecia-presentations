@@ -1,7 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'outline';
+export type BadgeVariant =
+  | 'default'
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'outline';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 export interface BadgeProps {
@@ -29,7 +36,7 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   const variants: Record<BadgeVariant, string> = {
     default: 'bg-[#1e3a5f] text-gray-300',
-    primary: 'bg-[#e91e63]/20 text-[#e91e63] border border-[#e91e63]/30',
+    primary: 'bg-[#c9a84c]/20 text-[#c9a84c] border border-[#c9a84c]/30',
     success: 'bg-green-500/20 text-green-400 border border-green-500/30',
     warning: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
     danger: 'bg-red-500/20 text-red-400 border border-red-500/30',
@@ -45,7 +52,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const dotColors: Record<BadgeVariant, string> = {
     default: 'bg-gray-400',
-    primary: 'bg-[#e91e63]',
+    primary: 'bg-[#c9a84c]',
     success: 'bg-green-400',
     warning: 'bg-yellow-400',
     danger: 'bg-red-400',
@@ -65,12 +72,12 @@ export const Badge: React.FC<BadgeProps> = ({
       `}
     >
       {dot && (
-        <span 
+        <span
           className={`
-            w-1.5 h-1.5 rounded-full 
+            w-1.5 h-1.5 rounded-full
             ${dotColor || dotColors[variant]}
             ${pulse ? 'animate-pulse' : ''}
-          `} 
+          `}
         />
       )}
       {children}
@@ -80,7 +87,12 @@ export const Badge: React.FC<BadgeProps> = ({
           className="ml-1 -mr-1 p-0.5 rounded-full hover:bg-white/10 transition-colors"
         >
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       )}
@@ -93,11 +105,7 @@ export interface StatusBadgeProps extends Omit<BadgeProps, 'dot' | 'variant'> {
   label?: string;
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({
-  status,
-  label,
-  ...props
-}) => {
+export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, label, ...props }) => {
   const statusConfig = {
     online: { variant: 'success' as const, label: label || 'En ligne' },
     offline: { variant: 'default' as const, label: label || 'Hors ligne' },
@@ -108,12 +116,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   const config = statusConfig[status];
 
   return (
-    <Badge 
-      variant={config.variant} 
-      dot 
-      pulse={status === 'online'}
-      {...props}
-    >
+    <Badge variant={config.variant} dot pulse={status === 'online'} {...props}>
       {config.label}
     </Badge>
   );

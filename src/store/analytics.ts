@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { useQuery, useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
 export interface AnalyticsEvent {
   id: string;
@@ -10,6 +10,7 @@ export interface AnalyticsEvent {
   timestamp: number;
   userId?: string;
   sessionId: string;
+  sent?: boolean;
 }
 
 export interface UsageMetrics {
@@ -70,7 +71,7 @@ export const useAnalyticsStore = create<AnalyticsState>()(
         projectsToFirstExport: 0,
         lastUpdated: Date.now(),
       },
-      
+
       trackEvent: (name, properties) => {
         const event: AnalyticsEvent = {
           id: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -79,26 +80,26 @@ export const useAnalyticsStore = create<AnalyticsState>()(
           timestamp: Date.now(),
           sessionId: get().sessionId,
         };
-        
+
         set((state) => ({
           eventQueue: [...state.eventQueue, event],
         }));
-        
+
         if (get().eventQueue.length >= 10) {
           get().flushEvents();
         }
       },
-      
+
       trackPageView: (path) => {
-        get().trackEvent("page_view", { path });
+        get().trackEvent('page_view', { path });
       },
-      
+
       trackSignup: (userId) => {
-        get().trackEvent("user_signup", { userId });
+        get().trackEvent('user_signup', { userId });
       },
-      
+
       trackProjectCreated: (projectId) => {
-        get().trackEvent("project_created", { projectId });
+        get().trackEvent('project_created', { projectId });
         set((state) => ({
           metrics: {
             ...state.metrics,
@@ -106,9 +107,9 @@ export const useAnalyticsStore = create<AnalyticsState>()(
           },
         }));
       },
-      
+
       trackProjectExported: (projectId, format) => {
-        get().trackEvent("project_exported", { projectId, format });
+        get().trackEvent('project_exported', { projectId, format });
         set((state) => ({
           metrics: {
             ...state.metrics,
@@ -116,9 +117,9 @@ export const useAnalyticsStore = create<AnalyticsState>()(
           },
         }));
       },
-      
+
       trackAISGeneration: (tokensUsed) => {
-        get().trackEvent("ai_generation", { tokensUsed });
+        get().trackEvent('ai_generation', { tokensUsed });
         set((state) => ({
           metrics: {
             ...state.metrics,
@@ -127,29 +128,39 @@ export const useAnalyticsStore = create<AnalyticsState>()(
           },
         }));
       },
-      
+
       flushEvents: async () => {
+        const unsentEvents = get().eventQueue.filter((e) => !e.sent);
+        if (unsentEvents.length === 0) return;
+
+        // If no real endpoint, just log and mark as sent
+        if (!import.meta.env.VITE_ANALYTICS_ENDPOINT) {
+          console.log('[Analytics]', unsentEvents.length, 'events would be sent');
+          set({
+            eventQueue: get().eventQueue.map((e) => ({ ...e, sent: true })),
+          });
+          return;
+        }
+
         const events = get().eventQueue;
-        if (events.length === 0) return;
-        
         set({ eventQueue: [] });
-        
+
         try {
-          console.log("[Analytics] Flushing events:", events.length);
+          console.log('[Analytics] Flushing events:', events.length);
         } catch (error) {
-          console.error("[Analytics] Failed to flush events:", error);
+          console.error('[Analytics] Failed to flush events:', error);
           set((state) => ({
             eventQueue: [...events, ...state.eventQueue],
           }));
         }
       },
-      
+
       getMetrics: async () => {
         return get().metrics;
       },
     }),
     {
-      name: "pitchforge-analytics",
+      name: 'pitchforge-analytics',
       partialize: (state) => ({
         metrics: state.metrics,
         sessionId: state.sessionId,
@@ -165,7 +176,7 @@ export function useTrackEvent() {
   const trackProjectCreated = useAnalyticsStore((s) => s.trackProjectCreated);
   const trackProjectExported = useAnalyticsStore((s) => s.trackProjectExported);
   const trackAISGeneration = useAnalyticsStore((s) => s.trackAISGeneration);
-  
+
   return {
     trackEvent,
     trackPageView,
