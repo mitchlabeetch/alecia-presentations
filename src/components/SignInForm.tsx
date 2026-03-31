@@ -36,7 +36,7 @@ export function SignInForm() {
           className="auth-input-field"
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="E-mail"
           required
         />
         <input

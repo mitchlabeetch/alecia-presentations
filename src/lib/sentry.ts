@@ -18,7 +18,6 @@ export function initSentry() {
     debug: import.meta.env.DEV,
     tracesSampleRate: 0.1,
     attachStacktrace: true,
-    captureUnhandledRejections: true,
     initialScope: {
       tags: {
         version: import.meta.env.VITE_APP_VERSION || 'unknown',

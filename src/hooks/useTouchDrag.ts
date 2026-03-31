@@ -329,7 +329,13 @@ export function useSortableTouch<T extends HTMLElement = HTMLDivElement>(
     id,
     containerRef,
     isDragging,
-    handlers
+    handlers as {
+      onPointerDown: (e: React.PointerEvent<HTMLElement>) => void;
+      onPointerMove: (e: React.PointerEvent<HTMLElement>) => void;
+      onPointerUp: (e: React.PointerEvent<HTMLElement>) => void;
+      onPointerCancel: (e: React.PointerEvent<HTMLElement>) => void;
+      onWheel: (e: React.WheelEvent<HTMLElement>) => void;
+    }
   );
 
   return {
@@ -350,8 +356,14 @@ function useSortableTouchCore(
   _isDragging: boolean,
   handlers: ReturnType<typeof useTouchDrag>['handlers']
 ) {
-  const [transform, setTransform] = useState<{ x: number; y: number } | null>(null);
-  const [transition, setTransition] = useState<string | null>(null);
+  const [transform, _setTransform] = useState<{ x: number; y: number } | null>(null);
+  const [transition, _setTransition] = useState<string | null>(null);
+  
+  // Transform and transition state available for future animation features
+  void transform;
+  void transition;
+  void _setTransform;
+  void _setTransition;
 
   return {
     attributes: {

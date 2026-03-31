@@ -82,7 +82,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   fontFamily = 'Inter',
   onFontFamilyChange,
   color = '#ffffff',
-  _onColorChange,
+  onColorChange: _onColorChange,
 }) => {
   const fontSizes = [
     { value: '12px', label: '12px' },

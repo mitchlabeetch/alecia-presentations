@@ -111,9 +111,9 @@ export const useExport = () => {
         // Set password if provided
         if (mergedOptions.password) {
           pptx.write = ((originalWrite) => {
-            return async (options?: { fileName?: string }) => {
+            return async (props?: any) => {
               return originalWrite.call(pptx, {
-                ...options,
+                ...props,
                 password: mergedOptions.password,
               });
             };
@@ -143,7 +143,7 @@ export const useExport = () => {
                   fontSize: (element.style?.fontSize as number) || 18,
                   color: (element.style?.color as string) || '#000000',
                   bold: (element.style?.bold as boolean) || false,
-                  align: (element.style?.align as string) || 'left',
+                  align: (element.style?.align as any) || 'left',
                 });
                 break;
 
@@ -165,7 +165,7 @@ export const useExport = () => {
                   y: element.y,
                   w: element.width,
                   h: element.height,
-                  fill: (element.style?.fill as string) || '#e91e63',
+                  fill: { color: (element.style?.fill as string) || '#e91e63' } as any,
                 });
                 break;
             }
@@ -227,8 +227,6 @@ export const useExport = () => {
           unit: 'mm',
           format: [pageSize.width, pageSize.height],
         });
-
-        const scaleFactor = mergedOptions.quality === 'high' ? 2 : 1;
 
         updateProgress('generating', 30, 'Génération des pages...');
 

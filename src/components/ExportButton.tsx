@@ -17,7 +17,7 @@ interface Props {
   onExport?: (format: string, slideCount: number) => void;
 }
 
-export function ExportButton({ slides, theme, projectName }: Props) {
+export function ExportButton({ slides, theme, projectName, onExport }: Props) {
   const [exporting, setExporting] = useState(false);
 
   async function handleExport() {

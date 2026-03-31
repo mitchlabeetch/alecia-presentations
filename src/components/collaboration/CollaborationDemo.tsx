@@ -32,7 +32,6 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
     shareSettings,
     isConnected,
     isReconnecting,
-    _connectionError,
     updateCursorPosition,
     updateCurrentSlide,
     grantPermission,
@@ -40,7 +39,6 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
     updateShareSettings,
     addActivity,
     canEdit,
-    _canShare,
   } = useCollaboration({
     presentationId,
     currentUserId: 'user-1',

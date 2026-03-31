@@ -215,7 +215,6 @@ const ThinkingIndicator: React.FC = () => (
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   message,
   onCopy,
-  _brandColor = '#e91e63',
 }) => {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';

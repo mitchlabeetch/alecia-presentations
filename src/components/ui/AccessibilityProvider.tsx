@@ -117,16 +117,12 @@ export function AccessibilityProvider({
 
   // Detect keyboard navigation
   useEffect(() => {
-    let lastInputType = "mouse";
-
     const handlePointerDown = () => {
-      lastInputType = "mouse";
       setKeyboardNavigation(false);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
-        lastInputType = "keyboard";
         setKeyboardNavigation(true);
       }
     };
@@ -576,7 +572,7 @@ export function KeyboardShortcutsHelp() {
 /**
  * Roving tabindex for complex widgets
  */
-export function useRovingTabIndex<T extends HTMLElement>(
+export function useRovingTabIndex(
   itemCount: number,
   initialIndex = 0
 ) {

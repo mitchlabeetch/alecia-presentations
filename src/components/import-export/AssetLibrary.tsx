@@ -771,11 +771,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-// Add hover styles via CSS
-const hoverStyles = `
-  .asset-library [style*="deleteButton"]:hover {
-    opacity: 1 !important;
-  }
-`;
-
 export default AssetLibrary;

@@ -12,7 +12,7 @@ import {
   Type,
   Image as ImageIcon
 } from 'lucide-react';
-import { Template, TemplateVariable, categoryLabels } from './useTemplates';
+import { Template, categoryLabels } from './useTemplates';
 
 interface TemplatePreviewProps {
   template: Template | null;
@@ -31,7 +31,6 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [variableValues, setVariableValues] = useState<Record<string, string>>({});
-  const [showVariables, setShowVariables] = useState(false);
   const [activeTab, setActiveTab] = useState<'preview' | 'variables'>('preview');
 
   // Réinitialiser l'état quand le template change

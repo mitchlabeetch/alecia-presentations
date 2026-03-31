@@ -25,11 +25,8 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-  useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { DraggableSlide } from './DraggableSlide';
-import { DragOverlay } from './DragOverlay';
 import type { SlideData } from './types';
 
 interface SortableSlideListProps {

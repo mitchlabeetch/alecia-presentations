@@ -459,7 +459,7 @@ const ConflictResolutionModal: React.FC<ConflictResolutionModalProps> = ({
             flexDirection: 'column',
             boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
           },
-          onClick: (e) => e.stopPropagation(),
+          onClick: (e: React.MouseEvent) => e.stopPropagation(),
         },
         // Header
         React.createElement(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Copy, Trash2, Eye, FileText, MoreVertical } from 'lucide-react';
-import { Template, TemplateCategory, categoryLabels, categoryIcons } from './useTemplates';
+import { Template, categoryLabels, categoryIcons } from './useTemplates';
 
 interface TemplateCardProps {
   template: Template;

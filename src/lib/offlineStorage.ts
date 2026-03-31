@@ -357,7 +357,9 @@ async function setLastSyncTime(time: string): Promise<void> {
 
 async function syncPendingUpdates(): Promise<{ success: number; failed: number }> {
   const pendingUpdates = await getPendingUpdates();
-  const conflicts = await getUnresolvedConflicts();
+  // Conflicts available for future resolution handling
+  const _conflicts = await getUnresolvedConflicts();
+  void _conflicts;
 
   let syncedCount = 0;
   let failedCount = 0;

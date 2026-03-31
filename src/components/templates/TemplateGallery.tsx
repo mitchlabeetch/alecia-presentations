@@ -33,7 +33,6 @@ interface TemplateGalleryProps {
 
 const TemplateGallery: React.FC<TemplateGalleryProps> = ({
   onApplyTemplate,
-  onSaveAsTemplate,
   currentSlides = [],
   showSaveButton = true
 }) => {
@@ -41,7 +40,6 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
     templates,
     filteredTemplates,
     filters,
-    templatesByCategory,
     categoryCounts,
     addTemplate,
     toggleFavorite,
@@ -369,7 +367,12 @@ const TemplateGallery: React.FC<TemplateGalleryProps> = ({
                           'rapport': '📄',
                           'equipe': '👥',
                           'references': '⭐',
-                          'custom': '💾'
+                          'custom': '💾',
+                          'cession_vente': '🏢',
+                          'acquisition_achats': '🤝',
+                          'lbo_levee_fonds': '💰',
+                          'fusion_partenariat': '🔗',
+                          'ipo': '📈',
                         }[template.category]}</span>
                       </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Clock, Users, MoreVertical, Eye, Copy, Check } from 'lucide-react';
-import { Card, CardHeader, CardContent, CardFooter } from './Card';
+import { Card, CardFooter } from './Card';
 import { Badge } from './Badge';
 import { Dropdown } from './Dropdown';
 import { Tooltip } from './Tooltip';

@@ -106,7 +106,6 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
 }) => {
   const [isOver, setIsOver] = useState(false);
   const [dragOverType, setDragOverType] = useState<BlockType | null>(null);
-  const [dropPosition, setDropPosition] = useState<{ x: number; y: number } | null>(null);
 
   const { setNodeRef } = useDroppable({
     id: `canvas-${slide.id}`,
@@ -117,7 +116,6 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
     disabled: readOnly,
   });
 
-  const handleDrop;
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
@@ -155,7 +153,6 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
 
       setIsOver(false);
       setDragOverType(null);
-      setDropPosition(null);
     },
     [readOnly, snapToGrid, gridSize, onBlockAdd]
   );
@@ -1484,7 +1481,7 @@ function renderBlockContent(block: BlockData): React.ReactNode {
         </div>
       );
     default:
-      return <div>{block.content}</div>;
+      return <div>{(block as BlockData & { content: string }).content || 'Block'}</div>;
   }
 }
 

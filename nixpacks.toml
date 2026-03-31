@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['nodejs_18', 'npm']
+
+[phases.install]
+cmds = ['npm ci --include=dev']
+
+[phases.build]
+cmds = ['npm run build']
+
+[start]
+cmd = 'serve -s dist -l 3000'
+
+[variables]
+NODE_ENV = 'production'

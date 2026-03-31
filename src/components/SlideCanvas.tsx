@@ -36,7 +36,7 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
   isFullscreen = false,
   onToggleFullscreen,
   onCanvasClick,
-  _editable: boolean = true,
+  editable: _editable = true,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [isPanning, setIsPanning] = useState(false);

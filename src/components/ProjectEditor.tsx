@@ -156,92 +156,95 @@ export function ProjectEditor({ projectId, onBack }: Props) {
   const [generatingDeck, setGeneratingDeck] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
 
-  const { undo, redo, canUndo, canRedo } = useUndoRedo();
+  const { undo, redo, pushSnapshot, clearHistory } = useUndoRedo();
+  const [lastRecordedState, setLastRecordedState] = useState<string>('');
 
   // Keyboard shortcuts
-  useKeyboardShortcuts([
-    {
-      key: 's',
-      modifiers: ['meta'],
-      description: 'Save project',
-      action: () => {
-        toast.success('Projet enregistré');
+  useKeyboardShortcuts({
+    shortcuts: [
+      {
+        key: 's',
+        modifiers: ['meta'],
+        description: 'Save project',
+        action: () => {
+          toast.success('Projet enregistré');
+        },
       },
-    },
-    {
-      key: 'z',
-      modifiers: ['meta'],
-      description: 'Undo',
-      action: undo,
-    },
-    {
-      key: 'z',
-      modifiers: ['meta', 'shift'],
-      description: 'Redo',
-      action: redo,
-    },
-    {
-      key: 'd',
-      modifiers: ['meta'],
-      description: 'Duplicate slide',
-      action: async () => {
-        const selectedSlideId = slides[activeSlideIdx]?._id;
-        if (selectedSlideId) {
-          await duplicateSlide({ slideId: selectedSlideId });
-          toast.success('Diapositive dupliquée');
-        }
+      {
+        key: 'z',
+        modifiers: ['meta'],
+        description: 'Undo',
+        action: undo,
       },
-    },
-    {
-      key: 'delete',
-      description: 'Delete slide',
-      action: async () => {
-        const selectedSlideId = slides[activeSlideIdx]?._id;
-        if (selectedSlideId && confirm('Supprimer cette diapositive ?')) {
-          await removeSlide({ slideId: selectedSlideId });
-          toast.success('Diapositive supprimée');
-        }
+      {
+        key: 'z',
+        modifiers: ['meta', 'shift'],
+        description: 'Redo',
+        action: redo,
       },
-    },
-    {
-      key: 'arrowup',
-      description: 'Previous slide',
-      action: () => {
-        setActiveSlideIdx(Math.max(0, activeSlideIdx - 1));
+      {
+        key: 'd',
+        modifiers: ['meta'],
+        description: 'Duplicate slide',
+        action: async () => {
+          const selectedSlideId = slides[activeSlideIdx]?._id;
+          if (selectedSlideId) {
+            await duplicateSlide({ slideId: selectedSlideId });
+            toast.success('Diapositive dupliquée');
+          }
+        },
       },
-    },
-    {
-      key: 'arrowdown',
-      description: 'Next slide',
-      action: () => {
-        setActiveSlideIdx(Math.min(slides.length - 1, activeSlideIdx + 1));
+      {
+        key: 'delete',
+        description: 'Delete slide',
+        action: async () => {
+          const selectedSlideId = slides[activeSlideIdx]?._id;
+          if (selectedSlideId && confirm('Supprimer cette diapositive ?')) {
+            await removeSlide({ slideId: selectedSlideId });
+            toast.success('Diapositive supprimée');
+          }
+        },
       },
-    },
-    {
-      key: 'p',
-      modifiers: ['meta'],
-      description: 'Toggle presentation mode',
-      action: () => {
-        setShowPresentation(true);
+      {
+        key: 'arrowup',
+        description: 'Previous slide',
+        action: () => {
+          setActiveSlideIdx(Math.max(0, activeSlideIdx - 1));
+        },
       },
-    },
-    {
-      key: 'escape',
-      description: 'Close / Exit',
-      action: () => {
-        setShowPresentation(false);
-        setActivePanel(null);
+      {
+        key: 'arrowdown',
+        description: 'Next slide',
+        action: () => {
+          setActiveSlideIdx(Math.min(slides.length - 1, activeSlideIdx + 1));
+        },
       },
-    },
-    {
-      key: 'c',
-      modifiers: ['meta'],
-      description: 'Toggle comments panel',
-      action: () => {
-        setActivePanel(activePanel === 'chat' ? null : 'chat');
+      {
+        key: 'p',
+        modifiers: ['meta'],
+        description: 'Toggle presentation mode',
+        action: () => {
+          setShowPresentation(true);
+        },
       },
-    },
-  ]);
+      {
+        key: 'escape',
+        description: 'Close / Exit',
+        action: () => {
+          setShowPresentation(false);
+          setActivePanel(null);
+        },
+      },
+      {
+        key: 'c',
+        modifiers: ['meta'],
+        description: 'Toggle comments panel',
+        action: () => {
+          setActivePanel(activePanel === 'chat' ? null : 'chat');
+        },
+      },
+    ],
+  });
 
   // Track project opened
   useEffect(() => {
@@ -259,6 +262,36 @@ export function ProjectEditor({ projectId, onBack }: Props) {
   );
 
   const activeSlide = slides[activeSlideIdx] ?? null;
+
+  // Record snapshots for undo/redo when slide content changes
+  useEffect(() => {
+    if (!activeSlide) return;
+    
+    const currentState = JSON.stringify({
+      title: activeSlide.title,
+      content: activeSlide.content,
+      notes: activeSlide.notes,
+    });
+    
+    // Only record if state actually changed and we have a previous state
+    if (currentState !== lastRecordedState && lastRecordedState !== '') {
+      pushSnapshot({
+        slideId: activeSlide._id,
+        title: activeSlide.title || '',
+        content: activeSlide.content || '',
+        notes: activeSlide.notes || '',
+        type: activeSlide.type || '',
+        timestamp: Date.now(),
+      });
+    }
+    setLastRecordedState(currentState);
+  }, [activeSlide?.title, activeSlide?.content, activeSlide?.notes, activeSlide?._id]);
+
+  // Clear history when switching projects
+  useEffect(() => {
+    clearHistory();
+    setLastRecordedState('');
+  }, [projectId]);
   const theme = project?.theme ?? {
     primaryColor: '#1a3a5c',
     accentColor: '#c9a84c',
@@ -307,7 +340,15 @@ export function ProjectEditor({ projectId, onBack }: Props) {
     useAnalyticsStore.getState().trackEvent('ai_chat', { projectId });
     try {
       const ctx = `Projet: ${project.name}, Cible: ${project.targetCompany ?? 'N/A'}, Type: ${project.dealType ?? 'N/A'}, Secteur: ${project.targetSector ?? 'N/A'}`;
-      await generateDeck({ projectId, projectContext: ctx });
+      await generateDeck({ 
+        projectId, 
+        projectContext: ctx,
+        brief: {
+          clientSector: project.targetSector ?? 'N/A',
+          clientName: project.targetCompany ?? 'N/A',
+          dealType: project.dealType ?? 'N/A',
+        },
+      });
       toast.success('Génération en cours...');
     } catch {
       toast.error('Erreur lors de la génération');

@@ -36,7 +36,6 @@ interface ReplacementPreview {
 }
 
 export const BulkReplaceModal: React.FC<BulkReplaceModalProps> = ({
-  variables,
   slides = [],
   onClose,
   onReplaceAll,
@@ -332,22 +331,6 @@ export const BulkReplaceModal: React.FC<BulkReplaceModalProps> = ({
     padding: '16px',
     marginBottom: '12px',
     border: '1px solid #e0e0e0',
-  };
-
-  const diffStyles = {
-    removed: {
-      backgroundColor: '#ffebee',
-      color: '#c62828',
-      textDecoration: 'line-through',
-      padding: '2px 4px',
-      borderRadius: '4px',
-    } as React.CSSProperties,
-    added: {
-      backgroundColor: '#e8f5e9',
-      color: '#2e7d32',
-      padding: '2px 4px',
-      borderRadius: '4px',
-    } as React.CSSProperties,
   };
 
   const variablesListStyles: React.CSSProperties = {

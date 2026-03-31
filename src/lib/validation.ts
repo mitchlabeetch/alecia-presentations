@@ -187,7 +187,7 @@ export function validateSchema<T>(
   }
 
   const errors = result.error.issues.map(
-    (issue: { path: (string | number)[]; message: string }) =>
+    (issue, _index, _array) =>
       `${issue.path.join('.')}: ${issue.message}`
   );
 

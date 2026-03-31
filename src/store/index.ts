@@ -48,7 +48,7 @@ interface StoreState {
   isTyping: boolean;
 }
 
-const useStore = create<StoreState>((set, get) => ({
+const useStore = create<StoreState>((set, _get) => ({
   user: null,
   setUser: (user) => set({ user }),
   login: async () => {},
@@ -57,7 +57,7 @@ const useStore = create<StoreState>((set, get) => ({
   presentations: [],
   currentPresentation: null,
   setCurrentPresentation: (presentation) => set({ currentPresentation: presentation }),
-  createPresentation: async (title) => ({ id: "", title, slides: [], variables: {} as PresentationVariables, status: "draft", createdBy: "", createdAt: new Date(), updatedAt: new Date(), lastModifiedBy: "", tags: [] } as Presentation),
+  createPresentation: async (title) => ({ id: "", title, slides: [], variables: {} as PresentationVariables, status: "draft", createdBy: "", createdAt: new Date(), updatedAt: new Date(), lastModifiedBy: "", tags: [] }) as unknown as Presentation,
   deletePresentation: async () => {},
   slides: [],
   selectedSlideId: null,

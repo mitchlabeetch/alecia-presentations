@@ -679,6 +679,327 @@ function renderBlockContent(block: BlockData): React.ReactNode {
         </ul>
       );
     }
+    case 'Citation':
+      return (
+        <div
+          style={{
+            padding: '16px',
+            borderLeft: '4px solid #c9a84c',
+            backgroundColor: '#f8f9fa',
+            borderRadius: '0 4px 4px 0',
+            fontStyle: 'italic',
+          }}
+        >
+          <p style={{ margin: 0, fontSize: '14px', color: '#333333' }}>
+            {block.content || '"Une citation inspirante"'}
+          </p>
+          {(block as any).author && (
+            <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#666666' }}>
+              — {(block as any).author}
+            </p>
+          )}
+        </div>
+      );
+    case 'KPI_Card':
+      return (
+        <div
+          style={{
+            padding: '16px',
+            background: 'linear-gradient(135deg, #0a1628 0%, #1a3a5c 100%)',
+            borderRadius: '8px',
+            color: '#ffffff',
+          }}
+        >
+          <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', opacity: 0.7 }}>
+            {(block as any).label || 'Indicateur'}
+          </div>
+          <div style={{ fontSize: '28px', fontWeight: 700, marginTop: '4px' }}>
+            {block.content || '1.2M €'}
+          </div>
+          {(block as any).subtitle && (
+            <div style={{ fontSize: '11px', marginTop: '4px', opacity: 0.6 }}>
+              {(block as any).subtitle}
+            </div>
+          )}
+        </div>
+      );
+    case 'Timeline_Block':
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {['Étape 1', 'Étape 2', 'Étape 3'].map((step, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: i === 0 ? '#c9a84c' : '#e0e0e0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  color: i === 0 ? '#ffffff' : '#666666',
+                }}
+              >
+                {i + 1}
+              </div>
+              <div style={{ flex: 1, padding: '8px 12px', background: '#f8f9fa', borderRadius: '4px' }}>
+                <span style={{ fontSize: '12px', color: '#333333' }}>{step}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    case 'Company_Overview':
+      return (
+        <div
+          style={{
+            padding: '16px',
+            border: '1px solid #e0e0e0',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '8px',
+              background: '#f0f0f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px',
+            }}
+          >
+            🏢
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: '14px', color: '#0a1628' }}>
+              {block.content || 'Nom de l\'entreprise'}
+            </div>
+            <div style={{ fontSize: '12px', color: '#666666', marginTop: '2px' }}>
+              {(block as any).sector || 'Secteur d\'activité'}
+            </div>
+          </div>
+        </div>
+      );
+    case 'Deal_Rationale':
+      return (
+        <div
+          style={{
+            padding: '16px',
+            borderLeft: '4px solid #c9a84c',
+            background: 'linear-gradient(90deg, rgba(201,168,76,0.1) 0%, rgba(201,168,76,0) 100%)',
+            borderRadius: '0 8px 8px 0',
+          }}
+        >
+          <div style={{ fontWeight: 600, fontSize: '13px', color: '#0a1628', marginBottom: '8px' }}>
+            Justification de la transaction
+          </div>
+          <div style={{ fontSize: '12px', color: '#444444', lineHeight: 1.5 }}>
+            {block.content || 'Raisons stratégiques de l\'opération...'}
+          </div>
+        </div>
+      );
+    case 'SWOT':
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div style={{ padding: '10px', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '4px' }}>
+            <div style={{ fontWeight: 600, fontSize: '11px', color: '#2e7d32' }}>Forces</div>
+            <div style={{ fontSize: '10px', color: '#388e3c', marginTop: '4px' }}>
+              {(block as any).strengths || '• Point fort 1\n• Point fort 2'}
+            </div>
+          </div>
+          <div style={{ padding: '10px', background: '#fff3e0', border: '1px solid #ffcc80', borderRadius: '4px' }}>
+            <div style={{ fontWeight: 600, fontSize: '11px', color: '#e65100' }}>Faiblesses</div>
+            <div style={{ fontSize: '10px', color: '#f57c00', marginTop: '4px' }}>
+              {(block as any).weaknesses || '• Point faible 1\n• Point faible 2'}
+            </div>
+          </div>
+          <div style={{ padding: '10px', background: '#e3f2fd', border: '1px solid #90caf9', borderRadius: '4px' }}>
+            <div style={{ fontWeight: 600, fontSize: '11px', color: '#1565c0' }}>Opportunités</div>
+            <div style={{ fontSize: '10px', color: '#1976d2', marginTop: '4px' }}>
+              {(block as any).opportunities || '• Opportunité 1\n• Opportunité 2'}
+            </div>
+          </div>
+          <div style={{ padding: '10px', background: '#ffebee', border: '1px solid #ef9a9a', borderRadius: '4px' }}>
+            <div style={{ fontWeight: 600, fontSize: '11px', color: '#c62828' }}>Menaces</div>
+            <div style={{ fontSize: '10px', color: '#d32f2f', marginTop: '4px' }}>
+              {(block as any).threats || '• Menace 1\n• Menace 2'}
+            </div>
+          </div>
+        </div>
+      );
+    case 'Key_Metrics':
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          {[
+            { label: 'CA', value: '—' },
+            { label: 'EBITDA', value: '—' },
+            { label: 'Marge', value: '—' },
+            { label: 'Croissance', value: '—' },
+          ].map((metric, i) => (
+            <div
+              key={i}
+              style={{
+                padding: '10px',
+                background: '#f8f9fa',
+                borderRadius: '4px',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '10px', color: '#666666' }}>{metric.label}</div>
+              <div style={{ fontSize: '18px', fontWeight: 700, color: '#0a1628', marginTop: '2px' }}>
+                {metric.value}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    case 'Process_Timeline':
+      return (
+        <div style={{ display: 'flex', gap: '8px', overflow: 'hidden' }}>
+          {['Préparation', 'Due Diligence', 'Négociation', 'Clôture'].map((phase, i) => (
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                padding: '10px',
+                background: i === 0 ? '#c9a84c' : '#f0f0f0',
+                borderRadius: '4px',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  color: i === 0 ? '#ffffff' : '#333333',
+                }}
+              >
+                {phase}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    case 'Team_Grid':
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+          {[1, 2, 3, 4, 5, 6].map((_, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: '#e0e0e0',
+                  margin: '0 auto 4px',
+                }}
+              />
+              <div style={{ fontSize: '10px', fontWeight: 500, color: '#333333' }}>Nom</div>
+              <div style={{ fontSize: '9px', color: '#666666' }}>Rôle</div>
+            </div>
+          ))}
+        </div>
+      );
+    case 'Team_Row':
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px' }}>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: '#e0e0e0',
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '12px', fontWeight: 500, color: '#333333' }}>
+              {block.content || 'Nom du membre'}
+            </div>
+            <div style={{ fontSize: '10px', color: '#666666' }}>
+              {(block as any).role || 'Fonction'}
+            </div>
+          </div>
+        </div>
+      );
+    case 'Advisor_List':
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {['Conseiller financier', 'Avocat', 'Expert-comptable'].map((advisor, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 12px',
+                background: '#f8f9fa',
+                borderRadius: '4px',
+              }}
+            >
+              <span style={{ fontSize: '14px' }}>👤</span>
+              <span style={{ fontSize: '11px', color: '#333333' }}>{advisor}</span>
+            </div>
+          ))}
+        </div>
+      );
+    case 'Logo_Grid':
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                height: '40px',
+                background: '#f0f0f0',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                color: '#999999',
+              }}
+            >
+              Logo
+            </div>
+          ))}
+        </div>
+      );
+    case 'Icon_Text':
+      return (
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '6px',
+              background: '#c9a84c20',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+            }}
+          >
+            {(block as any).icon || '✓'}
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '13px', fontWeight: 500, color: '#333333' }}>
+              {block.content || 'Titre'}
+            </div>
+            {(block as any).description && (
+              <div style={{ fontSize: '11px', color: '#666666', marginTop: '2px' }}>
+                {(block as any).description}
+              </div>
+            )}
+          </div>
+        </div>
+      );
     default:
       return <div>{block.content}</div>;
   }

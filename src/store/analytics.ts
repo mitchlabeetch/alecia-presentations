@@ -1,7 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../convex/_generated/api';
 
 export interface AnalyticsEvent {
   id: string;

@@ -197,7 +197,7 @@ export class AleciaPptxGenerator {
     this.pptx.title = 'Présentation';
 
     // Enregistrer les masters de slides
-    registerAllSlideMasters(this.pptx);
+    registerAllSlideMasters();
   }
 
   /**
@@ -1115,14 +1115,16 @@ export class AleciaPptxGenerator {
    * Retourne la présentation sous forme de buffer
    */
   public async getBuffer(): Promise<Blob | ArrayBuffer> {
-    return await this.pptx.write({ outputType: 'arraybuffer' });
+    const result = await this.pptx.write({ outputType: 'arraybuffer' });
+    return result as Blob | ArrayBuffer;
   }
 
   /**
    * Retourne la présentation sous forme de base64
    */
   public async getBase64(): Promise<string> {
-    return await this.pptx.write({ outputType: 'base64' });
+    const result = await this.pptx.write({ outputType: 'base64' });
+    return result as string;
   }
 
   /**

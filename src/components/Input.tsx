@@ -51,7 +51,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ${className}
           `}
             disabled={disabled}
-            {...props}
+            {...(props as Record<string, unknown>)}
           />
           {rightIcon && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">

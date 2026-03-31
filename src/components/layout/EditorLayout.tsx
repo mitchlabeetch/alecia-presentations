@@ -35,7 +35,7 @@ import {
 import useStore, { useSlides, useSelectedSlide } from '@store/index';
 import { useSocket, useCursorTracking } from '@hooks/useSocket';
 import { formatRelativeTime } from '@lib/utils';
-import type { Slide, SlideType } from '@types/index';
+import type { Slide, SlideType } from 'src/types/index';
 
 /**
  * Bouton d'outil dans la barre d'outils
@@ -202,7 +202,7 @@ const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
  * Panneau de chat IA
  */
 const ChatPanel: React.FC = () => {
-  const { currentPresentation, sessions, currentSessionId, addMessage, isTyping } = useStore();
+  const { sessions, currentSessionId, addMessage, isTyping } = useStore();
   const [input, setInput] = React.useState('');
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -321,7 +321,7 @@ const ChatPanel: React.FC = () => {
  * Panneau des variables
  */
 const VariablesPanel: React.FC = () => {
-  const { currentPresentation, updateVariables, setVariable } = useStore();
+  const { currentPresentation, setVariable } = useStore();
   const variables = currentPresentation?.variables;
 
   if (!variables) return null;
@@ -454,14 +454,14 @@ const EditorLayout: React.FC = () => {
   const selectedSlide = slides.find((s) => s.id === selectedSlideId);
 
   // Connexion Socket.io pour la collaboration
-  const { collaborators, isConnected, joinPresentation, leavePresentation } = useSocket({
+  const { collaborators, joinPresentation, leavePresentation } = useSocket({
     presentationId,
-    user,
+    user: user ?? undefined,
     enabled: !!presentationId && !!user,
   });
 
   // Suivi du curseur
-  const { socket } = useSocket({ presentationId, user, enabled: false });
+  const { socket } = useSocket({ presentationId, user: user ?? undefined, enabled: false });
   useCursorTracking(socket, presentationId, true);
 
   // Charger la présentation
@@ -487,7 +487,7 @@ const EditorLayout: React.FC = () => {
           showFooter: true,
         },
       };
-      setCurrentPresentation(mockPresentation as typeof currentPresentation);
+      setCurrentPresentation(mockPresentation as any);
 
       // Créer une session de chat
       createSession(presentationId);
@@ -525,7 +525,7 @@ const EditorLayout: React.FC = () => {
           <input
             type="text"
             value={currentPresentation?.title || ''}
-            onChange={(e) => {
+            onChange={() => {
               /* Mettre à jour le titre */
             }}
             className="bg-transparent text-white font-medium focus:outline-none focus:border-b focus:border-alecia-pink min-w-[200px]"

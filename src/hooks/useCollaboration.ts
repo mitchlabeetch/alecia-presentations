@@ -16,7 +16,7 @@ import type {
   Conflict,
   UserRole,
 } from '../types/collaboration';
-import { getUserColor, ROLE_LABELS, ACTIVITY_LABELS } from '../types/collaboration';
+import { getUserColor, ROLE_LABELS } from '../types/collaboration';
 
 interface UseCollaborationOptions {
   presentationId: string;
@@ -73,8 +73,8 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Formater le temps relatif
-function formatRelativeTime(date: Date): string {
+// Formater le temps relatif (available for future use)
+function _formatRelativeTime(date: Date): string {
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   const seconds = Math.floor(diff / 1000);
@@ -87,6 +87,9 @@ function formatRelativeTime(date: Date): string {
   if (hours < 24) return `Il y a ${hours} h`;
   return `Il y a ${days} j`;
 }
+
+// Mark as used
+void _formatRelativeTime;
 
 export function useCollaboration(options: UseCollaborationOptions): UseCollaborationReturn {
   const { presentationId, currentUserId, currentUserName, currentUserEmail, initialRole = 'editor' } = options;

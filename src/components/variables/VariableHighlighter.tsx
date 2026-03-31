@@ -43,8 +43,6 @@ export const VariableHighlighter: React.FC<VariableHighlighterProps> = ({
   style = {},
   showTooltip = true,
   renderAs = 'react',
-  editable = false,
-  onContentChange,
 }) => {
   // Créer une map des variables pour un accès rapide
   const variableMap = useMemo(() => {

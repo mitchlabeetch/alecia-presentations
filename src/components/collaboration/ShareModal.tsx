@@ -426,7 +426,6 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'people' | 'link'>('people');
-  const _canEdit = currentUserRole === 'owner' || currentUserRole === 'editor';
   const canManagePermissions = currentUserRole === 'owner';
 
   // Générer le lien de partage

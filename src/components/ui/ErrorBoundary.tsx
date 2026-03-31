@@ -4,7 +4,7 @@
  * Intégré avec Sentry pour le monitoring des erreurs
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import * as Sentry from '@sentry/react';
 

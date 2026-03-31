@@ -126,7 +126,7 @@ export const TabPanel: React.FC<TabPanelProps> = ({
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.2 }}
         className={className}
-        {...props}
+        {...(props as Record<string, unknown>)}
       >
         {children}
       </motion.div>

@@ -158,7 +158,7 @@ export function MobileView({
   if (showPresentation) {
     return (
       <PresentationMode
-        slides={slides}
+        slides={slides as any}
         theme={theme}
         initialIndex={currentIndex}
         onClose={() => setShowPresentation(false)}
@@ -423,10 +423,10 @@ function TouchGestures({
 }
 
 /**
- * Custom hook to store callbacks in refs
+ * Custom hook to store values in refs
  */
-function useCallbackRef<T extends (...args: never[]) => void>(initialValue: T) {
-  const ref = React.useRef(initialValue);
+function useCallbackRef<T>(initialValue: T) {
+  const ref = React.useRef<T>(initialValue);
   ref.current = initialValue;
   return ref;
 }
@@ -438,7 +438,6 @@ export function MobileSlideList({
   slides,
   activeIndex,
   onIndexChange,
-  theme,
 }: {
   slides: Slide[];
   activeIndex: number;

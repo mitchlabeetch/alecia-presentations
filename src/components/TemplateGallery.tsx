@@ -2,7 +2,6 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useState, useRef } from "react";
-import { toast } from "sonner";
 
 const BUILTIN_TEMPLATES = [
   {
@@ -79,8 +78,6 @@ export function TemplateGallery({ onClose, onSelect }: Props) {
   const customTemplates = useQuery(api.templates.list) ?? [];
   const removeTemplate = useMutation(api.templates.remove);
   const [selected, setSelected] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleSelectBuiltin = (t: typeof BUILTIN_TEMPLATES[0]) => {

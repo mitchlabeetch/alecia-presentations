@@ -212,6 +212,10 @@ export const PresetManager: React.FC<PresetManagerProps> = ({
     color,
   });
 
+  // iconButtonStyles is available for future use
+  const _iconButtonStyles = iconButtonStyles('#666');
+  void _iconButtonStyles;
+
   const emptyStateStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',

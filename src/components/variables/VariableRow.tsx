@@ -111,9 +111,11 @@ export const VariableRow: React.FC<VariableRowProps> = ({
     onUpdate(variable.id, { type });
   }, [onUpdate, variable.id]);
 
-  const handleDescriptionChange = useCallback((description: string) => {
+  // handleDescriptionChange is available for future use
+  const _handleDescriptionChange = useCallback((description: string) => {
     onUpdate(variable.id, { description });
   }, [onUpdate, variable.id]);
+  void _handleDescriptionChange;
 
   const typeColor = VARIABLE_TYPE_COLORS[variable.type];
 

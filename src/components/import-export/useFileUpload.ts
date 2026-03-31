@@ -47,7 +47,7 @@ const getFileType = (mimeType: string): FileType => {
 };
 
 const generateThumbnail = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!file.type.startsWith('image/')) {
       resolve('');
       return;

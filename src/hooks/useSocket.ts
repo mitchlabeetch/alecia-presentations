@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import type { CollaborationEvent, CollaborationEventType, Collaborator, User } from '@types/index';
+import type { Collaborator, User } from 'src/types/index';
 
 // Configuration du serveur Socket.io
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';

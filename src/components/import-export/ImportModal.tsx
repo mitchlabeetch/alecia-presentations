@@ -85,7 +85,6 @@ const ImportModal: React.FC<ImportModalProps> = ({
   onClose,
   onImport,
   onFilesImported,
-  projectId,
   className = '',
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>('pptx');
@@ -115,7 +114,6 @@ const ImportModal: React.FC<ImportModalProps> = ({
 
       // Parse core.xml for metadata
       const coreXml = await zip.file('docProps/core.xml')?.async('text');
-      const appXml = await zip.file('docProps/app.xml')?.async('text');
 
       let title = file.name.replace(/\.[^/.]+$/, '');
       let author = 'Importé';

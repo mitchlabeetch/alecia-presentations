@@ -89,74 +89,76 @@ export function SlideEditor({
   const contextMenuRef = useRef<HTMLDivElement>(null);
 
   // Keyboard shortcuts for slide editor
-  useKeyboardShortcuts([
-    {
-      key: 'c',
-      modifiers: ['meta'],
-      description: 'Copier le contenu',
-      action: () => {
-        setCopiedContent(content);
-        toast.success('Contenu copié');
+  useKeyboardShortcuts({
+    shortcuts: [
+      {
+        key: 'c',
+        modifiers: ['meta'],
+        description: 'Copier le contenu',
+        action: () => {
+          setCopiedContent(content);
+          toast.success('Contenu copié');
+        },
       },
-    },
-    {
-      key: 'v',
-      modifiers: ['meta'],
-      description: 'Coller le contenu',
-      action: () => {
-        if (copiedContent) {
-          setContent(copiedContent);
-          markDirty();
-          toast.success('Contenu collé');
-        }
+      {
+        key: 'v',
+        modifiers: ['meta'],
+        description: 'Coller le contenu',
+        action: () => {
+          if (copiedContent) {
+            setContent(copiedContent);
+            markDirty();
+            toast.success('Contenu collé');
+          }
+        },
       },
-    },
-    {
-      key: 'arrowup',
-      description: 'Diapositive précédente',
-      action: () => {
-        if (hasPrev) onPrev();
+      {
+        key: 'arrowup',
+        description: 'Diapositive précédente',
+        action: () => {
+          if (hasPrev) onPrev();
+        },
       },
-    },
-    {
-      key: 'arrowdown',
-      description: 'Diapositive suivante',
-      action: () => {
-        if (hasNext) onNext();
+      {
+        key: 'arrowdown',
+        description: 'Diapositive suivante',
+        action: () => {
+          if (hasNext) onNext();
+        },
       },
-    },
-    {
-      key: 'delete',
-      description: 'Supprimer la diapositive',
-      action: () => {
-        if (onDelete) {
-          onDelete();
-        } else {
-          handleDelete();
-        }
+      {
+        key: 'delete',
+        description: 'Supprimer la diapositive',
+        action: () => {
+          if (onDelete) {
+            onDelete();
+          } else {
+            handleDelete();
+          }
+        },
       },
-    },
-    {
-      key: 'backspace',
-      description: 'Supprimer la diapositive',
-      action: () => {
-        if (onDelete) {
-          onDelete();
-        } else {
-          handleDelete();
-        }
+      {
+        key: 'backspace',
+        description: 'Supprimer la diapositive',
+        action: () => {
+          if (onDelete) {
+            onDelete();
+          } else {
+            handleDelete();
+          }
+        },
       },
-    },
-    {
-      key: 'escape',
-      description: 'Fermer / Quitter le mode édition',
-      action: () => {
-        setEditField(null);
-        setTab('preview');
-        toast.success('Mode aperçu');
+      {
+        key: 'escape',
+        description: 'Fermer / Quitter le mode édition',
+        action: () => {
+          setEditField(null);
+          setTab('preview');
+          toast.success('Mode aperçu');
+        },
       },
-    },
-  ]);
+    ],
+  });
 
   useEffect(() => {
     setTitle(slide.title);

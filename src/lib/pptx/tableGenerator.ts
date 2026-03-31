@@ -13,12 +13,12 @@ import {
 // Types de données pour les tableaux
 export interface TableCell {
   text: string;
-  options?: Partial<PptxGenJS.TableCellOptions>;
+  options?: Record<string, unknown>;
 }
 
 export interface TableRow {
   cells: TableCell[];
-  options?: Partial<PptxGenJS.TableRowOptions>;
+  options?: Record<string, unknown>;
 }
 
 export interface TableData {
@@ -250,7 +250,7 @@ export function generateComparisonTable(
   items.forEach((item, index) => {
     const fillColor = index % 2 === 0 ? opts.rowFill : opts.rowAlternateFill;
     
-    const row: PptxGenJS.TableCell[] = [
+    const row: TableCell[] = [
       {
         text: item.label,
         options: {
@@ -263,7 +263,7 @@ export function generateComparisonTable(
           border: createBorder(opts.borderColor!, opts.borderWidth!),
         },
       },
-      ...item.values.map((value) => ({
+      ...item.values.map((value): TableCell => ({
         text: String(value),
         options: {
           fill: { color: fillColor },
@@ -431,7 +431,7 @@ export function generatePerformanceTable(
         border: createBorder(TABLE_STYLES.border.color, TABLE_STYLES.border.width),
       },
     },
-    ...periods.map((period) => ({
+    ...periods.map((period): TableCell => ({
       text: period,
       options: {
         fill: { color: TABLE_STYLES.header.fill },
@@ -452,7 +452,7 @@ export function generatePerformanceTable(
       ? ALECIA_COLORS.primary.light 
       : (index % 2 === 0 ? TABLE_STYLES.row.fill : TABLE_STYLES.row.alternateFill);
     
-    const row: PptxGenJS.TableCell[] = [
+    const row = [
       {
         text: perf.name,
         options: {
@@ -466,7 +466,7 @@ export function generatePerformanceTable(
           border: createBorder(TABLE_STYLES.border.color, TABLE_STYLES.border.width),
         },
       },
-      ...perf.values.map((value) => ({
+      ...perf.values.map((value): TableCell => ({
         text: formatPercentage(value),
         options: {
           fill: { color: fillColor },
@@ -750,7 +750,7 @@ function createBorder(color: string, width: number): PptxGenJS.BorderOptions {
 /**
  * Formate un montant en devise
  */
-function formatCurrency(amount: number, currency: string = '€'): string {
+function formatCurrency(amount: number, _currency: string = '€'): string {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR',

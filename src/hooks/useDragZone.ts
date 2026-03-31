@@ -40,10 +40,13 @@ interface UseDragZoneReturn {
 export function useDragZone(options: UseDragZoneOptions = {}): UseDragZoneReturn {
   const {
     enabled = true,
-    _highlightColor = 'rgba(233, 30, 99, 0.1)',
     borderColor = '#e91e63',
     animationDuration = 200,
+    highlightColor: _highlightColor = 'rgba(233, 30, 99, 0.1)',
   } = options;
+  
+  // highlightColor is available for future use
+  void _highlightColor;
 
   const [isOver, setIsOver] = useState(false);
   const [isValidDropZone, setIsValidDropZone] = useState(false);

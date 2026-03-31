@@ -76,7 +76,7 @@ const SaveTemplateModal: React.FC<SaveTemplateModalProps> = ({
       }
     });
 
-    return Array.from(variableMap.entries()).map(([key, data]) => ({
+    return Array.from(variableMap.entries()).map(([key]) => ({
       key,
       label: key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()),
       defaultValue: '',

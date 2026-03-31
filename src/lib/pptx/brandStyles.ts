@@ -31,6 +31,11 @@ export const ALECIA_COLORS = {
     secondary: '#b0b0b0',
     muted: '#808080',
   },
+  // Couleurs de fond
+  background: {
+    light: '#f5f5f5',
+    dark: '#0a1628',
+  },
 } as const;
 
 // Typographie
@@ -200,15 +205,18 @@ export const TEAM_CARD_CONFIG = {
   },
   name: {
     fontSize: 16,
+    fontFace: ALECIA_FONTS.primary,
     bold: true,
     color: ALECIA_COLORS.text.primary,
   },
   role: {
     fontSize: 12,
+    fontFace: ALECIA_FONTS.secondary,
     color: ALECIA_COLORS.accent.main,
   },
   description: {
     fontSize: 10,
+    fontFace: ALECIA_FONTS.secondary,
     color: ALECIA_COLORS.text.secondary,
   },
 } as const;

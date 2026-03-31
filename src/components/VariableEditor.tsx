@@ -5,7 +5,6 @@ import {
   Plus,
   Trash2,
   Edit2,
-  X,
   Search,
   Database,
   Type,
@@ -20,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Input } from './Input';
 import { Button } from './Button';
-import { Card, CardHeader, CardContent } from './Card';
 import { Badge } from './Badge';
 import { Modal } from './Modal';
 import { Tooltip } from './Tooltip';

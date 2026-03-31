@@ -90,7 +90,7 @@ export function renderTitle(
   y: number,
   width: number,
   height: number,
-  options: Partial<PptxGenJS.TextOptions> = {}
+  options: Record<string, unknown> = {}
 ): void {
   slide.addText(text, {
     x,
@@ -116,7 +116,7 @@ export function renderBulletList(
   y: number,
   width: number,
   height: number,
-  options: Partial<PptxGenJS.TextOptions> = {}
+  options: Record<string, unknown> = {}
 ): void {
   const textItems = items.map((item) => {
     const bulletChar = getBulletChar(item.style || 'bullet');
@@ -155,7 +155,7 @@ export function renderParagraph(
   y: number,
   width: number,
   height: number,
-  options: Partial<PptxGenJS.TextOptions> = {}
+  options: Record<string, unknown> = {}
 ): void {
   slide.addText(text, {
     x,
@@ -181,7 +181,7 @@ export function renderParagraphs(
   y: number,
   width: number,
   height: number,
-  options: Partial<PptxGenJS.TextOptions> = {}
+  options: Record<string, unknown> = {}
 ): void {
   const textItems = paragraphs.map((para) => ({
     text: para,
@@ -214,7 +214,7 @@ export function renderImage(
   y: number,
   width: number,
   height: number,
-  options: Partial<PptxGenJS.ImageOptions> = {}
+  options: Record<string, unknown> = {}
 ): void {
   slide.addImage({
     path: imagePath,
@@ -222,7 +222,7 @@ export function renderImage(
     y,
     w: width,
     h: height,
-    sizing: 'contain',
+    sizing: { type: 'contain', w: width, h: height },
     ...options,
   });
 }
@@ -250,7 +250,7 @@ export function renderTeamMemberCard(
       y: photoY,
       w: photoConfig.width,
       h: photoConfig.height,
-      sizing: 'contain',
+      sizing: { type: 'contain', w: photoConfig.width, h: photoConfig.height },
     });
   } else {
     // Placeholder pour la photo
@@ -347,7 +347,7 @@ export function renderClientLogo(
     y,
     w: maxWidth,
     h: maxHeight,
-    sizing: 'contain',
+    sizing: { type: 'contain', w: maxWidth, h: maxHeight },
   });
 }
 

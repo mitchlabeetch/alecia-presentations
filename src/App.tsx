@@ -7,6 +7,7 @@ import { PitchForgeLogoFull } from './components/Logo';
 import { useAnalyticsStore } from './store/analytics';
 import { LoadingScreen } from './components/ui/LoadingSkeleton';
 import { api } from '../convex/_generated/api';
+import { useOnboarding, Onboarding } from './components/Onboarding';
 
 const Dashboard = lazy(() =>
   import('./components/Dashboard').then((m) => ({ default: m.Dashboard }))
@@ -18,6 +19,7 @@ const ProjectEditor = lazy(() =>
 export default function App() {
   const [activeProjectId, setActiveProjectId] = useState<Id<'projects'> | null>(null);
   const user = useQuery(api.auth.loggedInUser);
+  const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
 
   // Track page views on mount
   useEffect(() => {
@@ -39,6 +41,10 @@ export default function App() {
       className="min-h-screen flex flex-col bg-[#f7f8fa]"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
+      {/* Onboarding overlay for first-time users */}
+      {showOnboarding && (
+        <Onboarding onComplete={completeOnboarding} onSkip={skipOnboarding} />
+      )}
       <Authenticated>
         <Suspense
           fallback={
