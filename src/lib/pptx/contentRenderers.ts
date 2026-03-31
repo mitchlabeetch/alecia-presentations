@@ -7,9 +7,7 @@ import PptxGenJS from 'pptxgenjs';
 import {
   ALECIA_COLORS,
   ALECIA_FONTS,
-  BULLET_STYLES,
   WATERMARK_CONFIG,
-  TABLE_STYLES,
   TEAM_CARD_CONFIG,
   CLIENT_LOGO_CONFIG,
 } from './brandStyles';
@@ -121,9 +119,8 @@ export function renderBulletList(
   options: Partial<PptxGenJS.TextOptions> = {}
 ): void {
   const textItems = items.map((item) => {
-    const indent = item.level ? item.level * BULLET_STYLES.indent : 0;
     const bulletChar = getBulletChar(item.style || 'bullet');
-    
+
     return {
       text: `${' '.repeat(item.level || 0)}${bulletChar} ${item.text}`,
       options: {
@@ -244,7 +241,7 @@ export function renderTeamMemberCard(
   const photoConfig = TEAM_CARD_CONFIG.photo;
   const photoX = x + 0.1;
   const photoY = y + 0.1;
-  
+
   // Photo
   if (member.photo) {
     slide.addImage({
@@ -266,7 +263,7 @@ export function renderTeamMemberCard(
       line: { color: ALECIA_COLORS.neutral.darkGray, width: 1 },
     });
   }
-  
+
   // Nom
   const textX = photoX + photoConfig.width + 0.15;
   slide.addText(member.name, {
@@ -280,7 +277,7 @@ export function renderTeamMemberCard(
     bold: TEAM_CARD_CONFIG.name.bold,
     align: 'left',
   });
-  
+
   // Rôle
   slide.addText(member.role, {
     x: textX,
@@ -292,7 +289,7 @@ export function renderTeamMemberCard(
     color: TEAM_CARD_CONFIG.role.color,
     align: 'left',
   });
-  
+
   // Description (si fournie)
   if (member.description) {
     slide.addText(member.description, {
@@ -325,10 +322,10 @@ export function renderTeamGrid(
   members.forEach((member, index) => {
     const col = index % columns;
     const row = Math.floor(index / columns);
-    
+
     const x = startX + col * (cardWidth + spacing);
     const y = startY + row * (cardHeight + spacing);
-    
+
     renderTeamMemberCard(slide, member, x, y, cardWidth, cardHeight);
   });
 }
@@ -370,10 +367,11 @@ export function renderClientLogoGrid(
   logos.forEach((logo, index) => {
     const col = index % columns;
     const row = Math.floor(index / columns);
-    
+
     const x = startX + col * (cellWidth + spacing) + (cellWidth - CLIENT_LOGO_CONFIG.maxWidth) / 2;
-    const y = startY + row * (cellHeight + spacing) + (cellHeight - CLIENT_LOGO_CONFIG.maxHeight) / 2;
-    
+    const y =
+      startY + row * (cellHeight + spacing) + (cellHeight - CLIENT_LOGO_CONFIG.maxHeight) / 2;
+
     renderClientLogo(slide, logo, x, y, CLIENT_LOGO_CONFIG.maxWidth, CLIENT_LOGO_CONFIG.maxHeight);
   });
 }
@@ -390,13 +388,13 @@ export function renderContactInfo(
   height: number
 ): void {
   const lines: string[] = [];
-  
+
   if (contact.company) lines.push(contact.company);
   if (contact.address) lines.push(contact.address);
   if (contact.phone) lines.push(`Tél: ${contact.phone}`);
   if (contact.email) lines.push(`Email: ${contact.email}`);
   if (contact.website) lines.push(contact.website);
-  
+
   const textItems = lines.map((line, index) => ({
     text: line,
     options: {
@@ -437,7 +435,7 @@ export function renderFooter(
     color: ALECIA_COLORS.text.muted,
     align: 'center',
   });
-  
+
   // Numéro de page
   slide.addText(String(pageNumber), {
     x: 9,
@@ -449,7 +447,7 @@ export function renderFooter(
     color: ALECIA_COLORS.text.muted,
     align: 'right',
   });
-  
+
   // Date
   if (showDate && date) {
     slide.addText(date, {
@@ -475,7 +473,7 @@ export function renderHeader(
 ): void {
   // Titre
   renderTitle(slide, title, 0.5, 0.5, 9, 0.6);
-  
+
   // Ligne d'accent
   if (showAccentLine) {
     renderAccentLine(slide, 0.5, 1.15, 9, 0.02);
@@ -524,7 +522,7 @@ export function renderQuote(
     color: ALECIA_COLORS.accent.main,
     align: 'left',
   });
-  
+
   // Citation
   slide.addText(quote, {
     x,
@@ -538,7 +536,7 @@ export function renderQuote(
     valign: 'top',
     italic: true,
   });
-  
+
   // Auteur
   slide.addText(`— ${author}`, {
     x,
@@ -577,7 +575,7 @@ export function renderStatistic(
     align: 'center',
     valign: 'bottom',
   });
-  
+
   // Label
   slide.addText(label, {
     x,
@@ -608,10 +606,10 @@ export function renderStatisticsGrid(
   statistics.forEach((stat, index) => {
     const col = index % columns;
     const row = Math.floor(index / columns);
-    
+
     const x = startX + col * (itemWidth + spacing);
     const y = startY + row * (itemHeight + spacing);
-    
+
     renderStatistic(slide, stat.value, stat.label, x, y, itemWidth, itemHeight);
   });
 }
@@ -639,7 +637,7 @@ export function renderProgressBar(
     color: ALECIA_COLORS.text.secondary,
     align: 'left',
   });
-  
+
   // Barre de fond
   slide.addShape('rect', {
     x,
@@ -649,7 +647,7 @@ export function renderProgressBar(
     fill: { color: ALECIA_COLORS.primary.main },
     line: { color: ALECIA_COLORS.neutral.darkGray, width: 0.5 },
   });
-  
+
   // Barre de progression
   slide.addShape('rect', {
     x,
@@ -658,7 +656,7 @@ export function renderProgressBar(
     h: height,
     fill: { color: ALECIA_COLORS.accent.main },
   });
-  
+
   // Pourcentage
   slide.addText(`${percentage}%`, {
     x: x + width - 0.5,
@@ -693,7 +691,7 @@ export function renderInfoBox(
     fill: { color: ALECIA_COLORS.primary.main },
     line: { color: ALECIA_COLORS.accent.main, width: 2 },
   });
-  
+
   // Titre
   slide.addText(title, {
     x: x + 0.15,
@@ -706,7 +704,7 @@ export function renderInfoBox(
     bold: true,
     align: 'left',
   });
-  
+
   // Contenu
   slide.addText(content, {
     x: x + 0.15,
@@ -742,7 +740,7 @@ export function renderProcessStep(
     h: 0.5,
     fill: { color: ALECIA_COLORS.accent.main },
   });
-  
+
   slide.addText(String(stepNumber), {
     x,
     y: y + 0.05,
@@ -754,7 +752,7 @@ export function renderProcessStep(
     bold: true,
     align: 'center',
   });
-  
+
   // Titre
   slide.addText(title, {
     x: x + 0.6,
@@ -767,7 +765,7 @@ export function renderProcessStep(
     bold: true,
     align: 'left',
   });
-  
+
   // Description
   slide.addText(description, {
     x: x + 0.6,
@@ -794,7 +792,7 @@ export function renderTimeline(
   height: number
 ): void {
   const itemWidth = width / events.length;
-  
+
   // Ligne horizontale
   slide.addShape('rect', {
     x: startX,
@@ -803,10 +801,10 @@ export function renderTimeline(
     h: 0.03,
     fill: { color: ALECIA_COLORS.accent.main },
   });
-  
+
   events.forEach((event, index) => {
     const x = startX + index * itemWidth;
-    
+
     // Point sur la ligne
     slide.addShape('ellipse', {
       x: x + itemWidth / 2 - 0.1,
@@ -815,7 +813,7 @@ export function renderTimeline(
       h: 0.2,
       fill: { color: ALECIA_COLORS.accent.main },
     });
-    
+
     // Année
     slide.addText(event.year, {
       x,
@@ -828,7 +826,7 @@ export function renderTimeline(
       bold: true,
       align: 'center',
     });
-    
+
     // Titre
     slide.addText(event.title, {
       x,
@@ -841,7 +839,7 @@ export function renderTimeline(
       bold: true,
       align: 'center',
     });
-    
+
     // Description
     slide.addText(event.description, {
       x: x + 0.1,

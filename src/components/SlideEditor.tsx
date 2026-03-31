@@ -60,7 +60,7 @@ export function SlideEditor({
   slideIndex,
   totalSlides,
   onDuplicated,
-  onDuplicate,
+  onDuplicate: _onDuplicate,
   onDelete,
 }: Props) {
   const upsertSlide = useMutation(api.slides.upsert);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sidebar, SidebarSection } from './Sidebar';
-import { Header, Collaborator } from './Header';
+import { Header } from './Header';
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -57,12 +57,7 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-h-screen relative z-10">
         {/* Header */}
-        {showHeader && (
-          <Header
-            {...headerProps}
-            onOpenChat={onOpenChat}
-          />
-        )}
+        {showHeader && <Header {...headerProps} onOpenChat={onOpenChat} />}
 
         {/* Page Content */}
         <motion.main
@@ -110,7 +105,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`
         mx-auto w-full
         ${maxWidths[maxWidth]}
@@ -157,19 +152,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           ))}
         </nav>
       )}
-      
+
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">{title}</h1>
-          {subtitle && (
-            <p className="text-gray-400 mt-2">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-gray-400 mt-2">{subtitle}</p>}
         </div>
-        {actions && (
-          <div className="flex items-center gap-3 flex-shrink-0">
-            {actions}
-          </div>
-        )}
+        {actions && <div className="flex items-center gap-3 flex-shrink-0">{actions}</div>}
       </div>
     </div>
   );

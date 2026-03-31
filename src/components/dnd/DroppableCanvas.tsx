@@ -6,23 +6,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import {
-  useDroppable,
-  DndContext,
-  DragStartEvent,
-  DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  defaultDropAnimationSideEffects,
-  useSensor,
-  useSensors,
-  PointerSensor,
-  TouchSensor,
-  MouseSensor,
-  KeyboardSensor,
-  closestCenter,
-} from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
+import { useDroppable } from '@dnd-kit/core';
 import type { BlockType, BlockData, SlideData } from './types';
 
 interface DroppableCanvasProps {
@@ -109,7 +93,7 @@ const blockIcons: Record<BlockType, string> = {
 export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
   slide,
   onBlockAdd,
-  onBlockMove,
+  onBlockMove: _onBlockMove,
   onBlockSelect,
   onBlockDelete,
   onBlockUpdate,
@@ -124,7 +108,7 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
   const [dragOverType, setDragOverType] = useState<BlockType | null>(null);
   const [dropPosition, setDropPosition] = useState<{ x: number; y: number } | null>(null);
 
-  const { isOver: isDroppableOver, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: `canvas-${slide.id}`,
     data: {
       accepts: ['BLOCK', 'IMAGE'],
@@ -133,42 +117,7 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
     disabled: readOnly,
   });
 
-  const handleDragOver = useCallback(
-    (event: DragOverEvent) => {
-      const { active, over } = event;
-
-      if (over && over.id === `canvas-${slide.id}`) {
-        setIsOver(true);
-        const blockType = active.data.current?.blockType as BlockType;
-        setDragOverType(blockType || null);
-
-        // Calculer la position de dépôt
-        if (
-          event.activatorEvent instanceof MouseEvent ||
-          event.activatorEvent instanceof TouchEvent
-        ) {
-          const rect = (event.activatorEvent.target as HTMLElement)?.getBoundingClientRect?.();
-          if (rect) {
-            const x = event.delta.x;
-            const y = event.delta.y;
-            setDropPosition({ x, y });
-          }
-        }
-      } else {
-        setIsOver(false);
-        setDragOverType(null);
-        setDropPosition(null);
-      }
-    },
-    [slide.id]
-  );
-
-  const handleDragLeave = useCallback(() => {
-    setIsOver(false);
-    setDragOverType(null);
-    setDropPosition(null);
-  }, []);
-
+  const handleDrop;
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
@@ -210,6 +159,12 @@ export const DroppableCanvas: React.FC<DroppableCanvasProps> = ({
     },
     [readOnly, snapToGrid, gridSize, onBlockAdd]
   );
+
+  // @ts-ignore - declared but handleDragLeave was removed
+  const handleDragLeave = useCallback(() => {
+    setIsOver(false);
+    setDragOverType(null);
+  }, []);
 
   const handleDragOverNative = useCallback(
     (event: React.DragEvent) => {
@@ -448,7 +403,7 @@ interface EmptyStateProps {
   dragOverType: BlockType | null;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ isOver, dragOverType }) => {
+const EmptyState: React.FC<EmptyStateProps> = ({ isOver, dragOverType: _dragOverType }) => {
   return (
     <div className={`empty-state ${isOver ? 'drag-over' : ''}`}>
       <div className="empty-content">

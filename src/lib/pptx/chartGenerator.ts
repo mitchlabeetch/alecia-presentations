@@ -4,11 +4,7 @@
  */
 
 import PptxGenJS from 'pptxgenjs';
-import {
-  ALECIA_COLORS,
-  ALECIA_FONTS,
-  CHART_STYLES,
-} from './brandStyles';
+import { ALECIA_COLORS, ALECIA_FONTS, CHART_STYLES } from './brandStyles';
 
 // Types de données pour les graphiques
 export interface ChartDataPoint {
@@ -99,7 +95,7 @@ export function generateBarChart(
   height: number,
   options: CommonChartOptions = {}
 ): void {
-  const chartData = data.series.map((series, index) => ({
+  const chartData = data.series.map((series) => ({
     name: series.name,
     labels: data.categories,
     values: series.data,
@@ -277,11 +273,13 @@ export function generatePieChart(
   height: number,
   options: CommonChartOptions = {}
 ): void {
-  const chartData = [{
-    name: 'Données',
-    labels: data.labels,
-    values: data.values,
-  }];
+  const chartData = [
+    {
+      name: 'Données',
+      labels: data.labels,
+      values: data.values,
+    },
+  ];
 
   slide.addChart('pie', chartData, {
     x,
@@ -319,11 +317,13 @@ export function generateDoughnutChart(
   height: number,
   options: CommonChartOptions = {}
 ): void {
-  const chartData = [{
-    name: 'Données',
-    labels: data.labels,
-    values: data.values,
-  }];
+  const chartData = [
+    {
+      name: 'Données',
+      labels: data.labels,
+      values: data.values,
+    },
+  ];
 
   slide.addChart('doughnut', chartData, {
     x,
@@ -464,7 +464,7 @@ export function generateComparisonChart(
   const maxValue = Math.max(data1.value, data2.value);
   const barHeight = height * 0.35;
   const barWidth = (width - 1) * 0.45;
-  
+
   // Titre
   if (title) {
     slide.addText(title, {
@@ -479,7 +479,7 @@ export function generateComparisonChart(
       align: 'center',
     });
   }
-  
+
   // Première barre
   const bar1Width = barWidth * (data1.value / maxValue);
   slide.addShape('rect', {
@@ -489,7 +489,7 @@ export function generateComparisonChart(
     h: barHeight,
     fill: { color: data1.color || CHART_STYLES.colors[0] },
   });
-  
+
   slide.addText(`${data1.label}: ${data1.value}`, {
     x: x,
     y: y + barHeight + 0.05,
@@ -500,7 +500,7 @@ export function generateComparisonChart(
     color: ALECIA_COLORS.text.primary,
     align: 'right',
   });
-  
+
   // Deuxième barre
   const bar2Width = barWidth * (data2.value / maxValue);
   slide.addShape('rect', {
@@ -510,7 +510,7 @@ export function generateComparisonChart(
     h: barHeight,
     fill: { color: data2.color || CHART_STYLES.colors[1] },
   });
-  
+
   slide.addText(`${data2.label}: ${data2.value}`, {
     x: x + width / 2 + 0.2,
     y: y + height * 0.5 + barHeight + 0.05,
@@ -521,7 +521,7 @@ export function generateComparisonChart(
     color: ALECIA_COLORS.text.primary,
     align: 'left',
   });
-  
+
   // Ligne centrale
   slide.addShape('rect', {
     x: x + width / 2 - 0.01,
@@ -553,10 +553,10 @@ export function generateMiniCharts(
   charts.forEach((chart, index) => {
     const col = index % columns;
     const row = Math.floor(index / columns);
-    
+
     const x = startX + col * (itemWidth + spacing);
     const y = startY + row * (itemHeight + spacing);
-    
+
     // Fond
     slide.addShape('rect', {
       x,
@@ -566,7 +566,7 @@ export function generateMiniCharts(
       fill: { color: ALECIA_COLORS.primary.main },
       line: { color: ALECIA_COLORS.neutral.darkGray, width: 1 },
     });
-    
+
     // Titre
     slide.addText(chart.title, {
       x: x + 0.1,
@@ -578,7 +578,7 @@ export function generateMiniCharts(
       color: ALECIA_COLORS.text.secondary,
       align: 'center',
     });
-    
+
     // Valeur
     const percentage = Math.round((chart.value / chart.total) * 100);
     slide.addText(`${percentage}%`, {
@@ -592,7 +592,7 @@ export function generateMiniCharts(
       bold: true,
       align: 'center',
     });
-    
+
     // Barre de progression
     const barWidth = itemWidth - 0.3;
     slide.addShape('rect', {
@@ -602,7 +602,7 @@ export function generateMiniCharts(
       h: 0.1,
       fill: { color: ALECIA_COLORS.primary.dark },
     });
-    
+
     slide.addShape('rect', {
       x: x + 0.15,
       y: y + itemHeight - 0.3,

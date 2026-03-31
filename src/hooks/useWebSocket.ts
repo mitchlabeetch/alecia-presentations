@@ -4,14 +4,13 @@
  */
 
 import { useEffect, useRef, useCallback, useState } from 'react';
-import type { 
-  User, 
-  UserCursor, 
-  SlideUpdate, 
-  VariableChange, 
+import type {
+  User,
+  UserCursor,
+  SlideUpdate,
+  VariableChange,
   Activity,
   Permission,
-  WebSocketEvent 
 } from '../types/collaboration';
 
 // Mock Socket.io pour la démonstration
@@ -57,9 +56,9 @@ interface UseWebSocketReturn {
 
 // Créer un mock socket pour la démonstration
 function createMockSocket(
-  presentationId: string,
-  userId: string,
-  userName: string,
+  _presentationId: string,
+  _userId: string,
+  _userName: string,
   callbacks: {
     onConnect?: () => void;
     onDisconnect?: (reason: string) => void;
@@ -67,47 +66,46 @@ function createMockSocket(
   }
 ): MockSocket {
   const listeners: Record<string, ((...args: unknown[]) => void)[]> = {};
-  
+
   const socket: MockSocket = {
     connected: false,
     id: `mock-${Date.now()}`,
-    
+
     emit: (event: string, ...args: unknown[]) => {
       console.log(`[WebSocket] Emit: ${event}`, args);
-      
+
       // Simuler des réponses du serveur
       if (event === 'cursor:move') {
         // Diffuser le mouvement du curseur aux autres
         setTimeout(() => {
-          const payload = args[0] as UserCursor;
           socket.on('cursor:move', () => {});
         }, 10);
       }
     },
-    
+
     on: (event: string, callback: (...args: unknown[]) => void) => {
       if (!listeners[event]) {
         listeners[event] = [];
       }
       listeners[event].push(callback);
     },
-    
+
     off: (event: string, callback?: (...args: unknown[]) => void) => {
       if (listeners[event]) {
         if (callback) {
-          listeners[event] = listeners[event].filter(cb => cb !== callback);
+          listeners[event] = listeners[event].filter((cb) => cb !== callback);
         } else {
           delete listeners[event];
         }
       }
     },
-    
+
     connect: () => {
       console.log('[WebSocket] Connexion simulée...');
       setTimeout(() => {
         socket.connected = true;
         callbacks.onConnect?.();
-        
+
         // Simuler l'arrivée d'autres utilisateurs
         triggerEvent('user:join', {
           id: 'user-2',
@@ -119,7 +117,7 @@ function createMockSocket(
           joinedAt: new Date(),
           lastSeenAt: new Date(),
         } as User);
-        
+
         triggerEvent('user:join', {
           id: 'user-3',
           name: 'Pierre Bernard',
@@ -132,15 +130,15 @@ function createMockSocket(
         } as User);
       }, 500);
     },
-    
+
     disconnect: () => {
       socket.connected = false;
       callbacks.onDisconnect?.('client disconnect');
     },
   };
-  
+
   function triggerEvent(event: string, ...args: unknown[]) {
-    listeners[event]?.forEach(callback => {
+    listeners[event]?.forEach((callback) => {
       try {
         callback(...args);
       } catch (error) {
@@ -148,7 +146,7 @@ function createMockSocket(
       }
     });
   }
-  
+
   return socket;
 }
 
@@ -197,14 +195,17 @@ export function useWebSocket(options: UseWebSocketOptions): UseWebSocketReturn {
       onDisconnect: (reason) => {
         setIsConnected(false);
         onDisconnect?.(reason);
-        
+
         // Tentative de reconnexion automatique
         if (reconnectAttemptsRef.current < maxReconnectAttempts) {
           setIsReconnecting(true);
           reconnectAttemptsRef.current++;
-          setTimeout(() => {
-            socket.connect();
-          }, 1000 * Math.min(reconnectAttemptsRef.current, 5));
+          setTimeout(
+            () => {
+              socket.connect();
+            },
+            1000 * Math.min(reconnectAttemptsRef.current, 5)
+          );
         }
       },
       onError: (err) => {
@@ -220,9 +221,9 @@ export function useWebSocket(options: UseWebSocketOptions): UseWebSocketReturn {
     const handleUserLeave = (payload: { userId: string }) => onUserLeave?.(payload.userId);
     const handleUserUpdate = (user: Partial<User> & { id: string }) => onUserUpdate?.(user);
     const handleSlideUpdate = (update: SlideUpdate) => onSlideUpdate?.(update);
-    const handleSlideAdd = (payload: { slideId: string; position: number; createdBy: string }) => 
+    const handleSlideAdd = (payload: { slideId: string; position: number; createdBy: string }) =>
       onSlideAdd?.(payload);
-    const handleSlideRemove = (payload: { slideId: string; removedBy: string }) => 
+    const handleSlideRemove = (payload: { slideId: string; removedBy: string }) =>
       onSlideRemove?.(payload);
     const handleCursorMove = (cursor: UserCursor) => onCursorMove?.(cursor);
     const handleVariableChange = (change: VariableChange) => onVariableChange?.(change);
@@ -265,7 +266,7 @@ export function useWebSocket(options: UseWebSocketOptions): UseWebSocketReturn {
     if (socketRef.current?.connected) {
       socketRef.current.emit(event, payload);
     } else {
-      console.warn('[WebSocket] Tentative d\'émission sans connexion:', event);
+      console.warn("[WebSocket] Tentative d'émission sans connexion:", event);
     }
   }, []);
 

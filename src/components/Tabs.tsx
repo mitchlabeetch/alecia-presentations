@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
 export interface Tab {
@@ -149,7 +149,7 @@ export const VerticalTabs: React.FC<VerticalTabsProps> = ({
   activeTab,
   onChange,
   size = 'md',
-  collapsible = false,
+  collapsible: _collapsible = false,
 }) => {
   const sizes = {
     sm: 'text-xs py-2 px-3',

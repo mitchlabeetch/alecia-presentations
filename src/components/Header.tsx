@@ -15,7 +15,6 @@ import { Input } from './Input';
 import { Button } from './Button';
 import { Dropdown } from './Dropdown';
 import { Tooltip } from './Tooltip';
-import { Badge } from './Badge';
 
 export interface Collaborator {
   id: string;
@@ -51,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
   onPresent,
   onOpenChat,
   notifications = 0,
-  isPresenting = false,
+  isPresenting: _isPresenting = false,
   userAvatar,
   userName = 'Utilisateur',
 }) => {

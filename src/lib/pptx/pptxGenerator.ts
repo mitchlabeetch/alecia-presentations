@@ -6,23 +6,16 @@
 import PptxGenJS from 'pptxgenjs';
 import {
   ALECIA_COLORS,
+  DEFAULT_GENERATION_OPTIONS,
   ALECIA_FONTS,
-  ALECIA_SPACING,
   SLIDE_DIMENSIONS,
   WATERMARK_CONFIG,
-  FOOTER_CONFIG,
-  DEFAULT_GENERATION_OPTIONS,
   type TemplateVariables,
   type GenerationOptions,
   type SlideType,
 } from './brandStyles';
 import { registerAllSlideMasters, SLIDE_MASTER_NAMES } from './slideMasters';
-import {
-  ALL_LAYOUTS,
-  type SlideLayoutType,
-  calculateTeamCardPositions,
-  calculateClientLogoPositions,
-} from './slideLayouts';
+import { ALL_LAYOUTS } from './slideLayouts';
 import {
   renderWatermark,
   renderAccentLine,
@@ -31,13 +24,10 @@ import {
   renderParagraph,
   renderParagraphs,
   renderImage,
-  renderTeamMemberCard,
   renderTeamGrid,
-  renderClientLogo,
   renderClientLogoGrid,
   renderContactInfo,
   renderFooter,
-  renderHeader,
   type BulletPoint,
   type TeamMember,
   type ClientLogo,
@@ -60,7 +50,6 @@ import {
 import {
   generateTable,
   generateFinancialTable,
-  generateComparisonTable,
   generatePortfolioTable,
   generatePerformanceTable,
   generateFeeTable,
@@ -115,7 +104,14 @@ export interface ChartSlideData {
 export interface TableSlideData {
   type: 'table';
   title: string;
-  tableType: 'standard' | 'financial' | 'comparison' | 'portfolio' | 'performance' | 'fee' | 'contact';
+  tableType:
+    | 'standard'
+    | 'financial'
+    | 'comparison'
+    | 'portfolio'
+    | 'performance'
+    | 'fee'
+    | 'contact';
   data: TableData | FinancialTableData | any;
   options?: {
     colW?: number[];
@@ -185,7 +181,7 @@ export class AleciaPptxGenerator {
     this.options = { ...DEFAULT_GENERATION_OPTIONS, ...options };
     this.pptx = new PptxGenJS();
     this.presentationDate = this.formatDate(new Date());
-    
+
     this.initializePresentation();
   }
 
@@ -199,7 +195,7 @@ export class AleciaPptxGenerator {
     this.pptx.company = 'Alecia - Conseil en gestion de patrimoine';
     this.pptx.subject = 'Présentation Alecia';
     this.pptx.title = 'Présentation';
-    
+
     // Enregistrer les masters de slides
     registerAllSlideMasters(this.pptx);
   }
@@ -336,7 +332,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Titre
     renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
@@ -344,17 +346,43 @@ export class AleciaPptxGenerator {
     // Contenu
     if (Array.isArray(data.content)) {
       if (this.isBulletPointArray(data.content)) {
-        renderBulletList(slide, data.content, layout.content.x, layout.content.y, layout.content.w, layout.content.h);
+        renderBulletList(
+          slide,
+          data.content,
+          layout.content.x,
+          layout.content.y,
+          layout.content.w,
+          layout.content.h
+        );
       } else {
-        renderParagraphs(slide, data.content as string[], layout.content.x, layout.content.y, layout.content.w, layout.content.h);
+        renderParagraphs(
+          slide,
+          data.content as string[],
+          layout.content.x,
+          layout.content.y,
+          layout.content.w,
+          layout.content.h
+        );
       }
     } else {
-      renderParagraph(slide, data.content, layout.content.x, layout.content.y, layout.content.w, layout.content.h);
+      renderParagraph(
+        slide,
+        data.content,
+        layout.content.x,
+        layout.content.y,
+        layout.content.w,
+        layout.content.h
+      );
     }
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -374,7 +402,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Ligne de séparation verticale
     slide.addShape('rect', {
@@ -391,28 +425,75 @@ export class AleciaPptxGenerator {
     // Colonne gauche
     if (Array.isArray(data.leftColumn)) {
       if (this.isBulletPointArray(data.leftColumn)) {
-        renderBulletList(slide, data.leftColumn, layout.leftColumn.x, layout.leftColumn.y, layout.leftColumn.w, layout.leftColumn.h);
+        renderBulletList(
+          slide,
+          data.leftColumn,
+          layout.leftColumn.x,
+          layout.leftColumn.y,
+          layout.leftColumn.w,
+          layout.leftColumn.h
+        );
       } else {
-        renderParagraphs(slide, data.leftColumn as string[], layout.leftColumn.x, layout.leftColumn.y, layout.leftColumn.w, layout.leftColumn.h);
+        renderParagraphs(
+          slide,
+          data.leftColumn as string[],
+          layout.leftColumn.x,
+          layout.leftColumn.y,
+          layout.leftColumn.w,
+          layout.leftColumn.h
+        );
       }
     } else {
-      renderParagraph(slide, data.leftColumn, layout.leftColumn.x, layout.leftColumn.y, layout.leftColumn.w, layout.leftColumn.h);
+      renderParagraph(
+        slide,
+        data.leftColumn,
+        layout.leftColumn.x,
+        layout.leftColumn.y,
+        layout.leftColumn.w,
+        layout.leftColumn.h
+      );
     }
 
     // Colonne droite
     if (Array.isArray(data.rightColumn)) {
       if (this.isBulletPointArray(data.rightColumn)) {
-        renderBulletList(slide, data.rightColumn, layout.rightColumn.x, layout.rightColumn.y, layout.rightColumn.w, layout.rightColumn.h);
+        renderBulletList(
+          slide,
+          data.rightColumn,
+          layout.rightColumn.x,
+          layout.rightColumn.y,
+          layout.rightColumn.w,
+          layout.rightColumn.h
+        );
       } else {
-        renderParagraphs(slide, data.rightColumn as string[], layout.rightColumn.x, layout.rightColumn.y, layout.rightColumn.w, layout.rightColumn.h);
+        renderParagraphs(
+          slide,
+          data.rightColumn as string[],
+          layout.rightColumn.x,
+          layout.rightColumn.y,
+          layout.rightColumn.w,
+          layout.rightColumn.h
+        );
       }
     } else {
-      renderParagraph(slide, data.rightColumn, layout.rightColumn.x, layout.rightColumn.y, layout.rightColumn.w, layout.rightColumn.h);
+      renderParagraph(
+        slide,
+        data.rightColumn,
+        layout.rightColumn.x,
+        layout.rightColumn.y,
+        layout.rightColumn.w,
+        layout.rightColumn.h
+      );
     }
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -433,39 +514,100 @@ export class AleciaPptxGenerator {
 
     // Titre
     if (data.title) {
-      renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
+      renderTitle(
+        slide,
+        data.title,
+        layout.title.x,
+        layout.title.y,
+        layout.title.w,
+        layout.title.h
+      );
     }
 
     // Image et texte selon le layout
     const imageLayout = data.layout || 'left';
-    
+
     if (imageLayout === 'full') {
-      renderImage(slide, data.imagePath, layout.image.fullImage.x, layout.image.fullImage.y, layout.image.fullImage.w, layout.image.fullImage.h);
+      renderImage(
+        slide,
+        data.imagePath,
+        layout.image.fullImage.x,
+        layout.image.fullImage.y,
+        layout.image.fullImage.w,
+        layout.image.fullImage.h
+      );
     } else if (imageLayout === 'left') {
-      renderImage(slide, data.imagePath, layout.image.leftImage.x, layout.image.leftImage.y, layout.image.leftImage.w, layout.image.leftImage.h);
+      renderImage(
+        slide,
+        data.imagePath,
+        layout.image.leftImage.x,
+        layout.image.leftImage.y,
+        layout.image.leftImage.w,
+        layout.image.leftImage.h
+      );
       if (data.text) {
         if (Array.isArray(data.text)) {
-          renderParagraphs(slide, data.text, layout.text.x, layout.text.y, layout.text.w, layout.text.h);
+          renderParagraphs(
+            slide,
+            data.text,
+            layout.text.x,
+            layout.text.y,
+            layout.text.w,
+            layout.text.h
+          );
         } else {
-          renderParagraph(slide, data.text, layout.text.x, layout.text.y, layout.text.w, layout.text.h);
+          renderParagraph(
+            slide,
+            data.text,
+            layout.text.x,
+            layout.text.y,
+            layout.text.w,
+            layout.text.h
+          );
         }
       }
     } else {
       // right layout
-      renderImage(slide, data.imagePath, layout.image.rightImage.x, layout.image.rightImage.y, layout.image.rightImage.w, layout.image.rightImage.h);
+      renderImage(
+        slide,
+        data.imagePath,
+        layout.image.rightImage.x,
+        layout.image.rightImage.y,
+        layout.image.rightImage.w,
+        layout.image.rightImage.h
+      );
       if (data.text) {
         const textX = layout.image.leftImage.x;
         if (Array.isArray(data.text)) {
-          renderParagraphs(slide, data.text, textX, layout.text.y, layout.image.leftImage.w, layout.text.h);
+          renderParagraphs(
+            slide,
+            data.text,
+            textX,
+            layout.text.y,
+            layout.image.leftImage.w,
+            layout.text.h
+          );
         } else {
-          renderParagraph(slide, data.text, textX, layout.text.y, layout.image.leftImage.w, layout.text.h);
+          renderParagraph(
+            slide,
+            data.text,
+            textX,
+            layout.text.y,
+            layout.image.leftImage.w,
+            layout.text.h
+          );
         }
       }
     }
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -485,7 +627,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Titre
     renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
@@ -500,31 +648,92 @@ export class AleciaPptxGenerator {
 
     switch (data.chartType) {
       case 'bar':
-        generateBarChart(slide, data.data as BarChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateBarChart(
+          slide,
+          data.data as BarChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'horizontalBar':
-        generateHorizontalBarChart(slide, data.data as BarChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateHorizontalBarChart(
+          slide,
+          data.data as BarChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'stackedBar':
-        generateStackedBarChart(slide, data.data as BarChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateStackedBarChart(
+          slide,
+          data.data as BarChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'line':
-        generateLineChart(slide, data.data as LineChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateLineChart(
+          slide,
+          data.data as LineChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'area':
-        generateAreaChart(slide, data.data as AreaChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateAreaChart(
+          slide,
+          data.data as AreaChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'pie':
-        generatePieChart(slide, data.data as PieChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generatePieChart(
+          slide,
+          data.data as PieChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
       case 'doughnut':
-        generateDoughnutChart(slide, data.data as DoughnutChartData, layout.chart.x, layout.chart.y, layout.chart.w, layout.chart.h, chartOptions);
+        generateDoughnutChart(
+          slide,
+          data.data as DoughnutChartData,
+          layout.chart.x,
+          layout.chart.y,
+          layout.chart.w,
+          layout.chart.h,
+          chartOptions
+        );
         break;
     }
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -544,7 +753,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Titre
     renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
@@ -558,33 +773,91 @@ export class AleciaPptxGenerator {
 
     switch (data.tableType) {
       case 'standard':
-        generateTable(slide, data.data as TableData, layout.table.x, layout.table.y, layout.table.w, layout.table.h, tableOptions);
+        generateTable(
+          slide,
+          data.data as TableData,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h,
+          tableOptions
+        );
         break;
       case 'financial':
-        generateFinancialTable(slide, data.data as FinancialTableData, layout.table.x, layout.table.y, layout.table.w, layout.table.h, tableOptions);
+        generateFinancialTable(
+          slide,
+          data.data as FinancialTableData,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h,
+          tableOptions
+        );
         break;
       case 'comparison':
         // Pour comparison, on utilise generateTable avec des données adaptées
-        generateTable(slide, data.data as TableData, layout.table.x, layout.table.y, layout.table.w, layout.table.h, tableOptions);
+        generateTable(
+          slide,
+          data.data as TableData,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h,
+          tableOptions
+        );
         break;
       case 'portfolio':
-        generatePortfolioTable(slide, data.data as any, layout.table.x, layout.table.y, layout.table.w, layout.table.h);
+        generatePortfolioTable(
+          slide,
+          data.data as any,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h
+        );
         break;
       case 'performance':
         const perfData = data.data as any;
-        generatePerformanceTable(slide, perfData.periods, perfData.performances, layout.table.x, layout.table.y, layout.table.w, layout.table.h);
+        generatePerformanceTable(
+          slide,
+          perfData.periods,
+          perfData.performances,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h
+        );
         break;
       case 'fee':
-        generateFeeTable(slide, data.data as any, layout.table.x, layout.table.y, layout.table.w, layout.table.h);
+        generateFeeTable(
+          slide,
+          data.data as any,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h
+        );
         break;
       case 'contact':
-        generateContactTable(slide, data.data as any, layout.table.x, layout.table.y, layout.table.w, layout.table.h);
+        generateContactTable(
+          slide,
+          data.data as any,
+          layout.table.x,
+          layout.table.y,
+          layout.table.w,
+          layout.table.h
+        );
         break;
     }
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -604,7 +877,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Titre
     renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
@@ -623,7 +902,12 @@ export class AleciaPptxGenerator {
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -643,7 +927,13 @@ export class AleciaPptxGenerator {
     }
 
     // Ligne d'accent
-    renderAccentLine(slide, layout.header.accentLine.x, layout.header.accentLine.y, layout.header.accentLine.w, layout.header.accentLine.h);
+    renderAccentLine(
+      slide,
+      layout.header.accentLine.x,
+      layout.header.accentLine.y,
+      layout.header.accentLine.w,
+      layout.header.accentLine.h
+    );
 
     // Titre
     renderTitle(slide, data.title, layout.title.x, layout.title.y, layout.title.w, layout.title.h);
@@ -662,7 +952,12 @@ export class AleciaPptxGenerator {
 
     // Pied de page
     if (this.options.includeFooter) {
-      renderFooter(slide, this.currentSlideNumber, this.options.includeDate!, this.presentationDate);
+      renderFooter(
+        slide,
+        this.currentSlideNumber,
+        this.options.includeDate!,
+        this.presentationDate
+      );
     }
   }
 
@@ -758,7 +1053,14 @@ export class AleciaPptxGenerator {
 
     // Informations de contact
     if (data.contactInfo) {
-      renderContactInfo(slide, data.contactInfo, layout.contact.x, layout.contact.y, layout.contact.w, layout.contact.h);
+      renderContactInfo(
+        slide,
+        data.contactInfo,
+        layout.contact.x,
+        layout.contact.y,
+        layout.contact.w,
+        layout.contact.h
+      );
     }
 
     // Logo
@@ -794,15 +1096,12 @@ export class AleciaPptxGenerator {
    */
   private formatDate(date: Date): string {
     const format = this.options.dateFormat || 'DD/MM/YYYY';
-    
+
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = String(date.getFullYear());
 
-    return format
-      .replace('DD', day)
-      .replace('MM', month)
-      .replace('YYYY', year);
+    return format.replace('DD', day).replace('MM', month).replace('YYYY', year);
   }
 
   /**

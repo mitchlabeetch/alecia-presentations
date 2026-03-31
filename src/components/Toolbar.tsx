@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Bold, 
-  Italic, 
-  Underline, 
+import {
+  Bold,
+  Italic,
+  Underline,
   Strikethrough,
   AlignLeft,
   AlignCenter,
@@ -13,7 +13,6 @@ import {
   ListOrdered,
   Link,
   Image,
-  Type,
   Palette,
   ChevronDown,
   Undo,
@@ -21,7 +20,7 @@ import {
   Quote,
   Code,
   Minus,
-  Table
+  Table,
 } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 import { Dropdown } from './Dropdown';
@@ -83,7 +82,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   fontFamily = 'Inter',
   onFontFamilyChange,
   color = '#ffffff',
-  onColorChange,
+  _onColorChange,
 }) => {
   const fontSizes = [
     { value: '12px', label: '12px' },
@@ -108,10 +107,26 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   ];
 
   const colors = [
-    '#ffffff', '#000000', '#e91e63', '#9c27b0', '#673ab7',
-    '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688',
-    '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107',
-    '#ff9800', '#ff5722', '#795548', '#9e9e9e', '#607d8b'
+    '#ffffff',
+    '#000000',
+    '#e91e63',
+    '#9c27b0',
+    '#673ab7',
+    '#3f51b5',
+    '#2196f3',
+    '#03a9f4',
+    '#00bcd4',
+    '#009688',
+    '#4caf50',
+    '#8bc34a',
+    '#cddc39',
+    '#ffeb3b',
+    '#ffc107',
+    '#ff9800',
+    '#ff5722',
+    '#795548',
+    '#9e9e9e',
+    '#607d8b',
   ];
 
   const ToolbarButton: React.FC<{
@@ -127,9 +142,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         disabled={disabled}
         className={`
           p-2 rounded-lg transition-all duration-200
-          ${isActive 
-            ? 'bg-[#e91e63]/20 text-[#e91e63]' 
-            : 'text-gray-400 hover:text-white hover:bg-white/5'
+          ${
+            isActive
+              ? 'bg-[#e91e63]/20 text-[#e91e63]'
+              : 'text-gray-400 hover:text-white hover:bg-white/5'
           }
           ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
         `}
@@ -139,9 +155,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     </Tooltip>
   );
 
-  const ToolbarDivider = () => (
-    <div className="w-px h-6 bg-[#1e3a5f] mx-1" />
-  );
+  const ToolbarDivider = () => <div className="w-px h-6 bg-[#1e3a5f] mx-1" />;
 
   return (
     <motion.div
@@ -162,7 +176,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         tooltip="Rétablir (Ctrl+Y)"
         disabled={!canRedo}
       />
-      
+
       <ToolbarDivider />
 
       {/* Font Family */}
@@ -232,7 +246,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         trigger={
           <button className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1">
             <Palette className="w-4 h-4" />
-            <div 
+            <div
               className="w-3 h-3 rounded-full border border-gray-600"
               style={{ backgroundColor: color }}
             />
@@ -242,7 +256,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           id: `color-${i}`,
           label: '',
           icon: (
-            <div 
+            <div
               className="w-6 h-6 rounded-full border border-gray-600"
               style={{ backgroundColor: c }}
             />

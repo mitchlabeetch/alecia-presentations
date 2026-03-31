@@ -325,7 +325,7 @@ export const CanvasBlock: React.FC<CanvasBlockProps> = ({
   isSelected = false,
   onSelect,
   onDelete,
-  onUpdate,
+  onUpdate: _onUpdate,
   className = '',
 }) => {
   const blockColor = defaultColors[block.type];

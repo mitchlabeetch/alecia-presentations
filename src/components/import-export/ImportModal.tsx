@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import FileUploader, { UploadedFile } from './useFileUpload';
+import FileUploader from './FileUploader';
+import { UploadedFile } from './useFileUpload';
 
 export interface ImportedPresentation {
   title: string;

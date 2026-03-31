@@ -3,14 +3,7 @@
  * Provides smooth 60fps touch interactions for tablet and mobile
  */
 
-import {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-  RefObject,
-} from "react";
+import { useState, useCallback, useRef, useEffect, useMemo, RefObject } from 'react';
 
 export interface TouchDragOptions {
   /** Minimum distance before drag starts (px) */
@@ -39,11 +32,11 @@ export interface TouchDragEvent {
   /** Total distance from start */
   distance: number;
   /** Direction of movement */
-  direction: "horizontal" | "vertical" | "diagonal" | "none";
+  direction: 'horizontal' | 'vertical' | 'diagonal' | 'none';
   /** Velocity of movement (px/ms) */
   velocity: { x: number; y: number };
   /** Is this a flick/pinch gesture */
-  gesture: "drag" | "pinch" | "none";
+  gesture: 'drag' | 'pinch' | 'none';
   /** Original touch/mouse event */
   originalEvent: TouchEvent | MouseEvent | PointerEvent | React.PointerEvent;
 }
@@ -60,7 +53,7 @@ interface DragState {
 
 const DEFAULT_OPTIONS: Required<TouchDragOptions> = {
   activationDistance: 8,
-  touchAction: "none",
+  touchAction: 'none',
   enablePinchZoom: true,
   enableMouse: true,
   onDragStart: () => {},
@@ -70,7 +63,7 @@ const DEFAULT_OPTIONS: Required<TouchDragOptions> = {
 };
 
 export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
-  options: TouchDragOptions = {},
+  options: TouchDragOptions = {}
 ): {
   containerRef: RefObject<T>;
   isDragging: boolean;
@@ -101,51 +94,45 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
   dragStateRef.current = dragState;
 
   // Calculate velocity from position delta
-  const calculateVelocity = useCallback(
-    (position: { x: number; y: number }, time: number) => {
-      const last = dragStateRef.current.lastPosition;
-      const lastTime = dragStateRef.current.lastTime;
+  const calculateVelocity = useCallback((position: { x: number; y: number }, time: number) => {
+    const last = dragStateRef.current.lastPosition;
+    const lastTime = dragStateRef.current.lastTime;
 
-      if (!last || !lastTime) {
-        return { x: 0, y: 0 };
-      }
+    if (!last || !lastTime) {
+      return { x: 0, y: 0 };
+    }
 
-      const dt = time - lastTime;
-      if (dt === 0) return { x: 0, y: 0 };
+    const dt = time - lastTime;
+    if (dt === 0) return { x: 0, y: 0 };
 
-      return {
-        x: (position.x - last.x) / dt,
-        y: (position.y - last.y) / dt,
-      };
-    },
-    [],
-  );
+    return {
+      x: (position.x - last.x) / dt,
+      y: (position.y - last.y) / dt,
+    };
+  }, []);
 
   // Determine drag direction
   const getDirection = useCallback(
-    (delta: {
-      x: number;
-      y: number;
-    }): "horizontal" | "vertical" | "diagonal" | "none" => {
+    (delta: { x: number; y: number }): 'horizontal' | 'vertical' | 'diagonal' | 'none' => {
       const absX = Math.abs(delta.x);
       const absY = Math.abs(delta.y);
       const threshold = 5;
 
-      if (absX < threshold && absY < threshold) return "none";
+      if (absX < threshold && absY < threshold) return 'none';
 
       const ratio = Math.max(absX, absY) / Math.min(absX || 1, absY || 1);
-      if (ratio < 1.5) return "diagonal";
+      if (ratio < 1.5) return 'diagonal';
 
-      return absX > absY ? "horizontal" : "vertical";
+      return absX > absY ? 'horizontal' : 'vertical';
     },
-    [],
+    []
   );
 
   // Create drag event from current state
   const createDragEvent = useCallback(
     (
       position: { x: number; y: number },
-      originalEvent: TouchEvent | MouseEvent | PointerEvent,
+      originalEvent: TouchEvent | MouseEvent | PointerEvent
     ): TouchDragEvent => {
       const state = dragStateRef.current;
       const start = state.startPosition || position;
@@ -162,15 +149,11 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
         distance,
         direction: getDirection(delta),
         velocity,
-        gesture: state.isPinching
-          ? "pinch"
-          : state.isDragging
-            ? "drag"
-            : "none",
+        gesture: state.isPinching ? 'pinch' : state.isDragging ? 'drag' : 'none',
         originalEvent,
       };
     },
-    [calculateVelocity, getDirection],
+    [calculateVelocity, getDirection]
   );
 
   // Reset drag state
@@ -189,12 +172,8 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
   // Pointer down handler
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<T>) => {
-      if (e.pointerType === "mouse" && !opts.enableMouse) return;
-      if (
-        e.pointerType === "touch" ||
-        e.pointerType === "mouse" ||
-        e.pointerType === "pen"
-      ) {
+      if (e.pointerType === 'mouse' && !opts.enableMouse) return;
+      if (e.pointerType === 'touch' || e.pointerType === 'mouse' || e.pointerType === 'pen') {
         // Capture pointer for smooth tracking
         (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
 
@@ -212,7 +191,7 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
         }));
       }
     },
-    [opts.enableMouse],
+    [opts.enableMouse]
   );
 
   // Pointer move handler
@@ -237,9 +216,7 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
           lastTime: Date.now(),
         }));
 
-        opts.onDragStart?.(
-          createDragEvent(position, e as unknown as PointerEvent),
-        );
+        opts.onDragStart?.(createDragEvent(position, e as unknown as PointerEvent));
       }
 
       // If dragging, fire move callback
@@ -253,12 +230,10 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
           velocity,
         }));
 
-        opts.onDragMove?.(
-          createDragEvent(position, e as unknown as PointerEvent),
-        );
+        opts.onDragMove?.(createDragEvent(position, e as unknown as PointerEvent));
       }
     },
-    [opts, createDragEvent, calculateVelocity],
+    [opts, createDragEvent, calculateVelocity]
   );
 
   // Pointer up handler
@@ -268,14 +243,12 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
 
       if (state.isDragging) {
         const position = { x: e.clientX, y: e.clientY };
-        opts.onDragEnd?.(
-          createDragEvent(position, e as unknown as PointerEvent),
-        );
+        opts.onDragEnd?.(createDragEvent(position, e as unknown as PointerEvent));
       }
 
       reset();
     },
-    [opts, createDragEvent, reset],
+    [opts, createDragEvent, reset]
   );
 
   // Pointer cancel handler
@@ -289,7 +262,7 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
 
       reset();
     },
-    [opts, reset],
+    [opts, reset]
   );
 
   // Wheel handler for pinch-to-zoom
@@ -302,7 +275,7 @@ export function useTouchDrag<T extends HTMLElement = HTMLDivElement>(
         e.preventDefault();
       }
     },
-    [opts.enablePinchZoom],
+    [opts.enablePinchZoom]
   );
 
   // Cleanup on unmount
@@ -342,8 +315,8 @@ export function useSortableTouch<T extends HTMLElement = HTMLDivElement>(
   id: string,
   options?: Pick<
     TouchDragOptions,
-    "activationDistance" | "onDragStart" | "onDragEnd" | "onDragMove"
-  >,
+    'activationDistance' | 'onDragStart' | 'onDragEnd' | 'onDragMove'
+  >
 ) {
   const { containerRef, isDragging, handlers } = useTouchDrag<T>({
     activationDistance: options?.activationDistance ?? 5,
@@ -352,8 +325,12 @@ export function useSortableTouch<T extends HTMLElement = HTMLDivElement>(
     onDragEnd: options?.onDragEnd,
   });
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortableTouchCore(id, containerRef, isDragging, handlers);
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortableTouchCore(
+    id,
+    containerRef,
+    isDragging,
+    handlers
+  );
 
   return {
     ref: setNodeRef,
@@ -370,32 +347,17 @@ export function useSortableTouch<T extends HTMLElement = HTMLDivElement>(
 function useSortableTouchCore(
   id: string,
   containerRef: RefObject<HTMLElement | null>,
-  isDragging: boolean,
-  handlers: ReturnType<typeof useTouchDrag>["handlers"],
+  _isDragging: boolean,
+  handlers: ReturnType<typeof useTouchDrag>['handlers']
 ) {
-  const [transform, setTransform] = useState<{ x: number; y: number } | null>(
-    null,
-  );
+  const [transform, setTransform] = useState<{ x: number; y: number } | null>(null);
   const [transition, setTransition] = useState<string | null>(null);
-
-  const handleDragStart = useCallback((event: TouchDragEvent) => {
-    setTransition(null);
-  }, []);
-
-  const handleDragMove = useCallback((event: TouchDragEvent) => {
-    setTransform({ x: event.delta.x, y: event.delta.y });
-  }, []);
-
-  const handleDragEnd = useCallback((_event: TouchDragEvent) => {
-    setTransform(null);
-    setTransition("transform 200ms ease-out");
-  }, []);
 
   return {
     attributes: {
-      "data-sortable-id": id,
-      role: "listitem",
-      "aria-roledescription": "Élément glissable",
+      'data-sortable-id': id,
+      role: 'listitem',
+      'aria-roledescription': 'Élément glissable',
     },
     listeners: {
       ...handlers,
@@ -421,12 +383,10 @@ export function useSwipeGesture<T extends HTMLElement = HTMLDivElement>(
     onSwipeRight?: () => void;
     onSwipeUp?: () => void;
     onSwipeDown?: () => void;
-  } = {},
+  } = {}
 ) {
   const containerRef = useRef<T>(null);
-  const startPoint = useRef<{ x: number; y: number; time: number } | null>(
-    null,
-  );
+  const startPoint = useRef<{ x: number; y: number; time: number } | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<string | null>(null);
 
   const { handlers, isDragging } = useTouchDrag<T>({
@@ -444,9 +404,9 @@ export function useSwipeGesture<T extends HTMLElement = HTMLDivElement>(
         // Determine primary direction while dragging
         const { delta } = event;
         if (Math.abs(delta.x) > Math.abs(delta.y)) {
-          setSwipeDirection(delta.x > 0 ? "right" : "left");
+          setSwipeDirection(delta.x > 0 ? 'right' : 'left');
         } else {
-          setSwipeDirection(delta.y > 0 ? "down" : "up");
+          setSwipeDirection(delta.y > 0 ? 'down' : 'up');
         }
       }
     },
@@ -455,13 +415,9 @@ export function useSwipeGesture<T extends HTMLElement = HTMLDivElement>(
 
       const { delta, distance, direction } = event;
       const maxDev = options.maxDeviation ?? 100;
-      const elapsed = Date.now() - startPoint.current.time;
 
       // Check if swipe is valid
-      if (
-        direction === "horizontal" &&
-        distance >= (options.swipeDistance ?? 30)
-      ) {
+      if (direction === 'horizontal' && distance >= (options.swipeDistance ?? 30)) {
         // Check perpendicular deviation
         if (Math.abs(delta.y) < maxDev) {
           if (delta.x > 0) {
@@ -470,10 +426,7 @@ export function useSwipeGesture<T extends HTMLElement = HTMLDivElement>(
             options.onSwipeLeft?.();
           }
         }
-      } else if (
-        direction === "vertical" &&
-        distance >= (options.swipeDistance ?? 30)
-      ) {
+      } else if (direction === 'vertical' && distance >= (options.swipeDistance ?? 30)) {
         // Check perpendicular deviation
         if (Math.abs(delta.x) < maxDev) {
           if (delta.y > 0) {

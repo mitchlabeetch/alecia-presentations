@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Variable, 
-  Plus, 
-  Trash2, 
-  Edit2, 
-  Check, 
+import {
+  Variable,
+  Plus,
+  Trash2,
+  Edit2,
   X,
   Search,
-  Filter,
   Database,
   Type,
   Hash,
@@ -17,17 +15,14 @@ import {
   DollarSign,
   Percent,
   ChevronDown,
-  MoreVertical,
-  RefreshCw,
   Download,
-  Upload
+  Upload,
 } from 'lucide-react';
 import { Input } from './Input';
 import { Button } from './Button';
 import { Card, CardHeader, CardContent } from './Card';
 import { Badge } from './Badge';
 import { Modal } from './Modal';
-import { Dropdown } from './Dropdown';
 import { Tooltip } from './Tooltip';
 import { Tabs } from './Tabs';
 
@@ -106,13 +101,16 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
     category: 'Général',
   });
 
-  const filteredVariables = variables.filter(v => {
-    const matchesSearch = 
+  const filteredVariables = variables.filter((v) => {
+    const matchesSearch =
       v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       v.key.toLowerCase().includes(searchQuery.toLowerCase()) ||
       String(v.value).toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || v.category === selectedCategory;
-    const matchesTab = activeTab === 'all' || (activeTab === 'used' && v.isUsed) || (activeTab === 'unused' && !v.isUsed);
+    const matchesTab =
+      activeTab === 'all' ||
+      (activeTab === 'used' && v.isUsed) ||
+      (activeTab === 'unused' && !v.isUsed);
     return matchesSearch && matchesCategory && matchesTab;
   });
 
@@ -148,8 +146,8 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
 
   const tabs = [
     { id: 'all', label: 'Toutes', badge: variables.length },
-    { id: 'used', label: 'Utilisées', badge: variables.filter(v => v.isUsed).length },
-    { id: 'unused', label: 'Non utilisées', badge: variables.filter(v => !v.isUsed).length },
+    { id: 'used', label: 'Utilisées', badge: variables.filter((v) => v.isUsed).length },
+    { id: 'unused', label: 'Non utilisées', badge: variables.filter((v) => !v.isUsed).length },
   ];
 
   return (
@@ -165,7 +163,7 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <Tooltip content="Importer" position="bottom">
-            <button 
+            <button
               onClick={() => onVariablesImport?.([])}
               className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
             >
@@ -173,7 +171,7 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             </button>
           </Tooltip>
           <Tooltip content="Exporter" position="bottom">
-            <button 
+            <button
               onClick={onVariablesExport}
               className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
             >
@@ -210,8 +208,10 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
               className="appearance-none bg-[#0d1a2d] border border-[#1e3a5f] text-gray-300 text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:border-[#e91e63]"
             >
               <option value="all">Toutes les catégories</option>
-              {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
@@ -242,7 +242,9 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
               >
                 <div className="flex items-center gap-4">
                   {/* Type Icon */}
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${typeColors[variable.type]}`}>
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${typeColors[variable.type]}`}
+                  >
                     {typeIcons[variable.type]}
                   </div>
 
@@ -333,7 +335,7 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             value={newVariable.name}
             onChange={(e) => {
               const name = e.target.value;
-              setNewVariable(prev => ({
+              setNewVariable((prev) => ({
                 ...prev,
                 name,
                 key: generateKey(name),
@@ -345,7 +347,7 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             label="Clé"
             placeholder="cle_variable"
             value={newVariable.key}
-            onChange={(e) => setNewVariable(prev => ({ ...prev, key: e.target.value }))}
+            onChange={(e) => setNewVariable((prev) => ({ ...prev, key: e.target.value }))}
             helperText="Utilisée dans les templates : {{cle_variable}}"
             fullWidth
           />
@@ -355,12 +357,13 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
               {(Object.keys(typeLabels) as VariableType[]).map((type) => (
                 <button
                   key={type}
-                  onClick={() => setNewVariable(prev => ({ ...prev, type }))}
+                  onClick={() => setNewVariable((prev) => ({ ...prev, type }))}
                   className={`
                     flex items-center gap-2 p-3 rounded-lg border transition-all
-                    ${newVariable.type === type
-                      ? 'border-[#e91e63] bg-[#e91e63]/10 text-white'
-                      : 'border-[#1e3a5f] text-gray-400 hover:border-[#3a5a7f]'
+                    ${
+                      newVariable.type === type
+                        ? 'border-[#e91e63] bg-[#e91e63]/10 text-white'
+                        : 'border-[#1e3a5f] text-gray-400 hover:border-[#3a5a7f]'
                     }
                   `}
                 >
@@ -374,18 +377,20 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             label="Valeur par défaut"
             placeholder="Valeur"
             value={String(newVariable.value || '')}
-            onChange={(e) => setNewVariable(prev => ({ ...prev, value: e.target.value }))}
+            onChange={(e) => setNewVariable((prev) => ({ ...prev, value: e.target.value }))}
             fullWidth
           />
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Catégorie</label>
             <select
               value={newVariable.category}
-              onChange={(e) => setNewVariable(prev => ({ ...prev, category: e.target.value }))}
+              onChange={(e) => setNewVariable((prev) => ({ ...prev, category: e.target.value }))}
               className="w-full bg-[#0d1a2d] border border-[#1e3a5f] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#e91e63]"
             >
-              {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -393,16 +398,14 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             label="Description (optionnel)"
             placeholder="Description de la variable"
             value={newVariable.description || ''}
-            onChange={(e) => setNewVariable(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e) => setNewVariable((prev) => ({ ...prev, description: e.target.value }))}
             fullWidth
           />
           <div className="flex justify-end gap-3 pt-4">
             <Button variant="ghost" onClick={() => setIsAddModalOpen(false)}>
               Annuler
             </Button>
-            <Button onClick={handleAddVariable}>
-              Créer la variable
-            </Button>
+            <Button onClick={handleAddVariable}>Créer la variable</Button>
           </div>
         </div>
       </Modal>
@@ -419,28 +422,34 @@ export const VariableEditor: React.FC<VariableEditorProps> = ({
             <Input
               label="Nom"
               value={editingVariable.name}
-              onChange={(e) => setEditingVariable(prev => prev ? { ...prev, name: e.target.value } : null)}
+              onChange={(e) =>
+                setEditingVariable((prev) => (prev ? { ...prev, name: e.target.value } : null))
+              }
               fullWidth
             />
             <Input
               label="Valeur"
               value={String(editingVariable.value)}
-              onChange={(e) => setEditingVariable(prev => prev ? { ...prev, value: e.target.value } : null)}
+              onChange={(e) =>
+                setEditingVariable((prev) => (prev ? { ...prev, value: e.target.value } : null))
+              }
               fullWidth
             />
             <Input
               label="Description"
               value={editingVariable.description || ''}
-              onChange={(e) => setEditingVariable(prev => prev ? { ...prev, description: e.target.value } : null)}
+              onChange={(e) =>
+                setEditingVariable((prev) =>
+                  prev ? { ...prev, description: e.target.value } : null
+                )
+              }
               fullWidth
             />
             <div className="flex justify-end gap-3 pt-4">
               <Button variant="ghost" onClick={() => setEditingVariable(null)}>
                 Annuler
               </Button>
-              <Button onClick={handleUpdateVariable}>
-                Enregistrer
-              </Button>
+              <Button onClick={handleUpdateVariable}>Enregistrer</Button>
             </div>
           </div>
         )}

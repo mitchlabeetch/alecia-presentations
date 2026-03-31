@@ -40,7 +40,7 @@ interface UseDragZoneReturn {
 export function useDragZone(options: UseDragZoneOptions = {}): UseDragZoneReturn {
   const {
     enabled = true,
-    highlightColor = 'rgba(233, 30, 99, 0.1)',
+    _highlightColor = 'rgba(233, 30, 99, 0.1)',
     borderColor = '#e91e63',
     animationDuration = 200,
   } = options;
@@ -49,16 +49,19 @@ export function useDragZone(options: UseDragZoneOptions = {}): UseDragZoneReturn
   const [isValidDropZone, setIsValidDropZone] = useState(false);
   const [dropPosition, setDropPosition] = useState<{ x: number; y: number } | null>(null);
 
-  const handleDragOver = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (!enabled) return;
+  const handleDragOver = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      if (!enabled) return;
 
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = 'clientX' in e ? e.clientX - rect.left : 0;
-    const y = 'clientY' in e ? e.clientY - rect.top : 0;
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const x = 'clientX' in e ? e.clientX - rect.left : 0;
+      const y = 'clientY' in e ? e.clientY - rect.top : 0;
 
-    setDropPosition({ x, y });
-    setIsValidDropZone(true);
-  }, [enabled]);
+      setDropPosition({ x, y });
+      setIsValidDropZone(true);
+    },
+    [enabled]
+  );
 
   const handleDragLeave = useCallback(() => {
     if (!enabled) return;
@@ -67,54 +70,60 @@ export function useDragZone(options: UseDragZoneOptions = {}): UseDragZoneReturn
     setDropPosition(null);
   }, [enabled]);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    if (!enabled) return null;
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      if (!enabled) return null;
 
-    e.preventDefault();
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    setIsOver(false);
-    setIsValidDropZone(false);
-    setDropPosition(null);
-
-    return { x, y };
-  }, [enabled]);
-
-  const getDropZoneProps = useCallback(() => ({
-    onDragOver: (e: React.DragEvent) => {
-      if (!enabled) return;
       e.preventDefault();
-      setIsOver(true);
-      setIsValidDropZone(true);
-
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      setDropPosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    },
-    onDragLeave: (e: React.DragEvent) => {
-      if (!enabled) return;
-      e.preventDefault();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
       setIsOver(false);
       setIsValidDropZone(false);
       setDropPosition(null);
+
+      return { x, y };
     },
-    onDrop: (e: React.DragEvent) => {
-      if (!enabled) return;
-      e.preventDefault();
-      setIsOver(false);
-      setIsValidDropZone(false);
-      setDropPosition(null);
-    },
-    style: {
-      outline: isOver && isValidDropZone ? `3px dashed ${borderColor}` : 'none',
-      outlineOffset: isOver && isValidDropZone ? '-3px' : '0',
-      transition: `outline ${animationDuration}ms ease, outline-offset ${animationDuration}ms ease`,
-    },
-  }), [enabled, isOver, isValidDropZone, borderColor, animationDuration]);
+    [enabled]
+  );
+
+  const getDropZoneProps = useCallback(
+    () => ({
+      onDragOver: (e: React.DragEvent) => {
+        if (!enabled) return;
+        e.preventDefault();
+        setIsOver(true);
+        setIsValidDropZone(true);
+
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        setDropPosition({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+      },
+      onDragLeave: (e: React.DragEvent) => {
+        if (!enabled) return;
+        e.preventDefault();
+        setIsOver(false);
+        setIsValidDropZone(false);
+        setDropPosition(null);
+      },
+      onDrop: (e: React.DragEvent) => {
+        if (!enabled) return;
+        e.preventDefault();
+        setIsOver(false);
+        setIsValidDropZone(false);
+        setDropPosition(null);
+      },
+      style: {
+        outline: isOver && isValidDropZone ? `3px dashed ${borderColor}` : 'none',
+        outlineOffset: isOver && isValidDropZone ? '-3px' : '0',
+        transition: `outline ${animationDuration}ms ease, outline-offset ${animationDuration}ms ease`,
+      },
+    }),
+    [enabled, isOver, isValidDropZone, borderColor, animationDuration]
+  );
 
   // Cleanup on unmount
   useEffect(() => {

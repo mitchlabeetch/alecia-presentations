@@ -1,9 +1,9 @@
-"use node";
-import { internalAction } from "./_generated/server";
-import { v } from "convex/values";
-import { internal } from "./_generated/api";
-import { Id } from "./_generated/dataModel";
-import OpenAI from "openai";
+'use node';
+import { internalAction } from './_generated/server';
+import { v } from 'convex/values';
+import { internal } from './_generated/api';
+import { Id } from './_generated/dataModel';
+import OpenAI from 'openai';
 
 /**
  * AI Chat Actions for PitchForge M&A Presentation Generator
@@ -25,45 +25,22 @@ interface AIProviderConfig {
   provider: string;
 }
 
-interface DeckBriefInput {
-  clientName: string;
-  clientSector: string;
-  dealType: string;
-  keyMetrics?: {
-    revenue?: number;
-    ebitda?: number;
-    growth?: number;
-    multiple?: number;
-  };
-  teamSize?: number;
-  yearFounded?: number;
-  transactionRationale?: string;
-}
-
 /**
  * Get AI client based on user settings or default
  */
-async function getAIClient(
-  ctx: any,
-  userId?: Id<"users"> | null,
-): Promise<AIProviderConfig> {
+async function getAIClient(ctx: any, userId?: Id<'users'> | null): Promise<AIProviderConfig> {
   if (userId) {
     const settings = await ctx.runQuery(internal.aiSettings.getForUser, {
       userId,
     });
-    if (
-      settings &&
-      settings.provider !== "convex_builtin" &&
-      settings.apiKey &&
-      settings.baseUrl
-    ) {
+    if (settings && settings.provider !== 'convex_builtin' && settings.apiKey && settings.baseUrl) {
       return {
         client: new OpenAI({
           baseURL: settings.baseUrl,
           apiKey: settings.apiKey,
         }),
         model: settings.model,
-        systemPromptExtra: settings.systemPromptExtra ?? "",
+        systemPromptExtra: settings.systemPromptExtra ?? '',
         provider: settings.provider,
       };
     }
@@ -73,20 +50,16 @@ async function getAIClient(
       baseURL: process.env.CONVEX_OPENAI_BASE_URL,
       apiKey: process.env.CONVEX_OPENAI_API_KEY,
     }),
-    model: "gpt-4.1-nano",
-    systemPromptExtra: "",
-    provider: "convex_builtin",
+    model: 'gpt-4.1-nano',
+    systemPromptExtra: '',
+    provider: 'convex_builtin',
   };
 }
 
 /**
  * Build M&A expert system prompt
  */
-function buildSystemPrompt(
-  projectContext: string,
-  slidesContext: string,
-  extra: string,
-): string {
+function buildSystemPrompt(projectContext: string, slidesContext: string, extra: string): string {
   return `Tu es PitchForge AI, un expert senior en fusions-acquisitions (M&A) spécialisé dans les PME et ETI françaises. Tu maîtrises parfaitement les opérations de cession, acquisition, LBO, levée de fonds, fusion, recapitalisation et IPO.
 
 ## Rôle et expertise
@@ -96,7 +69,7 @@ Tu aides à créer et améliorer des pitch decks M&A professionnels de qualité 
 ${projectContext || "Projet non renseigné — demande des informations à l'utilisateur si nécessaire"}
 
 ## Diapositives actuelles du deck
-${slidesContext || "Aucune diapositive — deck vide"}
+${slidesContext || 'Aucune diapositive — deck vide'}
 
 ## Capacités Spéciales
 
@@ -173,7 +146,7 @@ Quand tu proposes des diapositives, utilise OBLIGATOIREMENT ce format JSON dans 
 - Si tu proposes des modifications de diapositives existantes, fournis le JSON complet
 - Pour les questions générales M&A, réponds sans JSON
 - Adapte le niveau de détail au contexte du projet fourni
-${extra ? `\n## Instructions personnalisées\n${extra}` : ""}`;
+${extra ? `\n## Instructions personnalisées\n${extra}` : ''}`;
 }
 
 /**
@@ -181,24 +154,21 @@ ${extra ? `\n## Instructions personnalisées\n${extra}` : ""}`;
  */
 export const generateResponse = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     projectContext: v.string(),
     slidesContext: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
     const messages = await ctx.runQuery(internal.chat.getMessages, {
       projectId: args.projectId,
     });
-    const { client, model, systemPromptExtra } = await getAIClient(
-      ctx,
-      args.userId,
-    );
+    const { client, model, systemPromptExtra } = await getAIClient(ctx, args.userId);
 
     const systemPrompt = buildSystemPrompt(
       args.projectContext,
       args.slidesContext,
-      systemPromptExtra,
+      systemPromptExtra
     );
 
     // Build message history — keep last 20 messages
@@ -207,9 +177,9 @@ export const generateResponse = internalAction({
     const completion = await client.chat.completions.create({
       model,
       messages: [
-        { role: "system", content: systemPrompt },
+        { role: 'system', content: systemPrompt },
         ...recentMessages.map((m: { role: string; content: string }) => ({
-          role: m.role as "user" | "assistant",
+          role: m.role as 'user' | 'assistant',
           content: m.content,
         })),
       ],
@@ -233,7 +203,7 @@ export const generateResponse = internalAction({
  */
 export const generateDeckFromBrief = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     brief: v.object({
       clientName: v.string(),
       clientSector: v.string(),
@@ -244,24 +214,25 @@ export const generateDeckFromBrief = internalAction({
           ebitda: v.optional(v.number()),
           growth: v.optional(v.number()),
           multiple: v.optional(v.number()),
-        }),
+        })
       ),
       teamSize: v.optional(v.number()),
       yearFounded: v.optional(v.number()),
       transactionRationale: v.optional(v.string()),
     }),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
-    const { client, model, systemPromptExtra } = await getAIClient(
-      ctx,
-      args.userId,
-    );
+    const {
+      client,
+      model,
+      systemPromptExtra: _systemPromptExtra,
+    } = await getAIClient(ctx, args.userId);
 
     const brief = args.brief;
     const metricsStr = brief.keyMetrics
-      ? `\nMétriques clés :\n- CA : ${brief.keyMetrics.revenue ?? "N/A"} K€\n- EBITDA : ${brief.keyMetrics.ebitda ?? "N/A"} K€\n- Croissance : ${brief.keyMetrics.growth ?? "N/A"}%\n- Multiple : ${brief.keyMetrics.multiple ?? "N/A"}x`
-      : "";
+      ? `\nMétriques clés :\n- CA : ${brief.keyMetrics.revenue ?? 'N/A'} K€\n- EBITDA : ${brief.keyMetrics.ebitda ?? 'N/A'} K€\n- Croissance : ${brief.keyMetrics.growth ?? 'N/A'}%\n- Multiple : ${brief.keyMetrics.multiple ?? 'N/A'}x`
+      : '';
 
     const prompt = `Génère un pitch deck M&A complet et professionnel pour l'opération suivante :
 
@@ -269,9 +240,9 @@ export const generateDeckFromBrief = internalAction({
 **Secteur :** ${brief.clientSector}
 **Type d'opération :** ${brief.dealType}
 ${metricsStr}
-${brief.teamSize ? `**Taille de l'équipe :** ${brief.teamSize} personnes` : ""}
-${brief.yearFounded ? `**Année de création :** ${brief.yearFounded}` : ""}
-${brief.transactionRationale ? `\n**Rationale de la transaction :** ${brief.transactionRationale}` : ""}
+${brief.teamSize ? `**Taille de l'équipe :** ${brief.teamSize} personnes` : ''}
+${brief.yearFounded ? `**Année de création :** ${brief.yearFounded}` : ''}
+${brief.transactionRationale ? `\n**Rationale de la transaction :** ${brief.transactionRationale}` : ''}
 
 Génère 7-10 diapositives couvrant :
 1. Page de couverture
@@ -299,18 +270,17 @@ Utilise le format JSON suivant pour les diapositives :
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content: `Tu es PitchForge AI, expert M&A senior. Génère des pitch decks professionnels de qualité banque d'affaires. Réponds uniquement en français. Fournis toujours le JSON des diapositives dans un bloc \`\`\`slides\`\`\`.`,
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 4000,
       temperature: 0.7,
     });
 
     const responseContent =
-      completion.choices[0]?.message?.content ??
-      "Erreur lors de la génération du deck.";
+      completion.choices[0]?.message?.content ?? 'Erreur lors de la génération du deck.';
 
     // Save the generated slides as assistant message
     await ctx.runMutation(internal.chat.saveResponse, {
@@ -327,36 +297,33 @@ ${responseContent}`,
  */
 export const enhanceContent = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     content: v.string(),
-    intent: v.union(
-      v.literal("polish"),
-      v.literal("shorten"),
-      v.literal("expand"),
-    ),
-    userId: v.optional(v.id("users")),
+    intent: v.union(v.literal('polish'), v.literal('shorten'), v.literal('expand')),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
-    const { client, model, systemPromptExtra } = await getAIClient(
-      ctx,
-      args.userId,
-    );
+    const {
+      client,
+      model,
+      systemPromptExtra: _systemPromptExtra,
+    } = await getAIClient(ctx, args.userId);
 
     const intentMap = {
       polish: {
-        label: "améliorer et rendre plus professionnel",
+        label: 'améliorer et rendre plus professionnel',
         instruction:
-          "Rends ce texte plus professionnel, percutant et bancairement admissible. Conserve le sens mais enrichis le vocabulaire.",
+          'Rends ce texte plus professionnel, percutant et bancairement admissible. Conserve le sens mais enrichis le vocabulaire.',
       },
       shorten: {
-        label: "raccourcir",
+        label: 'raccourcir',
         instruction:
           "Réduis ce texte à l'essentiel : 3 à 5 points maximum. Supprime les redondances. Sois direct.",
       },
       expand: {
-        label: "développer",
+        label: 'développer',
         instruction:
-          "Enrichis ce texte avec des détails, arguments et données de support. Reste pertinent et professionnel.",
+          'Enrichis ce texte avec des détails, arguments et données de support. Reste pertinent et professionnel.',
       },
     };
 
@@ -373,17 +340,16 @@ Réponds uniquement avec le texte modifié, sans explanation.`;
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content: `Tu es PitchForge AI, expert en rédaction M&A. Tu réponds uniquement en français avec le texte modifié demandé. Pas d'explications, juste le contenu.`,
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 2000,
       temperature: 0.6,
     });
 
-    const responseContent =
-      completion.choices[0]?.message?.content ?? args.content;
+    const responseContent = completion.choices[0]?.message?.content ?? args.content;
 
     await ctx.runMutation(internal.chat.saveResponse, {
       projectId: args.projectId,
@@ -399,9 +365,9 @@ ${responseContent}`,
  */
 export const generateExecutiveSummary = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     slidesContext: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
     const { client, model } = await getAIClient(ctx, args.userId);
@@ -424,19 +390,18 @@ Réponds en français, de manière synthétique et professionnelle.`;
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content:
             "Tu es PitchForge AI, expert M&A senior. Génère des résumés exécutifs de qualité banque d'affaires. Réponds en français.",
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 2000,
       temperature: 0.6,
     });
 
     const responseContent =
-      completion.choices[0]?.message?.content ??
-      "Erreur lors de la génération du résumé.";
+      completion.choices[0]?.message?.content ?? 'Erreur lors de la génération du résumé.';
 
     await ctx.runMutation(internal.chat.saveResponse, {
       projectId: args.projectId,
@@ -455,10 +420,10 @@ ${responseContent}
  */
 export const generateTalkingPoints = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     slideTitle: v.string(),
     slideContent: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
     const { client, model } = await getAIClient(ctx, args.userId);
@@ -486,11 +451,11 @@ Réponds uniquement en français.`;
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content:
-            "Tu es PitchForge AI, expert en présentation M&A. Génère des talking points percutants et actionnables. Réponds en français.",
+            'Tu es PitchForge AI, expert en présentation M&A. Génère des talking points percutants et actionnables. Réponds en français.',
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 1500,
       temperature: 0.6,
@@ -498,7 +463,7 @@ Réponds uniquement en français.`;
 
     const responseContent =
       completion.choices[0]?.message?.content ??
-      "Erreur lors de la génération des points de discussion.";
+      'Erreur lors de la génération des points de discussion.';
 
     await ctx.runMutation(internal.chat.saveResponse, {
       projectId: args.projectId,
@@ -514,9 +479,9 @@ ${responseContent}`,
  */
 export const suggestSlideSequence = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     dealType: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
     const { client, model } = await getAIClient(ctx, args.userId);
@@ -524,20 +489,15 @@ export const suggestSlideSequence = internalAction({
     const dealTypeContext: Record<string, string> = {
       cession:
         "Opération de vente d'entreprise ou de participation. Focus sur valorisation, processus, due diligence.",
-      acquisition:
-        "Opération d'achat. Focus sur cible, synergies, stratégie d'intégration.",
-      lbo: "Leveraged Buy Out. Focus sur levier, rendements, projections.",
-      "levée de fonds":
-        "Collecte de capitaux. Focus sur uses of funds, traction, équipe.",
-      fusion: "Opération de fusion. Focus sur complementarity, synergies.",
-      partenariat:
-        "Collaboration stratégique. Focus sur valeur ajoutée, governance.",
-      ipo: "Introduction en bourse. Focus sur storytelling, financials, governance.",
+      acquisition: "Opération d'achat. Focus sur cible, synergies, stratégie d'intégration.",
+      lbo: 'Leveraged Buy Out. Focus sur levier, rendements, projections.',
+      'levée de fonds': 'Collecte de capitaux. Focus sur uses of funds, traction, équipe.',
+      fusion: 'Opération de fusion. Focus sur complementarity, synergies.',
+      partenariat: 'Collaboration stratégique. Focus sur valeur ajoutée, governance.',
+      ipo: 'Introduction en bourse. Focus sur storytelling, financials, governance.',
     };
 
-    const context =
-      dealTypeContext[args.dealType.toLowerCase()] ||
-      "Transaction M&A standard.";
+    const context = dealTypeContext[args.dealType.toLowerCase()] || 'Transaction M&A standard.';
 
     const prompt = `Suggère une séquence optimale de diapositives pour une opération de type : **${args.dealType}**
 
@@ -567,19 +527,18 @@ Réponds en français.`;
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content:
-            "Tu es PitchForge AI, expert M&A. Suggère des séquences de slides optimales pour pitch decks professionnels. Réponds en français avec JSON.",
+            'Tu es PitchForge AI, expert M&A. Suggère des séquences de slides optimales pour pitch decks professionnels. Réponds en français avec JSON.',
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 2000,
       temperature: 0.6,
     });
 
     const responseContent =
-      completion.choices[0]?.message?.content ??
-      "Erreur lors de la suggestion de séquence.";
+      completion.choices[0]?.message?.content ?? 'Erreur lors de la suggestion de séquence.';
 
     await ctx.runMutation(internal.chat.saveResponse, {
       projectId: args.projectId,
@@ -598,9 +557,9 @@ ${responseContent}
  */
 export const suggestImprovements = internalAction({
   args: {
-    projectId: v.id("projects"),
+    projectId: v.id('projects'),
     slidesContext: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
     const { client, model } = await getAIClient(ctx, args.userId);
@@ -622,19 +581,18 @@ Réponds en français, de manière détaillée mais concise.`;
       model,
       messages: [
         {
-          role: "system",
+          role: 'system',
           content:
             "Tu es PitchForge AI, expert M&A senior. Évalue et améliore des pitch decks avec regard critique de banque d'affaires. Réponds en français.",
         },
-        { role: "user", content: prompt },
+        { role: 'user', content: prompt },
       ],
       max_tokens: 2500,
       temperature: 0.6,
     });
 
     const responseContent =
-      completion.choices[0]?.message?.content ??
-      "Erreur lors de l'analyse du deck.";
+      completion.choices[0]?.message?.content ?? "Erreur lors de l'analyse du deck.";
 
     await ctx.runMutation(internal.chat.saveResponse, {
       projectId: args.projectId,
@@ -650,40 +608,37 @@ ${responseContent}`,
  */
 export const enhanceAllSlides = internalAction({
   args: {
-    projectId: v.id("projects"),
-    intent: v.union(
-      v.literal("polish"),
-      v.literal("shorten"),
-      v.literal("expand"),
-    ),
-    userId: v.optional(v.id("users")),
+    projectId: v.id('projects'),
+    intent: v.union(v.literal('polish'), v.literal('shorten'), v.literal('expand')),
+    userId: v.optional(v.id('users')),
   },
   handler: async (ctx, args) => {
-    const { client, model, systemPromptExtra } = await getAIClient(
-      ctx,
-      args.userId,
-    );
+    const {
+      client,
+      model,
+      systemPromptExtra: _systemPromptExtra,
+    } = await getAIClient(ctx, args.userId);
 
     // Get all slides for this project
-    const slides = await ctx.runQuery(internal.slides.list, {
+    const slides = await ctx.runQuery(internal.slides.internalList, {
       projectId: args.projectId,
     });
 
     const intentMap = {
       polish: {
-        label: "améliorer et rendre plus professionnel",
+        label: 'améliorer et rendre plus professionnel',
         instruction:
-          "Rends ce texte plus professionnel, percutant et bancairement admissible. Conserve le sens mais enrichis le vocabulaire.",
+          'Rends ce texte plus professionnel, percutant et bancairement admissible. Conserve le sens mais enrichis le vocabulaire.',
       },
       shorten: {
-        label: "raccourcir",
+        label: 'raccourcir',
         instruction:
           "Réduis ce texte à l'essentiel : 3 à 5 points maximum. Supprime les redondances. Sois direct.",
       },
       expand: {
-        label: "développer",
+        label: 'développer',
         instruction:
-          "Enrichis ce texte avec des détails, arguments et données de support. Reste pertinent et professionnel.",
+          'Enrichis ce texte avec des détails, arguments et données de support. Reste pertinent et professionnel.',
       },
     };
 
@@ -704,23 +659,22 @@ Réponds uniquement avec le texte modifié, sans explanation. Format: TITLE|NEW_
           model,
           messages: [
             {
-              role: "system",
+              role: 'system',
               content: `Tu es PitchForge AI, expert en rédaction M&A. Tu réponds uniquement en français avec le texte modifié demandé. Pas d'explications, juste le contenu. Le format de réponse est: TITLE|NEW_CONTENT (séparés par |)`,
             },
-            { role: "user", content: prompt },
+            { role: 'user', content: prompt },
           ],
           max_tokens: 2000,
           temperature: 0.6,
         });
 
-        const response =
-          completion.choices[0]?.message?.content ?? "";
+        const response = completion.choices[0]?.message?.content ?? '';
 
         // Parse response - expect "Title|NewContent" format
-        const parts = response.split("|");
+        const parts = response.split('|');
         if (parts.length >= 2) {
           const newTitle = parts[0].trim();
-          const newContent = parts.slice(1).join("|").trim();
+          const newContent = parts.slice(1).join('|').trim();
           results.push({
             slideId: slide._id,
             title: newTitle || slide.title,
@@ -746,9 +700,9 @@ Réponds uniquement avec le texte modifié, sans explanation. Format: TITLE|NEW_
 
     // Update all slides in bulk
     if (results.length > 0) {
-      await ctx.runMutation(internal.slides.bulkUpdate, {
-        slides: results.map(r => ({
-          slideId: r.slideId as Id<"slides">,
+      await ctx.runMutation(internal.slides.internalBulkUpdate, {
+        slides: results.map((r) => ({
+          slideId: r.slideId as Id<'slides'>,
           title: r.title,
           content: r.content,
         })),

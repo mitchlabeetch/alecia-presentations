@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Users, 
-  User, 
-  MousePointer2, 
-  MessageSquare, 
+import {
+  User,
+  MousePointer2,
+  MessageSquare,
   MoreHorizontal,
   Phone,
-  Video,
   ScreenShare,
   Crown,
-  Clock,
-  CheckCircle2,
   Circle,
   Wifi,
-  WifiOff
+  WifiOff,
 } from 'lucide-react';
 import { Badge } from './Badge';
 import { Tooltip } from './Tooltip';
@@ -70,11 +66,11 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
   maxVisible = 5,
 }) => {
   const [showAll, setShowAll] = useState(false);
-  
-  const activeCollaborators = collaborators.filter(c => c.isActive && c.isOnline);
-  const onlineCollaborators = collaborators.filter(c => c.isOnline);
-  const offlineCollaborators = collaborators.filter(c => !c.isOnline);
-  
+
+  const activeCollaborators = collaborators.filter((c) => c.isActive && c.isOnline);
+  const onlineCollaborators = collaborators.filter((c) => c.isOnline);
+  const offlineCollaborators = collaborators.filter((c) => !c.isOnline);
+
   const visibleCollaborators = activeCollaborators.slice(0, maxVisible);
   const remainingCount = Math.max(0, activeCollaborators.length - maxVisible);
 
@@ -84,17 +80,25 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
       label: 'Voir le profil',
       icon: <User className="w-4 h-4" />,
     },
-    ...(user.isOnline ? [{
-      id: 'message',
-      label: 'Envoyer un message',
-      icon: <MessageSquare className="w-4 h-4" />,
-    }] : []),
+    ...(user.isOnline
+      ? [
+          {
+            id: 'message',
+            label: 'Envoyer un message',
+            icon: <MessageSquare className="w-4 h-4" />,
+          },
+        ]
+      : []),
     { id: 'divider1', label: '', divider: true },
-    ...(user.role !== 'owner' ? [{
-      id: 'changeRole',
-      label: 'Modifier le rôle',
-      icon: <Crown className="w-4 h-4" />,
-    }] : []),
+    ...(user.role !== 'owner'
+      ? [
+          {
+            id: 'changeRole',
+            label: 'Modifier le rôle',
+            icon: <Crown className="w-4 h-4" />,
+          },
+        ]
+      : []),
     {
       id: 'remove',
       label: 'Retirer',
@@ -108,7 +112,7 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
       <div className="flex items-center">
         <div className="flex -space-x-2">
           {visibleCollaborators.map((collaborator, index) => (
-            <Tooltip 
+            <Tooltip
               key={collaborator.id}
               content={
                 <div className="text-left">
@@ -141,21 +145,23 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
                 style={{ backgroundColor: collaborator.color }}
               >
                 {collaborator.avatar ? (
-                  <img 
-                    src={collaborator.avatar} 
+                  <img
+                    src={collaborator.avatar}
                     alt={collaborator.name}
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   collaborator.name.charAt(0).toUpperCase()
                 )}
-                
+
                 {/* Online Status */}
-                <span className={`
+                <span
+                  className={`
                   absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0a1628]
                   ${collaborator.isOnline ? 'bg-green-500' : 'bg-gray-500'}
-                `} />
-                
+                `}
+                />
+
                 {/* Owner Crown */}
                 {collaborator.isOwner && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
@@ -165,7 +171,7 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
               </motion.div>
             </Tooltip>
           ))}
-          
+
           {remainingCount > 0 && (
             <motion.button
               initial={{ opacity: 0, scale: 0 }}
@@ -184,9 +190,7 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
         {onlineCollaborators.length > 0 ? (
           <>
             <Wifi className="w-3.5 h-3.5 text-green-500" />
-            <span className="text-xs text-gray-400">
-              {onlineCollaborators.length} en ligne
-            </span>
+            <span className="text-xs text-gray-400">{onlineCollaborators.length} en ligne</span>
           </>
         ) : (
           <>
@@ -250,7 +254,7 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
                   <Circle className="w-5 h-5" />
                 </button>
               </div>
-              
+
               <div className="overflow-y-auto max-h-[60vh]">
                 {/* Online Users */}
                 <div className="p-4">
@@ -259,16 +263,20 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
                   </h4>
                   <div className="space-y-2">
                     {onlineCollaborators.map((user) => (
-                      <div 
+                      <div
                         key={user.id}
                         className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#1e3a5f]/50 transition-colors group"
                       >
-                        <div 
+                        <div
                           className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium"
                           style={{ backgroundColor: user.color }}
                         >
                           {user.avatar ? (
-                            <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                            <img
+                              src={user.avatar}
+                              alt={user.name}
+                              className="w-full h-full rounded-full object-cover"
+                            />
                           ) : (
                             user.name.charAt(0).toUpperCase()
                           )}
@@ -305,11 +313,11 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
                     </h4>
                     <div className="space-y-2">
                       {offlineCollaborators.map((user) => (
-                        <div 
+                        <div
                           key={user.id}
                           className="flex items-center gap-3 p-3 rounded-xl opacity-60 hover:opacity-80 transition-opacity"
                         >
-                          <div 
+                          <div
                             className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium grayscale"
                             style={{ backgroundColor: user.color }}
                           >
@@ -333,34 +341,37 @@ export const CollaborationIndicator: React.FC<CollaborationIndicatorProps> = ({
       </AnimatePresence>
 
       {/* Cursor Overlays */}
-      {showCursors && activeCollaborators.map((collaborator) => (
-        collaborator.cursorPosition && collaborator.id !== currentUserId && (
-          <motion.div
-            key={collaborator.id}
-            initial={{ opacity: 0 }}
-            animate={{ 
-              opacity: 1,
-              x: collaborator.cursorPosition.x,
-              y: collaborator.cursorPosition.y,
-            }}
-            transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-            className="fixed pointer-events-none z-50"
-            style={{ left: 0, top: 0 }}
-          >
-            <MousePointer2 
-              className="w-5 h-5" 
-              style={{ color: collaborator.color }}
-              fill={collaborator.color}
-            />
-            <span 
-              className="ml-4 px-2 py-0.5 rounded text-xs text-white font-medium whitespace-nowrap"
-              style={{ backgroundColor: collaborator.color }}
-            >
-              {collaborator.name}
-            </span>
-          </motion.div>
-        )
-      ))}
+      {showCursors &&
+        activeCollaborators.map(
+          (collaborator) =>
+            collaborator.cursorPosition &&
+            collaborator.id !== currentUserId && (
+              <motion.div
+                key={collaborator.id}
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  x: collaborator.cursorPosition.x,
+                  y: collaborator.cursorPosition.y,
+                }}
+                transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+                className="fixed pointer-events-none z-50"
+                style={{ left: 0, top: 0 }}
+              >
+                <MousePointer2
+                  className="w-5 h-5"
+                  style={{ color: collaborator.color }}
+                  fill={collaborator.color}
+                />
+                <span
+                  className="ml-4 px-2 py-0.5 rounded text-xs text-white font-medium whitespace-nowrap"
+                  style={{ backgroundColor: collaborator.color }}
+                >
+                  {collaborator.name}
+                </span>
+              </motion.div>
+            )
+        )}
     </div>
   );
 };

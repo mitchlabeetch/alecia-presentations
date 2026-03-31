@@ -1,15 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ZoomIn, 
-  ZoomOut, 
-  Maximize, 
-  Minimize,
-  Grid3X3,
-  Move,
-  MousePointer2,
-  Hand
-} from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, Minimize, Grid3X3, MousePointer2, Hand } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 
 export interface SlideCanvasProps {
@@ -45,7 +36,7 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
   isFullscreen = false,
   onToggleFullscreen,
   onCanvasClick,
-  editable = true,
+  _editable: boolean = true,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [isPanning, setIsPanning] = useState(false);
@@ -106,7 +97,7 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
   const scale = zoom / 100;
 
   return (
-    <div 
+    <div
       ref={canvasRef}
       className="flex-1 relative overflow-hidden bg-[#080d14]"
       onWheel={handleWheel}
@@ -117,7 +108,7 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
     >
       {/* Grid Background */}
       {showGrid && (
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none opacity-20"
           style={{
             backgroundImage: `
@@ -130,7 +121,7 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
       )}
 
       {/* Canvas Content */}
-      <div 
+      <div
         className="absolute inset-0 flex items-center justify-center"
         style={{
           transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
@@ -164,9 +155,10 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
               onClick={() => setTool('select')}
               className={`
                 p-2 rounded-lg transition-colors
-                ${tool === 'select' 
-                  ? 'bg-[#e91e63]/20 text-[#e91e63]' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                ${
+                  tool === 'select'
+                    ? 'bg-[#e91e63]/20 text-[#e91e63]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }
               `}
             >
@@ -178,9 +170,10 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
               onClick={() => setTool('pan')}
               className={`
                 p-2 rounded-lg transition-colors
-                ${tool === 'pan' 
-                  ? 'bg-[#e91e63]/20 text-[#e91e63]' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                ${
+                  tool === 'pan'
+                    ? 'bg-[#e91e63]/20 text-[#e91e63]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }
               `}
             >
@@ -200,14 +193,14 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
               <ZoomOut className="w-4 h-4" />
             </button>
           </Tooltip>
-          
+
           <button
             onClick={handleZoomReset}
             className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white transition-colors min-w-[60px]"
           >
             {zoom}%
           </button>
-          
+
           <Tooltip content="Zoom avant" position="top">
             <button
               onClick={handleZoomIn}
@@ -227,9 +220,10 @@ export const SlideCanvas: React.FC<SlideCanvasProps> = ({
             onClick={onToggleGrid}
             className={`
               p-2 rounded-lg transition-colors
-              ${showGrid 
-                ? 'bg-[#e91e63]/20 text-[#e91e63]' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+              ${
+                showGrid
+                  ? 'bg-[#e91e63]/20 text-[#e91e63]'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
               }
             `}
           >

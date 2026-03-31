@@ -5,12 +5,7 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import type {
-  CollaborationEvent,
-  CollaborationEventType,
-  Collaborator,
-  User,
-} from '@types/index';
+import type { CollaborationEvent, CollaborationEventType, Collaborator, User } from '@types/index';
 
 // Configuration du serveur Socket.io
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
@@ -26,9 +21,13 @@ interface ServerToClientEvents {
   'slide:reordered': (data: { slideIds: string[]; userId: string }) => void;
   'variable:changed': (data: { key: string; value: string; userId: string }) => void;
   'cursor:moved': (data: { userId: string; position: { x: number; y: number } }) => void;
-  'selection:changed': (data: { userId: string; slideId: string | null; blockId: string | null }) => void;
-  'connect_error': (error: Error) => void;
-  'disconnect': (reason: string) => void;
+  'selection:changed': (data: {
+    userId: string;
+    slideId: string | null;
+    blockId: string | null;
+  }) => void;
+  connect_error: (error: Error) => void;
+  disconnect: (reason: string) => void;
 }
 
 interface ClientToServerEvents {
@@ -40,12 +39,16 @@ interface ClientToServerEvents {
   'slide:reorder': (data: { presentationId: string; slideIds: string[] }) => void;
   'variable:update': (data: { presentationId: string; key: string; value: string }) => void;
   'cursor:move': (data: { presentationId: string; position: { x: number; y: number } }) => void;
-  'selection:update': (data: { presentationId: string; slideId: string | null; blockId: string | null }) => void;
+  'selection:update': (data: {
+    presentationId: string;
+    slideId: string | null;
+    blockId: string | null;
+  }) => void;
   'user:presence': (data: { status: 'online' | 'away' }) => void;
 }
 
 // Options de configuration du hook
-interface UseSocketOptions {
+export interface UseSocketOptions {
   presentationId?: string;
   user?: User;
   enabled?: boolean;
@@ -60,11 +63,15 @@ interface UseSocketOptions {
   onSlideReordered?: (data: { slideIds: string[]; userId: string }) => void;
   onVariableChanged?: (data: { key: string; value: string; userId: string }) => void;
   onCursorMoved?: (data: { userId: string; position: { x: number; y: number } }) => void;
-  onSelectionChanged?: (data: { userId: string; slideId: string | null; blockId: string | null }) => void;
+  onSelectionChanged?: (data: {
+    userId: string;
+    slideId: string | null;
+    blockId: string | null;
+  }) => void;
 }
 
 // Résultat du hook
-interface UseSocketResult {
+export interface UseSocketResult {
   socket: Socket<ServerToClientEvents, ClientToServerEvents> | null;
   isConnected: boolean;
   isConnecting: boolean;
@@ -109,7 +116,7 @@ export function useSocket(options: UseSocketOptions = {}): UseSocketResult {
   // Références
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
   const currentPresentationIdRef = useRef<string | undefined>(initialPresentationId);
-  
+
   // États
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -171,10 +178,10 @@ export function useSocket(options: UseSocketOptions = {}): UseSocketResult {
     // Gestionnaires d'événements de collaboration
     socket.on('user:joined', (collaborator) => {
       console.log('[Socket] Utilisateur rejoint:', collaborator);
-      setCollaborators(prev => {
-        const exists = prev.find(c => c.id === collaborator.id);
+      setCollaborators((prev) => {
+        const exists = prev.find((c) => c.id === collaborator.id);
         if (exists) {
-          return prev.map(c => c.id === collaborator.id ? collaborator : c);
+          return prev.map((c) => (c.id === collaborator.id ? collaborator : c));
         }
         return [...prev, collaborator];
       });
@@ -183,14 +190,12 @@ export function useSocket(options: UseSocketOptions = {}): UseSocketResult {
 
     socket.on('user:left', (userId) => {
       console.log('[Socket] Utilisateur parti:', userId);
-      setCollaborators(prev => prev.filter(c => c.id !== userId));
+      setCollaborators((prev) => prev.filter((c) => c.id !== userId));
       onUserLeft?.(userId);
     });
 
     socket.on('user:updated', (collaborator) => {
-      setCollaborators(prev =>
-        prev.map(c => (c.id === collaborator.id ? collaborator : c))
-      );
+      setCollaborators((prev) => prev.map((c) => (c.id === collaborator.id ? collaborator : c)));
     });
 
     socket.on('slide:updated', (data) => {
@@ -219,22 +224,16 @@ export function useSocket(options: UseSocketOptions = {}): UseSocketResult {
     });
 
     socket.on('cursor:moved', (data) => {
-      setCollaborators(prev =>
-        prev.map(c =>
-          c.id === data.userId
-            ? { ...c, cursorPosition: data.position }
-            : c
-        )
+      setCollaborators((prev) =>
+        prev.map((c) => (c.id === data.userId ? { ...c, cursorPosition: data.position } : c))
       );
       onCursorMoved?.(data);
     });
 
     socket.on('selection:changed', (data) => {
-      setCollaborators(prev =>
-        prev.map(c =>
-          c.id === data.userId
-            ? { ...c, currentSlideId: data.slideId || undefined }
-            : c
+      setCollaborators((prev) =>
+        prev.map((c) =>
+          c.id === data.userId ? { ...c, currentSlideId: data.slideId || undefined } : c
         )
       );
       onSelectionChanged?.(data);
@@ -270,13 +269,16 @@ export function useSocket(options: UseSocketOptions = {}): UseSocketResult {
   }, [enabled, initializeSocket]);
 
   // Rejoindre une présentation
-  const joinPresentation = useCallback((presentationId: string) => {
-    currentPresentationIdRef.current = presentationId;
-    
-    if (socketRef.current?.connected && user) {
-      socketRef.current.emit('room:join', { presentationId, user });
-    }
-  }, [user]);
+  const joinPresentation = useCallback(
+    (presentationId: string) => {
+      currentPresentationIdRef.current = presentationId;
+
+      if (socketRef.current?.connected && user) {
+        socketRef.current.emit('room:join', { presentationId, user });
+      }
+    },
+    [user]
+  );
 
   // Quitter une présentation
   const leavePresentation = useCallback(() => {
@@ -484,8 +486,8 @@ export function usePresenceDetection(
 
     // Événements à surveiller pour l'activité
     const events = ['mousedown', 'keydown', 'touchstart', 'scroll'];
-    
-    events.forEach(event => {
+
+    events.forEach((event) => {
       window.addEventListener(event, resetTimeout);
     });
 
@@ -493,7 +495,7 @@ export function usePresenceDetection(
     resetTimeout();
 
     return () => {
-      events.forEach(event => {
+      events.forEach((event) => {
         window.removeEventListener(event, resetTimeout);
       });
       if (timeoutRef.current) {

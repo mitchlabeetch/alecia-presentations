@@ -3,7 +3,7 @@
  * Alecia Presentations - Composant de collaboration
  */
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { UserRole, Permission, ShareSettings } from '../../types/collaboration';
 import { ROLE_LABELS } from '../../types/collaboration';
 
@@ -81,7 +81,7 @@ const TrashIcon: React.FC = () => (
 function getInitials(name: string): string {
   return name
     .split(' ')
-    .map(part => part[0])
+    .map((part) => part[0])
     .join('')
     .toUpperCase()
     .slice(0, 2);
@@ -96,13 +96,16 @@ const InviteField: React.FC<{
   const [role, setRole] = useState<UserRole>('viewer');
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim() && !disabled) {
-      onInvite(email.trim(), role);
-      setEmail('');
-    }
-  }, [email, role, onInvite, disabled]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (email.trim() && !disabled) {
+        onInvite(email.trim(), role);
+        setEmail('');
+      }
+    },
+    [email, role, onInvite, disabled]
+  );
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
@@ -259,7 +262,14 @@ const PermissionItem: React.FC<{
             }}
           >
             {ROLE_LABELS[permission.role]}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
@@ -416,7 +426,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'people' | 'link'>('people');
-  const canEdit = currentUserRole === 'owner' || currentUserRole === 'editor';
+  const _canEdit = currentUserRole === 'owner' || currentUserRole === 'editor';
   const canManagePermissions = currentUserRole === 'owner';
 
   // Générer le lien de partage
@@ -434,9 +444,12 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   }, [shareUrl]);
 
   // Gérer l'invitation
-  const handleInvite = useCallback((email: string, role: UserRole) => {
-    onGrantPermission(email, role);
-  }, [onGrantPermission]);
+  const handleInvite = useCallback(
+    (email: string, role: UserRole) => {
+      onGrantPermission(email, role);
+    },
+    [onGrantPermission]
+  );
 
   if (!isOpen) return null;
 
@@ -556,7 +569,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               gap: '8px',
             }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
               <circle cx="9" cy="7" r="4" />
               <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
@@ -793,7 +813,11 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                       </div>
                       <select
                         value={shareSettings.publicAccess}
-                        onChange={(e) => onUpdateShareSettings({ publicAccess: e.target.value as 'view' | 'edit' | 'none' })}
+                        onChange={(e) =>
+                          onUpdateShareSettings({
+                            publicAccess: e.target.value as 'view' | 'edit' | 'none',
+                          })
+                        }
                         style={{
                           padding: '8px 12px',
                           borderRadius: '6px',

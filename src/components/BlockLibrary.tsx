@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Type, 
-  Image, 
-  Video, 
-  BarChart3, 
-  PieChart, 
+import {
+  Type,
+  Image,
+  Video,
+  BarChart3,
+  PieChart,
   LineChart,
   Table,
   Quote,
@@ -20,13 +20,20 @@ import {
   Grid3X3,
   Layout,
   Star,
-  History
 } from 'lucide-react';
 import { Input } from './Input';
 import { Tabs } from './Tabs';
 import { Tooltip } from './Tooltip';
 
-export type BlockCategory = 'all' | 'text' | 'media' | 'charts' | 'data' | 'layout' | 'favorites' | 'recent';
+export type BlockCategory =
+  | 'all'
+  | 'text'
+  | 'media'
+  | 'charts'
+  | 'data'
+  | 'layout'
+  | 'favorites'
+  | 'recent';
 
 export interface BlockItem {
   id: string;
@@ -50,34 +57,142 @@ export interface BlockLibraryProps {
 
 const defaultBlocks: BlockItem[] = [
   // Text blocks
-  { id: 'heading', name: 'Titre', description: 'Titre de section', icon: <Type className="w-5 h-5" />, category: 'text' },
-  { id: 'paragraph', name: 'Paragraphe', description: 'Bloc de texte', icon: <Type className="w-5 h-5" />, category: 'text' },
-  { id: 'quote', name: 'Citation', description: 'Citation stylisée', icon: <Quote className="w-5 h-5" />, category: 'text' },
-  { id: 'list', name: 'Liste', description: 'Liste à puces', icon: <List className="w-5 h-5" />, category: 'text' },
-  
+  {
+    id: 'heading',
+    name: 'Titre',
+    description: 'Titre de section',
+    icon: <Type className="w-5 h-5" />,
+    category: 'text',
+  },
+  {
+    id: 'paragraph',
+    name: 'Paragraphe',
+    description: 'Bloc de texte',
+    icon: <Type className="w-5 h-5" />,
+    category: 'text',
+  },
+  {
+    id: 'quote',
+    name: 'Citation',
+    description: 'Citation stylisée',
+    icon: <Quote className="w-5 h-5" />,
+    category: 'text',
+  },
+  {
+    id: 'list',
+    name: 'Liste',
+    description: 'Liste à puces',
+    icon: <List className="w-5 h-5" />,
+    category: 'text',
+  },
+
   // Media blocks
-  { id: 'image', name: 'Image', description: 'Insérer une image', icon: <Image className="w-5 h-5" />, category: 'media' },
-  { id: 'video', name: 'Vidéo', description: 'Vidéo intégrée', icon: <Video className="w-5 h-5" />, category: 'media' },
-  
+  {
+    id: 'image',
+    name: 'Image',
+    description: 'Insérer une image',
+    icon: <Image className="w-5 h-5" />,
+    category: 'media',
+  },
+  {
+    id: 'video',
+    name: 'Vidéo',
+    description: 'Vidéo intégrée',
+    icon: <Video className="w-5 h-5" />,
+    category: 'media',
+  },
+
   // Chart blocks
-  { id: 'bar-chart', name: 'Graphique à barres', description: 'Diagramme en barres', icon: <BarChart3 className="w-5 h-5" />, category: 'charts' },
-  { id: 'pie-chart', name: 'Graphique circulaire', description: 'Diagramme circulaire', icon: <PieChart className="w-5 h-5" />, category: 'charts' },
-  { id: 'line-chart', name: 'Graphique linéaire', description: 'Courbe de tendance', icon: <LineChart className="w-5 h-5" />, category: 'charts' },
-  
+  {
+    id: 'bar-chart',
+    name: 'Graphique à barres',
+    description: 'Diagramme en barres',
+    icon: <BarChart3 className="w-5 h-5" />,
+    category: 'charts',
+  },
+  {
+    id: 'pie-chart',
+    name: 'Graphique circulaire',
+    description: 'Diagramme circulaire',
+    icon: <PieChart className="w-5 h-5" />,
+    category: 'charts',
+  },
+  {
+    id: 'line-chart',
+    name: 'Graphique linéaire',
+    description: 'Courbe de tendance',
+    icon: <LineChart className="w-5 h-5" />,
+    category: 'charts',
+  },
+
   // Data blocks
-  { id: 'table', name: 'Tableau', description: 'Tableau de données', icon: <Table className="w-5 h-5" />, category: 'data' },
-  { id: 'checklist', name: 'Checklist', description: 'Liste de cases à cocher', icon: <CheckSquare className="w-5 h-5" />, category: 'data' },
-  { id: 'calendar', name: 'Calendrier', description: 'Vue calendrier', icon: <Calendar className="w-5 h-5" />, category: 'data' },
-  
+  {
+    id: 'table',
+    name: 'Tableau',
+    description: 'Tableau de données',
+    icon: <Table className="w-5 h-5" />,
+    category: 'data',
+  },
+  {
+    id: 'checklist',
+    name: 'Checklist',
+    description: 'Liste de cases à cocher',
+    icon: <CheckSquare className="w-5 h-5" />,
+    category: 'data',
+  },
+  {
+    id: 'calendar',
+    name: 'Calendrier',
+    description: 'Vue calendrier',
+    icon: <Calendar className="w-5 h-5" />,
+    category: 'data',
+  },
+
   // Layout blocks
-  { id: 'divider', name: 'Séparateur', description: 'Ligne de séparation', icon: <Divide className="w-5 h-5" />, category: 'layout' },
-  { id: 'two-columns', name: 'Deux colonnes', description: 'Mise en page 2 colonnes', icon: <Layout className="w-5 h-5" />, category: 'layout' },
-  { id: 'three-columns', name: 'Trois colonnes', description: 'Mise en page 3 colonnes', icon: <Grid3X3 className="w-5 h-5" />, category: 'layout' },
-  
+  {
+    id: 'divider',
+    name: 'Séparateur',
+    description: 'Ligne de séparation',
+    icon: <Divide className="w-5 h-5" />,
+    category: 'layout',
+  },
+  {
+    id: 'two-columns',
+    name: 'Deux colonnes',
+    description: 'Mise en page 2 colonnes',
+    icon: <Layout className="w-5 h-5" />,
+    category: 'layout',
+  },
+  {
+    id: 'three-columns',
+    name: 'Trois colonnes',
+    description: 'Mise en page 3 colonnes',
+    icon: <Grid3X3 className="w-5 h-5" />,
+    category: 'layout',
+  },
+
   // Other
-  { id: 'map', name: 'Carte', description: 'Carte géographique', icon: <MapPin className="w-5 h-5" />, category: 'data' },
-  { id: 'link', name: 'Lien', description: 'Lien hypertexte', icon: <Link className="w-5 h-5" />, category: 'text' },
-  { id: 'code', name: 'Code', description: 'Bloc de code', icon: <Code className="w-5 h-5" />, category: 'text' },
+  {
+    id: 'map',
+    name: 'Carte',
+    description: 'Carte géographique',
+    icon: <MapPin className="w-5 h-5" />,
+    category: 'data',
+  },
+  {
+    id: 'link',
+    name: 'Lien',
+    description: 'Lien hypertexte',
+    icon: <Link className="w-5 h-5" />,
+    category: 'text',
+  },
+  {
+    id: 'code',
+    name: 'Code',
+    description: 'Bloc de code',
+    icon: <Code className="w-5 h-5" />,
+    category: 'text',
+  },
 ];
 
 export const BlockLibrary: React.FC<BlockLibraryProps> = ({
@@ -85,8 +200,8 @@ export const BlockLibrary: React.FC<BlockLibraryProps> = ({
   onBlockDragStart,
   collapsed = false,
   onToggleCollapse,
-  recentBlocks = [],
-  favoriteBlocks = [],
+  recentBlocks: _recentBlocks = [],
+  favoriteBlocks: _favoriteBlocks = [],
 }) => {
   const [activeTab, setActiveTab] = useState<BlockCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,7 +217,7 @@ export const BlockLibrary: React.FC<BlockLibraryProps> = ({
   ];
 
   const toggleFavorite = (blockId: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newFavorites = new Set(prev);
       if (newFavorites.has(blockId)) {
         newFavorites.delete(blockId);
@@ -113,9 +228,9 @@ export const BlockLibrary: React.FC<BlockLibraryProps> = ({
     });
   };
 
-  const filteredBlocks = defaultBlocks.filter(block => {
+  const filteredBlocks = defaultBlocks.filter((block) => {
     const matchesCategory = activeTab === 'all' || block.category === activeTab;
-    const matchesSearch = 
+    const matchesSearch =
       block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       block.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -215,13 +330,16 @@ export const BlockLibrary: React.FC<BlockLibraryProps> = ({
                   }}
                   className={`
                     absolute top-2 right-2 p-1 rounded transition-all
-                    ${favorites.has(block.id)
-                      ? 'text-[#e91e63] opacity-100'
-                      : 'text-gray-500 opacity-0 group-hover:opacity-100 hover:text-[#e91e63]'
+                    ${
+                      favorites.has(block.id)
+                        ? 'text-[#e91e63] opacity-100'
+                        : 'text-gray-500 opacity-0 group-hover:opacity-100 hover:text-[#e91e63]'
                     }
                   `}
                 >
-                  <Star className={`w-3.5 h-3.5 ${favorites.has(block.id) ? 'fill-current' : ''}`} />
+                  <Star
+                    className={`w-3.5 h-3.5 ${favorites.has(block.id) ? 'fill-current' : ''}`}
+                  />
                 </button>
 
                 <div className="flex flex-col items-center text-center gap-2">

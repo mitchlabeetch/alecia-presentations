@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  MessageSquare, 
-  X, 
-  Send, 
-  Sparkles, 
-  Paperclip, 
+import {
+  X,
+  Send,
+  Sparkles,
+  Paperclip,
   Smile,
   MoreVertical,
   Trash2,
@@ -16,13 +15,10 @@ import {
   Bot,
   User,
   ChevronDown,
-  Image as ImageIcon,
   FileText,
-  Download
+  Download,
 } from 'lucide-react';
-import { Input } from './Input';
 import { Button } from './Button';
-import { Badge } from './Badge';
 import { Tooltip } from './Tooltip';
 import { Dropdown } from './Dropdown';
 
@@ -77,11 +73,11 @@ const statusIcons: Record<MessageStatus, React.ReactNode> = {
 };
 
 const suggestions = [
-  "Génère un résumé de cette présentation",
-  "Suggère des améliorations pour cette slide",
-  "Crée un graphique avec ces données",
-  "Aide-moi à rédiger ce texte",
-  "Quelles sont les tendances actuelles ?",
+  'Génère un résumé de cette présentation',
+  'Suggère des améliorations pour cette slide',
+  'Crée un graphique avec ces données',
+  'Aide-moi à rédiger ce texte',
+  'Quelles sont les tendances actuelles ?',
 ];
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({
@@ -96,7 +92,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   currentUserId,
   title = 'Assistant Alecia',
   placeholder = 'Écrivez votre message...',
-  showAIIndicator = true,
+  showAIIndicator: _showAIIndicator = true,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
@@ -145,11 +141,11 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setAttachments(prev => [...prev, ...files]);
+    setAttachments((prev) => [...prev, ...files]);
   };
 
   const removeAttachment = (index: number) => {
-    setAttachments(prev => prev.filter((_, i) => i !== index));
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
   const formatFileSize = (bytes: number) => {
@@ -170,7 +166,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
             onClick={onClose}
           />
-          
+
           {/* Panel */}
           <motion.div
             initial={{ x: '100%' }}
@@ -256,7 +252,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               )}
 
               {/* Message List */}
-              {messages.map((message, index) => {
+              {messages.map((message) => {
                 const isOwnMessage = message.sender?.id === currentUserId;
                 const isAI = message.type === 'ai';
                 const showAvatar = !isOwnMessage || isAI;
@@ -270,20 +266,17 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   >
                     {/* Avatar */}
                     {showAvatar && (
-                      <div 
+                      <div
                         className={`
                           w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center
-                          ${isAI 
-                            ? 'bg-gradient-to-br from-[#e91e63] to-[#9c27b0]' 
-                            : 'bg-[#1e3a5f]'
-                          }
+                          ${isAI ? 'bg-gradient-to-br from-[#e91e63] to-[#9c27b0]' : 'bg-[#1e3a5f]'}
                         `}
                       >
                         {isAI ? (
                           <Bot className="w-4 h-4 text-white" />
                         ) : message.sender?.avatar ? (
-                          <img 
-                            src={message.sender.avatar} 
+                          <img
+                            src={message.sender.avatar}
                             alt={message.sender.name}
                             className="w-full h-full rounded-full object-cover"
                           />
@@ -306,11 +299,12 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                       <div
                         className={`
                           inline-block max-w-[85%] text-left
-                          ${isOwnMessage 
-                            ? 'bg-[#e91e63] text-white rounded-2xl rounded-tr-sm' 
-                            : isAI
-                              ? 'bg-[#1e3a5f] text-white rounded-2xl rounded-tl-sm border border-[#3a5a7f]'
-                              : 'bg-[#111d2e] text-gray-200 rounded-2xl rounded-tl-sm'
+                          ${
+                            isOwnMessage
+                              ? 'bg-[#e91e63] text-white rounded-2xl rounded-tr-sm'
+                              : isAI
+                                ? 'bg-[#1e3a5f] text-white rounded-2xl rounded-tl-sm border border-[#3a5a7f]'
+                                : 'bg-[#111d2e] text-gray-200 rounded-2xl rounded-tl-sm'
                           }
                           px-4 py-2.5
                         `}
@@ -340,15 +334,21 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                         {message.attachments && message.attachments.length > 0 && (
                           <div className="mt-2 space-y-1">
                             {message.attachments.map((attachment) => (
-                              <div 
+                              <div
                                 key={attachment.id}
                                 className="flex items-center gap-2 p-2 bg-black/20 rounded-lg"
                               >
                                 <FileText className="w-4 h-4" />
                                 <span className="text-xs truncate flex-1">{attachment.name}</span>
-                                <span className="text-xs opacity-70">{formatFileSize(attachment.size)}</span>
+                                <span className="text-xs opacity-70">
+                                  {formatFileSize(attachment.size)}
+                                </span>
                                 {attachment.url && (
-                                  <a href={attachment.url} download className="p-1 hover:bg-white/10 rounded">
+                                  <a
+                                    href={attachment.url}
+                                    download
+                                    className="p-1 hover:bg-white/10 rounded"
+                                  >
                                     <Download className="w-3 h-3" />
                                   </a>
                                 )}
@@ -359,20 +359,20 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                       </div>
 
                       {/* Message Meta */}
-                      <div className={`flex items-center gap-2 mt-1 ${isOwnMessage ? 'justify-end' : ''}`}>
+                      <div
+                        className={`flex items-center gap-2 mt-1 ${isOwnMessage ? 'justify-end' : ''}`}
+                      >
                         <span className="text-xs text-gray-500">
-                          {message.timestamp.toLocaleTimeString('fr-FR', { 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
+                          {message.timestamp.toLocaleTimeString('fr-FR', {
+                            hour: '2-digit',
+                            minute: '2-digit',
                           })}
                         </span>
                         {message.isEdited && (
                           <span className="text-xs text-gray-500">(modifié)</span>
                         )}
                         {isOwnMessage && message.status && (
-                          <span className="text-gray-500">
-                            {statusIcons[message.status]}
-                          </span>
+                          <span className="text-gray-500">{statusIcons[message.status]}</span>
                         )}
                         {isOwnMessage && onEditMessage && onDeleteMessage && (
                           <Dropdown
@@ -382,8 +382,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                               </button>
                             }
                             items={[
-                              { id: 'edit', label: 'Modifier', icon: <Edit2 className="w-3 h-3" /> },
-                              { id: 'delete', label: 'Supprimer', icon: <Trash2 className="w-3 h-3" /> },
+                              {
+                                id: 'edit',
+                                label: 'Modifier',
+                                icon: <Edit2 className="w-3 h-3" />,
+                              },
+                              {
+                                id: 'delete',
+                                label: 'Supprimer',
+                                icon: <Trash2 className="w-3 h-3" />,
+                              },
                             ]}
                             onSelect={(item) => {
                               if (item.id === 'edit') handleEdit(message);
@@ -439,13 +447,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               {attachments.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {attachments.map((file, index) => (
-                    <div 
+                    <div
                       key={index}
                       className="flex items-center gap-2 px-2 py-1 bg-[#1e3a5f] rounded-lg text-sm"
                     >
                       <FileText className="w-4 h-4 text-gray-400" />
                       <span className="text-gray-300 truncate max-w-[120px]">{file.name}</span>
-                      <button 
+                      <button
                         onClick={() => removeAttachment(index)}
                         className="p-0.5 hover:bg-white/10 rounded"
                       >
@@ -472,7 +480,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                     <Paperclip className="w-5 h-5" />
                   </button>
                 </Tooltip>
-                
+
                 <div className="flex-1 relative">
                   <textarea
                     value={inputValue}

@@ -8,7 +8,6 @@ import React, { useState } from 'react';
 import {
   DndContext,
   DragStartEvent,
-  DragEndEvent,
   DragOverlay,
   useSensor,
   useSensors,

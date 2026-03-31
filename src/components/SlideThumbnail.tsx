@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GripVertical, Trash2, Copy, Eye, EyeOff, MoreHorizontal } from 'lucide-react';
-import { Tooltip } from './Tooltip';
 import { Dropdown } from './Dropdown';
 
 export interface SlideThumbnailProps {
@@ -31,8 +30,8 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
   onDuplicate,
   onDelete,
   onToggleVisibility,
-  onDragStart,
-  onDragEnd,
+  onDragStart: _onDragStart,
+  onDragEnd: _onDragEnd,
   dragHandleProps,
 }) => {
   const menuItems = [
@@ -79,16 +78,17 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
       className={`
         group relative flex items-start gap-2 p-2 rounded-xl cursor-pointer
         transition-all duration-200
-        ${isActive 
-          ? 'bg-[#e91e63]/10 ring-2 ring-[#e91e63]' 
-          : isSelected
-            ? 'bg-[#1e3a5f] ring-1 ring-[#3a5a7f]'
-            : 'hover:bg-[#1e3a5f]/50'
+        ${
+          isActive
+            ? 'bg-[#e91e63]/10 ring-2 ring-[#e91e63]'
+            : isSelected
+              ? 'bg-[#1e3a5f] ring-1 ring-[#3a5a7f]'
+              : 'hover:bg-[#1e3a5f]/50'
         }
       `}
     >
       {/* Drag Handle */}
-      <div 
+      <div
         {...dragHandleProps}
         className="pt-8 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
       >
@@ -99,26 +99,28 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
       <div className="flex-1 min-w-0">
         {/* Slide Number */}
         <div className="flex items-center justify-between mb-1.5">
-          <span className={`
+          <span
+            className={`
             text-xs font-medium
             ${isActive ? 'text-[#e91e63]' : 'text-gray-500'}
-          `}>
+          `}
+          >
             {slideNumber}
           </span>
-          {isHidden && (
-            <EyeOff className="w-3 h-3 text-gray-500" />
-          )}
+          {isHidden && <EyeOff className="w-3 h-3 text-gray-500" />}
         </div>
 
         {/* Thumbnail */}
-        <div className={`
+        <div
+          className={`
           aspect-[16/10] bg-[#0a1628] rounded-lg overflow-hidden border
           ${isActive ? 'border-[#e91e63]/50' : 'border-[#1e3a5f]'}
           ${isHidden ? 'opacity-50' : ''}
-        `}>
+        `}
+        >
           {thumbnail ? (
-            <img 
-              src={thumbnail} 
+            <img
+              src={thumbnail}
               alt={`Slide ${slideNumber}`}
               className="w-full h-full object-cover"
             />
@@ -130,16 +132,14 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
         </div>
 
         {/* Title */}
-        {title && (
-          <p className="mt-1.5 text-xs text-gray-400 truncate">{title}</p>
-        )}
+        {title && <p className="mt-1.5 text-xs text-gray-400 truncate">{title}</p>}
       </div>
 
       {/* Actions */}
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <Dropdown
           trigger={
-            <button 
+            <button
               onClick={(e) => e.stopPropagation()}
               className="p-1.5 rounded-lg bg-[#0a1628] text-gray-400 hover:text-white hover:bg-[#1e3a5f] transition-colors"
             >

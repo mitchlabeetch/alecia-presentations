@@ -7,7 +7,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { VariableRow } from './VariableRow';
 import { PresetManager } from './PresetManager';
 import { BulkReplaceModal } from './BulkReplaceModal';
-import { Variable, VariableType, VARIABLE_TYPE_LABELS, SYSTEM_VARIABLES } from './types';
+import { Variable, VariableType, VARIABLE_TYPE_LABELS } from './types';
 import { useVariables } from './useVariables';
 
 // Couleurs de la marque Alecia
@@ -25,7 +25,7 @@ interface VariablePanelProps {
 
 export const VariablePanel: React.FC<VariablePanelProps> = ({
   onVariablesChange,
-  initialVariables,
+  initialVariables: _initialVariables,
   className = '',
 }) => {
   const {
@@ -57,8 +57,6 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
   const [importType, setImportType] = useState<'json' | 'csv'>('json');
   const [importContent, setImportContent] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
-  const [previewVariable, setPreviewVariable] = useState<Variable | null>(null);
 
   // Notifier les changements
   React.useEffect(() => {
@@ -84,14 +82,14 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
   // Gérer l'import
   const handleImport = useCallback(() => {
     setImportError(null);
-    
+
     let result;
     if (importType === 'json') {
       result = importFromJSON(importContent);
     } else {
       result = importFromCSV(importContent);
     }
-    
+
     if (result.success) {
       setShowImportModal(false);
       setImportContent('');
@@ -119,21 +117,27 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
     setDraggedIndex(index);
   }, []);
 
-  const handleDragOver = useCallback((e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex === null || draggedIndex === index) return;
-    
-    // Réordonner visuellement (la logique réelle serait dans useVariables)
-  }, [draggedIndex]);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, _index: number) => {
+      e.preventDefault();
+      if (draggedIndex === null) return;
 
-  const handleDrop = useCallback((e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex === null) return;
-    
-    // Réordonner les variables
-    // reorderVariables(draggedIndex, index);
-    setDraggedIndex(null);
-  }, [draggedIndex]);
+      // Réordonner visuellement (la logique réelle serait dans useVariables)
+    },
+    [draggedIndex]
+  );
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent, _index: number) => {
+      e.preventDefault();
+      if (draggedIndex === null) return;
+
+      // Réordonner les variables
+      // reorderVariables(draggedIndex, index);
+      setDraggedIndex(null);
+    },
+    [draggedIndex]
+  );
 
   // Styles
   const containerStyles: React.CSSProperties = {
@@ -210,13 +214,15 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
     cursor: 'pointer',
   };
 
-  const buttonStyles = (variant: 'primary' | 'secondary' | 'danger' = 'secondary'): React.CSSProperties => {
+  const buttonStyles = (
+    variant: 'primary' | 'secondary' | 'danger' = 'secondary'
+  ): React.CSSProperties => {
     const colors = {
       primary: { bg: BRAND_COLORS.pinkAccent, color: '#ffffff', hover: '#d81b60' },
       secondary: { bg: '#f5f5f5', color: '#333333', hover: '#e0e0e0' },
       danger: { bg: '#ffebee', color: '#f44336', hover: '#ffcdd2' },
     };
-    
+
     return {
       display: 'flex',
       alignItems: 'center',
@@ -300,7 +306,7 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
             title="Remplacer tout"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
             Remplacer tout
           </button>
@@ -315,10 +321,7 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
         >
           Variables ({stats.total})
         </button>
-        <button
-          onClick={() => setActiveTab('presets')}
-          style={tabStyles(activeTab === 'presets')}
-        >
+        <button onClick={() => setActiveTab('presets')} style={tabStyles(activeTab === 'presets')}>
           Préréglages ({presets.length})
         </button>
       </div>
@@ -346,12 +349,9 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
                 </option>
               ))}
             </select>
-            <button
-              onClick={() => addVariable('custom')}
-              style={buttonStyles('primary')}
-            >
+            <button onClick={() => addVariable('custom')} style={buttonStyles('primary')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
               </svg>
               Ajouter
             </button>
@@ -361,29 +361,35 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
           <div style={{ ...toolbarStyles, paddingTop: 0 }}>
             <button onClick={handleExport} style={buttonStyles('secondary')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
               </svg>
               Exporter
             </button>
             <button onClick={() => setShowImportModal(true)} style={buttonStyles('secondary')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
               </svg>
               Importer
             </button>
             <button onClick={resetToDefaults} style={buttonStyles('secondary')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                <path
+                  fillRule="evenodd"
+                  d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
+                />
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
               </svg>
               Réinitialiser
             </button>
             <button onClick={clearAll} style={buttonStyles('danger')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                <path
+                  fillRule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                />
               </svg>
               Tout effacer
             </button>
@@ -393,9 +399,15 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
           <div style={contentStyles}>
             {filteredVariables.length === 0 ? (
               <div style={emptyStateStyles}>
-                <svg width="64" height="64" viewBox="0 0 16 16" fill="currentColor" style={{ marginBottom: '16px', opacity: 0.3 }}>
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                <svg
+                  width="64"
+                  height="64"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  style={{ marginBottom: '16px', opacity: 0.3 }}
+                >
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                 </svg>
                 <p style={{ margin: 0, fontSize: '14px' }}>
                   {searchQuery
@@ -458,13 +470,17 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
             <h3 style={{ margin: '0 0 16px 0', color: BRAND_COLORS.darkNavy }}>
               Importer des variables
             </h3>
-            
+
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 500 }}>
+              <label
+                style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 500 }}
+              >
                 Format
               </label>
               <div style={{ display: 'flex', gap: '12px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                <label
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                >
                   <input
                     type="radio"
                     value="json"
@@ -473,7 +489,9 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
                   />
                   <span>JSON</span>
                 </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                <label
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                >
                   <input
                     type="radio"
                     value="csv"
@@ -484,11 +502,15 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
                 </label>
               </div>
             </div>
-            
+
             <textarea
               value={importContent}
               onChange={(e) => setImportContent(e.target.value)}
-              placeholder={importType === 'json' ? '[\n  {"name": "client", "value": "Acme Corp"}\n]' : 'nom,valeur,type\nclient,Acme Corp,client'}
+              placeholder={
+                importType === 'json'
+                  ? '[\n  {"name": "client", "value": "Acme Corp"}\n]'
+                  : 'nom,valeur,type\nclient,Acme Corp,client'
+              }
               style={{
                 width: '100%',
                 height: '200px',
@@ -501,18 +523,15 @@ export const VariablePanel: React.FC<VariablePanelProps> = ({
                 marginBottom: '16px',
               }}
             />
-            
+
             {importError && (
               <div style={{ color: '#f44336', fontSize: '13px', marginBottom: '16px' }}>
                 {importError}
               </div>
             )}
-            
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-              <button
-                onClick={() => setShowImportModal(false)}
-                style={buttonStyles('secondary')}
-              >
+              <button onClick={() => setShowImportModal(false)} style={buttonStyles('secondary')}>
                 Annuler
               </button>
               <button

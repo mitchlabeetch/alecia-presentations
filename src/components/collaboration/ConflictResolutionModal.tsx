@@ -25,7 +25,12 @@ interface Props {
   onCancel: () => void;
 }
 
-export function ConflictResolutionModal({ conflicts, onResolve, onResolveAll, onCancel }: Props) {
+export function ConflictResolutionModal({
+  conflicts,
+  onResolve,
+  onResolveAll: _onResolveAll,
+  onCancel,
+}: Props) {
   const [selectedConflicts, setSelectedConflicts] = useState<Set<string>>(
     new Set(conflicts.map((c) => c.id))
   );

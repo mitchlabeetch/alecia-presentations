@@ -3,12 +3,7 @@
  * Configurations de mise en page pour les différents types de slides
  */
 
-import {
-  ALECIA_COLORS,
-  ALECIA_FONTS,
-  SLIDE_DIMENSIONS,
-  ALECIA_SPACING,
-} from './brandStyles';
+import { ALECIA_COLORS, ALECIA_FONTS } from './brandStyles';
 
 // Types de positionnement
 export type Position = {
@@ -595,7 +590,7 @@ export function calculateGridPositions(
   rows: number
 ): Position[] {
   const positions: Position[] = [];
-  
+
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
       positions.push({
@@ -606,7 +601,7 @@ export function calculateGridPositions(
       });
     }
   }
-  
+
   return positions;
 }
 
@@ -617,7 +612,7 @@ export function calculateTeamCardPositions(memberCount: number): Position[] {
   const layout = TEAM_SLIDE_LAYOUT.teamGrid;
   const maxPerRow = layout.columns;
   const rows = Math.ceil(memberCount / maxPerRow);
-  
+
   return calculateGridPositions(
     layout.x,
     layout.y,
@@ -636,7 +631,7 @@ export function calculateClientLogoPositions(logoCount: number): Position[] {
   const layout = CLIENTS_SLIDE_LAYOUT.logoGrid;
   const maxLogos = layout.columns * layout.rows;
   const actualCount = Math.min(logoCount, maxLogos);
-  
+
   return calculateGridPositions(
     layout.x,
     layout.y,

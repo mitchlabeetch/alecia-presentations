@@ -10,7 +10,7 @@ import { ActivityFeed } from './ActivityFeed';
 import { ShareModal } from './ShareModal';
 import { PermissionBadge, PermissionLegend } from './PermissionBadge';
 import { useCollaboration } from '../../hooks/useCollaboration';
-import type { User, Activity, UserRole } from '../../types/collaboration';
+import type { User, Activity } from '../../types/collaboration';
 
 interface CollaborationDemoProps {
   presentationId: string;
@@ -32,7 +32,7 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
     shareSettings,
     isConnected,
     isReconnecting,
-    connectionError,
+    _connectionError,
     updateCursorPosition,
     updateCurrentSlide,
     grantPermission,
@@ -40,7 +40,7 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
     updateShareSettings,
     addActivity,
     canEdit,
-    canShare,
+    _canShare,
   } = useCollaboration({
     presentationId,
     currentUserId: 'user-1',
@@ -65,10 +65,13 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
   }, []);
 
   // Changer de diapositive
-  const handleSlideChange = useCallback((slideId: string) => {
-    setCurrentSlideId(slideId);
-    updateCurrentSlide(slideId);
-  }, [updateCurrentSlide]);
+  const handleSlideChange = useCallback(
+    (slideId: string) => {
+      setCurrentSlideId(slideId);
+      updateCurrentSlide(slideId);
+    },
+    [updateCurrentSlide]
+  );
 
   // Simuler une modification
   const simulateEdit = useCallback(() => {
@@ -182,9 +185,7 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
           </div>
 
           {/* Badge de permission */}
-          {currentUser && (
-            <PermissionBadge role={currentUser.role} size="medium" />
-          )}
+          {currentUser && <PermissionBadge role={currentUser.role} size="medium" />}
 
           {/* Bouton de partage */}
           <button
@@ -210,7 +211,14 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
               e.currentTarget.style.backgroundColor = '#e91e63';
             }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <circle cx="18" cy="5" r="3" />
               <circle cx="6" cy="12" r="3" />
               <circle cx="18" cy="19" r="3" />
@@ -375,10 +383,7 @@ export const CollaborationDemo: React.FC<CollaborationDemoProps> = ({
             </div>
 
             {/* Overlay des curseurs */}
-            <CursorsOverlay
-              cursors={cursors}
-              currentSlideId={currentSlideId}
-            />
+            <CursorsOverlay cursors={cursors} currentSlideId={currentSlideId} />
           </CursorTrackingArea>
         </main>
 

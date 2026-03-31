@@ -2,14 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  User, 
-  Bot, 
-  Copy, 
-  Check, 
-  Sparkles,
-  Clock
-} from 'lucide-react';
+import { User, Bot, Copy, Check, Sparkles, Clock } from 'lucide-react';
 import { ChatMessage as ChatMessageType } from './useAIChat';
 
 interface ChatMessageProps {
@@ -72,22 +65,22 @@ const parseMarkdown = (content: string): React.ReactNode[] => {
         .split('|')
         .filter((cell) => cell.trim())
         .map((cell) => cell.trim());
-      
+
       // Ignorer la ligne de séparation (---)
       if (cells.every((cell) => cell.replace(/-/g, '').trim() === '')) {
         return;
       }
 
       const isHeader = index === 0 || (index > 0 && !lines[index - 1].trim().startsWith('|'));
-      
+
       tableRows.push(
-        <tr 
-          key={`row-${index}`} 
+        <tr
+          key={`row-${index}`}
           className={isHeader ? 'bg-[#e91e63]/10 font-semibold' : 'border-b border-gray-700/30'}
         >
           {cells.map((cell, cellIndex) => (
-            <td 
-              key={`cell-${cellIndex}`} 
+            <td
+              key={`cell-${cellIndex}`}
               className="px-3 py-2 text-left"
               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(cell) }}
             />
@@ -99,13 +92,14 @@ const parseMarkdown = (content: string): React.ReactNode[] => {
     flushTable();
 
     // Titres
-    if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**') && !trimmedLine.slice(2, -2).includes('**')) {
+    if (
+      trimmedLine.startsWith('**') &&
+      trimmedLine.endsWith('**') &&
+      !trimmedLine.slice(2, -2).includes('**')
+    ) {
       flushList();
       elements.push(
-        <h4 
-          key={`heading-${index}`} 
-          className="font-bold text-white mt-4 mb-2 text-base"
-        >
+        <h4 key={`heading-${index}`} className="font-bold text-white mt-4 mb-2 text-base">
           {trimmedLine.slice(2, -2)}
         </h4>
       );
@@ -117,8 +111,8 @@ const parseMarkdown = (content: string): React.ReactNode[] => {
       inList = true;
       const itemContent = trimmedLine.slice(2);
       listItems.push(
-        <li 
-          key={`item-${index}`} 
+        <li
+          key={`item-${index}`}
           className="text-gray-200"
           dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(itemContent) }}
         />
@@ -134,7 +128,7 @@ const parseMarkdown = (content: string): React.ReactNode[] => {
         elements.push(
           <div key={`numbered-${index}`} className="flex gap-2 my-1">
             <span className="text-[#e91e63] font-semibold min-w-[1.5rem]">{match[1]}.</span>
-            <span 
+            <span
               className="text-gray-200"
               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(match[2]) }}
             />
@@ -146,8 +140,8 @@ const parseMarkdown = (content: string): React.ReactNode[] => {
 
     // Texte normal avec formatage inline
     elements.push(
-      <p 
-        key={`p-${index}`} 
+      <p
+        key={`p-${index}`}
         className="text-gray-200 my-1 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(trimmedLine) }}
       />
@@ -168,10 +162,16 @@ const formatInlineMarkdown = (text: string): string => {
     // Italique
     .replace(/\*(.+?)\*/g, '<em class="text-gray-300">$1</em>')
     // Code inline
-    .replace(/`([^`]+)`/g, '<code class="bg-[#0a1628] px-1.5 py-0.5 rounded text-[#e91e63] text-sm font-mono">$1</code>')
+    .replace(
+      /`([^`]+)`/g,
+      '<code class="bg-[#0a1628] px-1.5 py-0.5 rounded text-[#e91e63] text-sm font-mono">$1</code>'
+    )
     // Variables {{variable}}
-    .replace(/\{\{([^}]+)\}\}/g, '<span class="bg-[#e91e63]/20 text-[#e91e63] px-1.5 py-0.5 rounded text-sm font-mono">{{$1}}</span>');
-  
+    .replace(
+      /\{\{([^}]+)\}\}/g,
+      '<span class="bg-[#e91e63]/20 text-[#e91e63] px-1.5 py-0.5 rounded text-sm font-mono">{{$1}}</span>'
+    );
+
   return formatted;
 };
 
@@ -212,10 +212,10 @@ const ThinkingIndicator: React.FC = () => (
   </motion.div>
 );
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ 
-  message, 
+export const ChatMessage: React.FC<ChatMessageProps> = ({
+  message,
   onCopy,
-  brandColor = '#e91e63'
+  _brandColor = '#e91e63',
 }) => {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
@@ -250,10 +250,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ 
-        duration: 0.3, 
+      transition={{
+        duration: 0.3,
         ease: [0.25, 0.46, 0.45, 0.94],
-        delay: message.isStreaming ? 0 : 0.05
+        delay: message.isStreaming ? 0 : 0.05,
       }}
       className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'} mb-4`}
     >
@@ -263,8 +263,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         animate={{ scale: 1 }}
         transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
         className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center ${
-          isUser 
-            ? 'bg-gradient-to-br from-[#e91e63] to-[#c2185b]' 
+          isUser
+            ? 'bg-gradient-to-br from-[#e91e63] to-[#c2185b]'
             : 'bg-gradient-to-br from-[#1a2744] to-[#0a1628] border border-[#e91e63]/30'
         }`}
       >
@@ -282,14 +282,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           <span className={`text-xs font-medium ${isUser ? 'text-[#e91e63]' : 'text-gray-400'}`}>
             {isUser ? 'Vous' : 'Assistant Alecia'}
           </span>
-          {!isUser && (
-            <Sparkles className="w-3 h-3 text-[#e91e63]/70" />
-          )}
+          {!isUser && <Sparkles className="w-3 h-3 text-[#e91e63]/70" />}
           <span className="text-xs text-gray-600 flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            {message.timestamp.toLocaleTimeString('fr-FR', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {message.timestamp.toLocaleTimeString('fr-FR', {
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </span>
         </div>
@@ -325,7 +323,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleCopy}
-              className="absolute -right-2 -top-2 p-1.5 bg-[#0a1628] border border-[#e91e63]/30 
+              className="absolute -right-2 -top-2 p-1.5 bg-[#0a1628] border border-[#e91e63]/30
                          rounded-lg opacity-0 group-hover:opacity-100 transition-opacity
                          hover:bg-[#e91e63]/10 hover:border-[#e91e63]"
               title={copied ? 'Copié !' : 'Copier le message'}

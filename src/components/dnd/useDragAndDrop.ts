@@ -7,7 +7,6 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import {
-  DndContext,
   DragStartEvent,
   DragMoveEvent,
   DragOverEvent,
@@ -26,14 +25,7 @@ import {
   defaultDropAnimationSideEffects,
   DropAnimation,
 } from '@dnd-kit/core';
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  horizontalListSortingStrategy,
-  rectSortingStrategy,
-  arrayMove,
-} from '@dnd-kit/sortable';
+import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable';
 import type { DragType, DragState, SlideData, BlockData, BlockType } from './types';
 
 export interface UseDragAndDropOptions {
@@ -98,7 +90,7 @@ export function useDragAndDrop(
   const {
     onSlideReorder,
     onBlockAdd,
-    onBlockMove,
+    onBlockMove: _onBlockMove,
     onTemplateApply,
     onImageAdd,
     collisionDetection: collisionDetectionType = 'closestCenter',
@@ -243,7 +235,7 @@ export function useDragAndDrop(
     [onSlideReorder, onBlockAdd, onTemplateApply, onImageAdd]
   );
 
-  const handleDragCancel = useCallback((event: DragCancelEvent) => {
+  const handleDragCancel = useCallback((_event: DragCancelEvent) => {
     setDragState({
       activeId: null,
       activeType: null,

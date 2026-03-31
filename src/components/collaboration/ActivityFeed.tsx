@@ -105,11 +105,7 @@ const ActivityIcon: React.FC<{ type: ActivityType }> = ({ type }) => {
     presentation_shared: '#00bcd4',
   };
 
-  return (
-    <span style={{ color: iconColors[type], flexShrink: 0 }}>
-      {icons[type]}
-    </span>
-  );
+  return <span style={{ color: iconColors[type], flexShrink: 0 }}>{icons[type]}</span>;
 };
 
 // Formater le temps relatif
@@ -121,7 +117,7 @@ function formatRelativeTime(date: Date): string {
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 
-  if (seconds < 10) return 'À l\'instant';
+  if (seconds < 10) return "À l'instant";
   if (seconds < 60) return `Il y a ${seconds}s`;
   if (minutes < 60) return `Il y a ${minutes}min`;
   if (hours < 24) return `Il y a ${hours}h`;
@@ -161,7 +157,7 @@ function getActivityDescription(activity: Activity): string {
 function getInitials(name: string): string {
   return name
     .split(' ')
-    .map(part => part[0])
+    .map((part) => part[0])
     .join('')
     .toUpperCase()
     .slice(0, 2);
@@ -283,9 +279,7 @@ const ActivityItem: React.FC<{
               </span>
             )}
             {activity.details.newValue !== undefined && (
-              <span style={{ color: '#4caf50' }}>
-                {String(activity.details.newValue)}
-              </span>
+              <span style={{ color: '#4caf50' }}>{String(activity.details.newValue)}</span>
             )}
           </div>
         )}
@@ -324,17 +318,17 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
 
     switch (filter) {
       case 'slides':
-        filtered = activities.filter(a => 
+        filtered = activities.filter((a) =>
           ['slide_created', 'slide_updated', 'slide_deleted', 'slide_moved'].includes(a.type)
         );
         break;
       case 'users':
-        filtered = activities.filter(a => 
+        filtered = activities.filter((a) =>
           ['user_joined', 'user_left', 'permission_changed'].includes(a.type)
         );
         break;
       case 'variables':
-        filtered = activities.filter(a => a.type === 'variable_changed');
+        filtered = activities.filter((a) => a.type === 'variable_changed');
         break;
     }
 
@@ -348,22 +342,22 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    filteredActivities.forEach(activity => {
+    filteredActivities.forEach((activity) => {
       const activityDate = new Date(activity.timestamp);
       let label: string;
 
       if (activityDate.toDateString() === today.toDateString()) {
-        label = 'Aujourd\'hui';
+        label = "Aujourd'hui";
       } else if (activityDate.toDateString() === yesterday.toDateString()) {
         label = 'Hier';
       } else {
-        label = activityDate.toLocaleDateString('fr-FR', { 
-          day: 'numeric', 
-          month: 'long' 
+        label = activityDate.toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'long',
         });
       }
 
-      const existingGroup = groups.find(g => g.label === label);
+      const existingGroup = groups.find((g) => g.label === label);
       if (existingGroup) {
         existingGroup.activities.push(activity);
       } else {
@@ -534,7 +528,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
             </p>
           </div>
         ) : (
-          groupedActivities.map((group, groupIndex) => (
+          groupedActivities.map((group) => (
             <div key={group.label}>
               {/* Séparateur de date */}
               <div

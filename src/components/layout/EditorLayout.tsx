@@ -4,11 +4,10 @@
  */
 
 import React from 'react';
-import { Outlet, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ChevronLeft,
-  Save,
   Download,
   Share2,
   Play,
@@ -18,13 +17,11 @@ import {
   BarChart3,
   Table,
   LayoutTemplate,
-  Settings,
   Undo,
   Redo,
   ZoomIn,
   ZoomOut,
   Maximize,
-  Users,
   MessageSquare,
   Variable,
   Layers,
@@ -35,10 +32,10 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import useStore, { useCurrentPresentation, useSlides, useSelectedSlide } from '@store/index';
+import useStore, { useSlides, useSelectedSlide } from '@store/index';
 import { useSocket, useCursorTracking } from '@hooks/useSocket';
-import { generateId, formatRelativeTime } from '@lib/utils';
-import type { SlideType } from '@types/index';
+import { formatRelativeTime } from '@lib/utils';
+import type { Slide, SlideType } from '@types/index';
 
 /**
  * Bouton d'outil dans la barre d'outils
@@ -65,9 +62,10 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = ({
     disabled={disabled}
     className={`
       flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200
-      ${active 
-        ? 'bg-alecia-pink text-white' 
-        : 'text-alecia-gray-300 hover:bg-alecia-navy-light hover:text-white'
+      ${
+        active
+          ? 'bg-alecia-pink text-white'
+          : 'text-alecia-gray-300 hover:bg-alecia-navy-light hover:text-white'
       }
       ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
     `}
@@ -82,7 +80,7 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = ({
  * Miniature de slide dans le panneau latéral
  */
 interface SlideThumbnailProps {
-  slide: ReturnType<typeof useSelectedSlide>;
+  slide: Slide;
   index: number;
   isSelected: boolean;
   onClick: () => void;
@@ -101,16 +99,17 @@ const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
   onToggleVisibility,
 }) => {
   const [showMenu, setShowMenu] = React.useState(false);
-  
+
   if (!slide) return null;
 
   return (
     <div
       className={`
         relative group cursor-pointer rounded-lg overflow-hidden transition-all duration-200
-        ${isSelected 
-          ? 'ring-2 ring-alecia-pink shadow-alecia-pink' 
-          : 'hover:ring-2 hover:ring-alecia-navy-lighter'
+        ${
+          isSelected
+            ? 'ring-2 ring-alecia-pink shadow-alecia-pink'
+            : 'hover:ring-2 hover:ring-alecia-navy-lighter'
         }
         ${slide.isHidden ? 'opacity-50' : ''}
       `}
@@ -122,7 +121,7 @@ const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
           {index + 1}
         </span>
       </div>
-      
+
       {/* Actions de la slide */}
       <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
@@ -134,7 +133,7 @@ const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
         >
           <MoreHorizontal className="w-4 h-4" />
         </button>
-        
+
         {showMenu && (
           <div className="absolute right-0 top-full mt-1 w-40 bg-alecia-navy-light rounded-lg border border-alecia-navy-lighter/30 shadow-alecia z-20">
             <button
@@ -173,14 +172,12 @@ const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
           </div>
         )}
       </div>
-      
+
       {/* Aperçu de la slide */}
       <div className="aspect-video bg-alecia-navy rounded-lg border border-alecia-navy-lighter/30 p-4">
         <div className="h-full flex flex-col justify-center">
           {slide.title && (
-            <h4 className="text-white text-sm font-medium truncate">
-              {slide.title}
-            </h4>
+            <h4 className="text-white text-sm font-medium truncate">{slide.title}</h4>
           )}
           <p className="text-alecia-gray-500 text-xs mt-1">
             {slide.type === 'title' && 'Page de titre'}
@@ -208,26 +205,26 @@ const ChatPanel: React.FC = () => {
   const { currentPresentation, sessions, currentSessionId, addMessage, isTyping } = useStore();
   const [input, setInput] = React.useState('');
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
-  
-  const currentSession = sessions.find(s => s.id === currentSessionId);
-  
+
+  const currentSession = sessions.find((s) => s.id === currentSessionId);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  
+
   React.useEffect(() => {
     scrollToBottom();
   }, [currentSession?.messages, isTyping]);
-  
+
   const handleSend = () => {
     if (!input.trim() || !currentSessionId) return;
-    
+
     addMessage(currentSessionId, {
       role: 'user',
       content: input,
     });
     setInput('');
-    
+
     // Simuler une réponse de l'IA
     setTimeout(() => {
       addMessage(currentSessionId, {
@@ -249,7 +246,7 @@ const ChatPanel: React.FC = () => {
           Posez vos questions ou demandez la création de slides
         </p>
       </div>
-      
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {currentSession?.messages.map((message) => (
@@ -260,9 +257,10 @@ const ChatPanel: React.FC = () => {
             <div
               className={`
                 max-w-[80%] rounded-2xl px-4 py-3
-                ${message.role === 'user'
-                  ? 'bg-alecia-pink text-white rounded-br-md'
-                  : 'bg-alecia-navy-light text-alecia-gray-200 rounded-bl-md'
+                ${
+                  message.role === 'user'
+                    ? 'bg-alecia-pink text-white rounded-br-md'
+                    : 'bg-alecia-navy-light text-alecia-gray-200 rounded-bl-md'
                 }
               `}
             >
@@ -273,22 +271,28 @@ const ChatPanel: React.FC = () => {
             </div>
           </div>
         ))}
-        
+
         {isTyping && (
           <div className="flex justify-start">
             <div className="bg-alecia-navy-light rounded-2xl rounded-bl-md px-4 py-3">
               <div className="flex gap-1">
                 <span className="w-2 h-2 bg-alecia-gray-400 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-alecia-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                <span className="w-2 h-2 bg-alecia-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                <span
+                  className="w-2 h-2 bg-alecia-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: '0.1s' }}
+                />
+                <span
+                  className="w-2 h-2 bg-alecia-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: '0.2s' }}
+                />
               </div>
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
-      
+
       {/* Saisie */}
       <div className="p-4 border-t border-alecia-navy-lighter/30">
         <div className="flex gap-2">
@@ -319,7 +323,7 @@ const ChatPanel: React.FC = () => {
 const VariablesPanel: React.FC = () => {
   const { currentPresentation, updateVariables, setVariable } = useStore();
   const variables = currentPresentation?.variables;
-  
+
   if (!variables) return null;
 
   return (
@@ -334,7 +338,7 @@ const VariablesPanel: React.FC = () => {
           Définissez les variables de la présentation
         </p>
       </div>
-      
+
       {/* Formulaire des variables */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {/* Informations client */}
@@ -363,7 +367,7 @@ const VariablesPanel: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Interlocuteurs */}
         <div>
           <h4 className="text-alecia-gray-300 text-sm font-medium mb-3">Interlocuteurs</h4>
@@ -390,7 +394,7 @@ const VariablesPanel: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Projet */}
         <div>
           <h4 className="text-alecia-gray-300 text-sm font-medium mb-3">Projet</h4>
@@ -444,26 +448,22 @@ const EditorLayout: React.FC = () => {
     createSession,
     user,
   } = useStore();
-  
+
   const slides = useSlides();
-  const selectedSlide = useSelectedSlide();
-  
+  const selectedSlideId = useSelectedSlide();
+  const selectedSlide = slides.find((s) => s.id === selectedSlideId);
+
   // Connexion Socket.io pour la collaboration
-  const {
-    collaborators,
-    isConnected,
-    joinPresentation,
-    leavePresentation,
-  } = useSocket({
+  const { collaborators, isConnected, joinPresentation, leavePresentation } = useSocket({
     presentationId,
     user,
     enabled: !!presentationId && !!user,
   });
-  
+
   // Suivi du curseur
   const { socket } = useSocket({ presentationId, user, enabled: false });
   useCursorTracking(socket, presentationId, true);
-  
+
   // Charger la présentation
   React.useEffect(() => {
     if (presentationId && !currentPresentation) {
@@ -488,14 +488,14 @@ const EditorLayout: React.FC = () => {
         },
       };
       setCurrentPresentation(mockPresentation as typeof currentPresentation);
-      
+
       // Créer une session de chat
       createSession(presentationId);
-      
+
       // Rejoindre la room de collaboration
       joinPresentation(presentationId);
     }
-    
+
     return () => {
       leavePresentation();
     };
@@ -519,23 +519,25 @@ const EditorLayout: React.FC = () => {
           >
             <ChevronLeft className="w-5 h-5 text-alecia-gray-300" />
           </button>
-          
+
           <div className="h-6 w-px bg-alecia-navy-lighter/50" />
-          
+
           <input
             type="text"
             value={currentPresentation?.title || ''}
-            onChange={(e) => {/* Mettre à jour le titre */}}
+            onChange={(e) => {
+              /* Mettre à jour le titre */
+            }}
             className="bg-transparent text-white font-medium focus:outline-none focus:border-b focus:border-alecia-pink min-w-[200px]"
             placeholder="Titre de la présentation"
           />
-          
+
           {/* Indicateur de sauvegarde */}
           <span className="text-alecia-gray-500 text-xs">
             {currentPresentation ? 'Sauvegardé' : 'Non sauvegardé'}
           </span>
         </div>
-        
+
         {/* Centre : Outils d'édition */}
         <div className="flex items-center gap-1">
           <ToolbarButton icon={Undo} label="Annuler" shortcut="Ctrl+Z" />
@@ -543,11 +545,15 @@ const EditorLayout: React.FC = () => {
           <div className="h-6 w-px bg-alecia-navy-lighter/50 mx-2" />
           <ToolbarButton icon={Type} label="Texte" onClick={() => handleAddSlide('content')} />
           <ToolbarButton icon={ImageIcon} label="Image" />
-          <ToolbarButton icon={BarChart3} label="Graphique" onClick={() => handleAddSlide('chart')} />
+          <ToolbarButton
+            icon={BarChart3}
+            label="Graphique"
+            onClick={() => handleAddSlide('chart')}
+          />
           <ToolbarButton icon={Table} label="Tableau" onClick={() => handleAddSlide('table')} />
           <ToolbarButton icon={LayoutTemplate} label="Template" />
         </div>
-        
+
         {/* Droite : Actions et collaboration */}
         <div className="flex items-center gap-3">
           {/* Indicateurs de présence */}
@@ -561,7 +567,8 @@ const EditorLayout: React.FC = () => {
                     title={`${collaborator.firstName} ${collaborator.lastName}`}
                   >
                     <span className="text-white text-xs font-medium">
-                      {collaborator.firstName[0]}{collaborator.lastName[0]}
+                      {collaborator.firstName[0]}
+                      {collaborator.lastName[0]}
                     </span>
                   </div>
                 ))}
@@ -573,31 +580,34 @@ const EditorLayout: React.FC = () => {
                   </div>
                 )}
               </div>
-              <span className="text-alecia-gray-400 text-xs">
-                {collaborators.length} en ligne
-              </span>
+              <span className="text-alecia-gray-400 text-xs">{collaborators.length} en ligne</span>
             </div>
           )}
-          
+
           <div className="h-6 w-px bg-alecia-navy-lighter/50" />
-          
-          <ToolbarButton icon={Grid} label="Grille" active={editorState.showGrid} onClick={toggleGrid} />
+
+          <ToolbarButton
+            icon={Grid}
+            label="Grille"
+            active={editorState.showGrid}
+            onClick={toggleGrid}
+          />
           <ToolbarButton icon={Play} label="Présenter" onClick={togglePreviewMode} />
-          
+
           <div className="h-6 w-px bg-alecia-navy-lighter/50" />
-          
+
           <button className="btn-secondary flex items-center gap-2">
             <Share2 className="w-4 h-4" />
             Partager
           </button>
-          
+
           <button className="btn-primary flex items-center gap-2">
             <Download className="w-4 h-4" />
             Exporter
           </button>
         </div>
       </header>
-      
+
       {/* Zone principale */}
       <div className="flex-1 flex overflow-hidden">
         {/* Panneau latéral gauche - Slides */}
@@ -616,7 +626,7 @@ const EditorLayout: React.FC = () => {
               <Plus className="w-4 h-4" />
             </button>
           </div>
-          
+
           {/* Liste des slides */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {slides.map((slide, index) => (
@@ -631,12 +641,10 @@ const EditorLayout: React.FC = () => {
                 onToggleVisibility={() => updateSlide(slide.id, { isHidden: !slide.isHidden })}
               />
             ))}
-            
+
             {slides.length === 0 && (
               <div className="text-center py-8">
-                <p className="text-alecia-gray-500 text-sm">
-                  Aucune slide
-                </p>
+                <p className="text-alecia-gray-500 text-sm">Aucune slide</p>
                 <button
                   onClick={() => handleAddSlide('title')}
                   className="mt-2 text-alecia-pink text-sm hover:underline"
@@ -647,16 +655,14 @@ const EditorLayout: React.FC = () => {
             )}
           </div>
         </aside>
-        
+
         {/* Zone d'édition principale */}
         <main className="flex-1 bg-alecia-navy relative overflow-hidden">
           {/* Filigrane Alecia */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-            <span className="text-[50vh] font-bold text-alecia-navy-light/5">
-              &
-            </span>
+            <span className="text-[50vh] font-bold text-alecia-navy-light/5">&</span>
           </div>
-          
+
           {/* Canvas d'édition */}
           <div className="absolute inset-0 flex items-center justify-center p-8">
             <motion.div
@@ -672,9 +678,7 @@ const EditorLayout: React.FC = () => {
               {selectedSlide ? (
                 <div className="w-full h-full p-8 text-alecia-navy">
                   <h2 className="text-2xl font-bold">{selectedSlide.title}</h2>
-                  <p className="text-gray-500 mt-2">
-                    Type: {selectedSlide.type}
-                  </p>
+                  <p className="text-gray-500 mt-2">Type: {selectedSlide.type}</p>
                 </div>
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-alecia-gray-400">
@@ -683,7 +687,7 @@ const EditorLayout: React.FC = () => {
               )}
             </motion.div>
           </div>
-          
+
           {/* Contrôles de zoom */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-alecia-navy-light rounded-lg px-3 py-2 border border-alecia-navy-lighter/30">
             <button
@@ -693,9 +697,7 @@ const EditorLayout: React.FC = () => {
             >
               <ZoomOut className="w-4 h-4 text-alecia-gray-300" />
             </button>
-            <span className="text-white text-sm w-16 text-center">
-              {editorState.zoom}%
-            </span>
+            <span className="text-white text-sm w-16 text-center">{editorState.zoom}%</span>
             <button
               onClick={() => setZoom(editorState.zoom + 10)}
               disabled={editorState.zoom >= 200}
@@ -713,7 +715,7 @@ const EditorLayout: React.FC = () => {
             </button>
           </div>
         </main>
-        
+
         {/* Panneau latéral droit */}
         {editorState.rightPanelOpen && (
           <aside className="w-80 bg-alecia-navy-light border-l border-alecia-navy-lighter/30 flex flex-col">
@@ -730,9 +732,10 @@ const EditorLayout: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as typeof editorState.activeTab)}
                   className={`
                     flex-1 py-3 flex flex-col items-center gap-1 transition-colors
-                    ${editorState.activeTab === tab.id
-                      ? 'text-alecia-pink border-b-2 border-alecia-pink'
-                      : 'text-alecia-gray-400 hover:text-white'
+                    ${
+                      editorState.activeTab === tab.id
+                        ? 'text-alecia-pink border-b-2 border-alecia-pink'
+                        : 'text-alecia-gray-400 hover:text-white'
                     }
                   `}
                 >
@@ -741,7 +744,7 @@ const EditorLayout: React.FC = () => {
                 </button>
               ))}
             </div>
-            
+
             {/* Contenu de l'onglet actif */}
             <div className="flex-1 overflow-hidden">
               {editorState.activeTab === 'chat' && <ChatPanel />}

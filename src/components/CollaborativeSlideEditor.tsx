@@ -1,24 +1,30 @@
-import { useEffect, useRef } from "react";
-import { useBlockNoteSync } from "@convex-dev/prosemirror-sync/blocknote";
-import { BlockNoteView } from "@blocknote/mantine";
-import { BlockNoteEditor } from "@blocknote/core";
-import "@blocknote/core/fonts/inter.css";
-import "@blocknote/mantine/style.css";
-import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
-import { useConvexAuth } from "convex/react";
+import { useEffect, useRef } from 'react';
+import { useBlockNoteSync } from '@convex-dev/prosemirror-sync/blocknote';
+import { BlockNoteView } from '@blocknote/mantine';
+import { BlockNoteEditor } from '@blocknote/core';
+import '@blocknote/core/fonts/inter.css';
+import '@blocknote/mantine/style.css';
+import { api } from '../../convex/_generated/api';
+import { Id } from '../../convex/_generated/dataModel';
+import { useConvexAuth } from 'convex/react';
 
 interface Props {
-  slideId: Id<"slides">;
-  field: "title" | "content" | "notes";
+  slideId: Id<'slides'>;
+  field: 'title' | 'content' | 'notes';
   onContentChange?: (text: string) => void;
   minHeight?: string;
   placeholder?: string;
 }
 
-const EMPTY_DOC = { type: "doc", content: [] };
+const EMPTY_DOC = { type: 'doc', content: [] };
 
-function EditorInner({ slideId, field, onContentChange, minHeight, placeholder }: Props) {
+function EditorInner({
+  slideId,
+  field,
+  onContentChange,
+  minHeight,
+  placeholder: _placeholder,
+}: Props) {
   const docId = `slide-${slideId}-${field}`;
   const sync = useBlockNoteSync<BlockNoteEditor>(api.prosemirrorSync, docId);
   const initialized = useRef(false);
@@ -31,12 +37,12 @@ function EditorInner({ slideId, field, onContentChange, minHeight, placeholder }
           .map((b: any) => {
             const content = b.content;
             if (Array.isArray(content)) {
-              return content.map((c: any) => c.text ?? "").join("");
+              return content.map((c: any) => c.text ?? '').join('');
             }
-            return "";
+            return '';
           })
           .filter(Boolean)
-          .join("\n");
+          .join('\n');
         onContentChange(text);
       };
       editor.onChange(handler);
@@ -78,13 +84,19 @@ function EditorInner({ slideId, field, onContentChange, minHeight, placeholder }
       <BlockNoteView
         editor={sync.editor as BlockNoteEditor}
         theme="light"
-        style={{ minHeight: minHeight ?? (field === "content" ? "180px" : "52px") }}
+        style={{ minHeight: minHeight ?? (field === 'content' ? '180px' : '52px') }}
       />
     </div>
   );
 }
 
-export function CollaborativeSlideEditor({ slideId, field, onContentChange, minHeight, placeholder }: Props) {
+export function CollaborativeSlideEditor({
+  slideId,
+  field,
+  onContentChange,
+  minHeight,
+  placeholder,
+}: Props) {
   const { isAuthenticated } = useConvexAuth();
   if (!isAuthenticated) return null;
   return (
