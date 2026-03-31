@@ -1,7 +1,7 @@
-"use client";
+'use client';
 import { useState } from 'react';
-import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
+import { Modal } from '../Modal';
+import { Button } from '../Button';
 import { toast } from 'sonner';
 
 interface ConflictItem {
@@ -21,12 +21,14 @@ interface ConflictItem {
 interface Props {
   conflicts: ConflictItem[];
   onResolve: (conflictId: string, resolution: 'local' | 'server' | 'merge') => void;
-  onResolveAll: (resolution: 'local' | 'server') => void;
+  onResolveAll?: (resolution: 'local' | 'server') => void;
   onCancel: () => void;
 }
 
 export function ConflictResolutionModal({ conflicts, onResolve, onResolveAll, onCancel }: Props) {
-  const [selectedConflicts, setSelectedConflicts] = useState<Set<string>>(new Set(conflicts.map(c => c.id)));
+  const [selectedConflicts, setSelectedConflicts] = useState<Set<string>>(
+    new Set(conflicts.map((c) => c.id))
+  );
   const [expandedConflict, setExpandedConflict] = useState<string | null>(null);
 
   const formatTimestamp = (ts: number) => {
@@ -50,7 +52,7 @@ export function ConflictResolutionModal({ conflicts, onResolve, onResolveAll, on
   };
 
   const handleResolveSelected = (resolution: 'local' | 'server') => {
-    selectedConflicts.forEach(id => {
+    selectedConflicts.forEach((id) => {
       onResolve(id, resolution);
     });
     toast.success(` ${selectedConflicts.size} conflit(s) resolu(s)`);
@@ -61,7 +63,7 @@ export function ConflictResolutionModal({ conflicts, onResolve, onResolveAll, on
       <div className="flex flex-col gap-4">
         <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <p className="text-sm text-amber-800">
-            ⚠️ {conflicts.length} modification(s) ont ete effectuees hors ligne qui sont en conflit 
+            ⚠️ {conflicts.length} modification(s) ont ete effectuees hors ligne qui sont en conflit
             avec le serveur. Choisissez quelle version conserver pour chaque element.
           </p>
         </div>
@@ -107,11 +109,14 @@ export function ConflictResolutionModal({ conflicts, onResolve, onResolveAll, on
                   className="rounded border-gray-300"
                 />
                 <span className="text-xs px-2 py-0.5 bg-gray-100 rounded">
-                  {conflict.type === 'slide' ? '📄' : conflict.type === 'project' ? '📁' : '💬'} {conflict.type}
+                  {conflict.type === 'slide' ? '📄' : conflict.type === 'project' ? '📁' : '💬'}{' '}
+                  {conflict.type}
                 </span>
                 <span className="font-medium flex-1">{conflict.title}</span>
                 <button
-                  onClick={() => setExpandedConflict(expandedConflict === conflict.id ? null : conflict.id)}
+                  onClick={() =>
+                    setExpandedConflict(expandedConflict === conflict.id ? null : conflict.id)
+                  }
                   className="text-xs text-alecia-navy hover:underline"
                 >
                   {expandedConflict === conflict.id ? 'Reduire' : 'Comparer'}

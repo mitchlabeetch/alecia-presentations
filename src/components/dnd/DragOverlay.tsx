@@ -1,7 +1,7 @@
 /**
  * Composant de superposition visuelle pendant le drag-and-drop
  * Alecia Presentations - Conseil financier français
- * 
+ *
  * Affiche un aperçu fantôme de l'élément en cours de déplacement
  */
 
@@ -25,26 +25,26 @@ interface DragOverlayProps {
 
 // Icônes pour les différents types de blocs
 const blockIcons: Record<BlockType, string> = {
-  'Titre': 'T',
+  Titre: 'T',
   'Sous-titre': 'S',
-  'Paragraphe': '¶',
-  'Image': '🖼️',
-  'Graphique': '📊',
-  'Tableau': '▦',
-  'Deux colonnes': '▌▐',
-  'Liste': '☰',
+  Paragraphe: '¶',
+  Image: '🖼️',
+  Chart_Block: '📊',
+  Table_Block: '▦',
+  Two_Column: '▌▐',
+  Liste: '☰',
 };
 
 // Couleurs pour les différents types de blocs
 const blockColors: Record<BlockType, string> = {
-  'Titre': '#e91e63',
+  Titre: '#e91e63',
   'Sous-titre': '#9c27b0',
-  'Paragraphe': '#2196f3',
-  'Image': '#4caf50',
-  'Graphique': '#ff9800',
-  'Tableau': '#00bcd4',
-  'Deux colonnes': '#795548',
-  'Liste': '#607d8b',
+  Paragraphe: '#2196f3',
+  Image: '#4caf50',
+  Chart_Block: '#ff9800',
+  Table_Block: '#00bcd4',
+  Two_Column: '#795548',
+  Liste: '#607d8b',
 };
 
 export const DragOverlay: React.FC<DragOverlayProps> = ({

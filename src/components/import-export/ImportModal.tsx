@@ -37,6 +37,7 @@ interface ImportModalProps {
   onClose: () => void;
   onImport?: (presentation: ImportedPresentation) => void;
   onFilesImported?: (files: UploadedFile[]) => void;
+  projectId?: string;
   className?: string;
 }
 
@@ -64,13 +65,7 @@ const importOptions: ImportOption[] = [
     label: 'Images',
     description: 'Importer des images ou logos',
     icon: '🖼️',
-    acceptedFormats: [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/svg+xml',
-      'image/webp',
-    ],
+    acceptedFormats: ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp'],
   },
   {
     id: 'templates',
@@ -89,6 +84,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
   onClose,
   onImport,
   onFilesImported,
+  projectId,
   className = '',
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>('pptx');
@@ -96,85 +92,156 @@ const ImportModal: React.FC<ImportModalProps> = ({
   const [isParsing, setIsParsing] = useState(false);
   const [parseProgress, setParseProgress] = useState(0);
   const [parseMessage, setParseMessage] = useState('');
-  const [parsedPresentation, setParsedPresentation] =
-    useState<ImportedPresentation | null>(null);
+  const [parsedPresentation, setParsedPresentation] = useState<ImportedPresentation | null>(null);
 
   if (!isOpen) return null;
 
   const currentOption = importOptions.find((opt) => opt.id === selectedOption);
 
-  const simulateParsing = useCallback(async (files: UploadedFile[]) => {
+  // Parse PPTX file client-side using JSZip
+  const parsePptxFile = useCallback(async (file: File): Promise<ImportedPresentation> => {
     setIsParsing(true);
     setParseProgress(0);
-    setParseMessage('Analyse du fichier...');
+    setParseMessage('Analyse du fichier PowerPoint...');
 
-    // Simulate parsing progress
-    const steps = [
-      { progress: 20, message: 'Lecture du fichier...' },
-      { progress: 40, message: 'Extraction des diapositives...' },
-      { progress: 60, message: 'Analyse du contenu...' },
-      { progress: 80, message: 'Prévisualisation...' },
-      { progress: 100, message: 'Analyse terminée !' },
-    ];
+    try {
+      const JSZip = require('jszip');
+      const arrayBuffer = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(arrayBuffer);
 
-    for (const step of steps) {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      setParseProgress(step.progress);
-      setParseMessage(step.message);
+      setParseProgress(20);
+      setParseMessage('Lecture des métadonnées...');
+
+      // Parse core.xml for metadata
+      const coreXml = await zip.file('docProps/core.xml')?.async('text');
+      const appXml = await zip.file('docProps/app.xml')?.async('text');
+
+      let title = file.name.replace(/\.[^/.]+$/, '');
+      let author = 'Importé';
+
+      if (coreXml) {
+        const titleMatch = coreXml.match(/<dc:title>([^<]*)<\/dc:title>/);
+        const creatorMatch = coreXml.match(/<dc:creator>([^<]*)<\/dc:creator>/);
+        if (titleMatch?.[1]) title = decodeXmlEntities(titleMatch[1]);
+        if (creatorMatch?.[1]) author = decodeXmlEntities(creatorMatch[1]);
+      }
+
+      setParseProgress(40);
+      setParseMessage('Extraction des diapositives...');
+
+      // Find and sort slide files
+      const slideFiles = zip.file(/ppt\/slides\/slide[0-9]+\.xml$/);
+      const sortedFiles = slideFiles.sort((a: any, b: any) => {
+        const numA = parseInt(a.name.match(/slide(\d+)\.xml$/)?.[1] || '0');
+        const numB = parseInt(b.name.match(/slide(\d+)\.xml$/)?.[1] || '0');
+        return numA - numB;
+      });
+
+      const slides: ImportedSlide[] = [];
+
+      for (let i = 0; i < sortedFiles.length; i++) {
+        const slideXml = await sortedFiles[i].async('text');
+        const slideNumber = i + 1;
+
+        setParseProgress(40 + Math.round((i / sortedFiles.length) * 40));
+        setParseMessage(`Analyse de la diapositive ${slideNumber}...`);
+
+        // Extract slide title
+        const titleMatch = slideXml.match(
+          /<p:sp[^>]*>[\s\S]*?<p:ph[^>]*type="title"[^>]*>[\s\S]*?<a:t>([^<]*)<\/a:t>[\s\S]*?<\/p:sp>/
+        );
+        const slideTitle = titleMatch?.[1]
+          ? decodeXmlEntities(titleMatch[1])
+          : `Diapositive ${slideNumber}`;
+
+        // Extract text content
+        const textMatches = slideXml.match(/<a:t>([^<]*)<\/a:t>/g) || [];
+        const texts = textMatches.map((m: string) => decodeXmlEntities(m.replace(/<\/?a:t>/g, '')));
+        const content = texts.filter((t: string) => t && t.length > 2).join('\n');
+
+        // Determine layout
+        let layout = 'content';
+        if (slideXml.includes('type="title"')) layout = 'title';
+        else if (slideXml.includes('type="ctrTitle"')) layout = 'cover';
+        else if (slideXml.includes('type="sectionHeader"')) layout = 'section';
+
+        // Extract notes
+        const notesXml = await zip
+          .file(`ppt/notesSlides/notesSlide${slideNumber}.xml`)
+          ?.async('text');
+        let notes: string | undefined;
+        if (notesXml) {
+          const notesMatch = notesXml.match(/<a:t>([^<]*)<\/a:t>/g);
+          if (notesMatch) {
+            notes = notesMatch
+              .map((m: string) => m.replace(/<\/?a:t>/g, ''))
+              .join(' ')
+              .trim();
+          }
+        }
+
+        slides.push({
+          id: `slide-${slideNumber}`,
+          title: slideTitle.substring(0, 50),
+          content: content.substring(0, 500),
+          layout,
+          elements: [],
+          notes,
+        });
+      }
+
+      setParseProgress(90);
+      setParseMessage("Finalisation de l'aperçu...");
+
+      const presentation: ImportedPresentation = {
+        title,
+        author,
+        slides,
+      };
+
+      setParseProgress(100);
+      setParseMessage('Analyse terminée !');
+
+      return presentation;
+    } catch (error) {
+      console.error('Error parsing PPTX:', error);
+      throw new Error("Impossible d'analyser le fichier PowerPoint");
+    } finally {
+      setIsParsing(false);
     }
-
-    // Create a mock parsed presentation
-    const mockPresentation: ImportedPresentation = {
-      title: files[0]?.name.replace(/\.[^/.]+$/, '') || 'Présentation importée',
-      author: 'Importé',
-      slides: Array.from({ length: Math.floor(Math.random() * 5) + 3 }, (_, i) => ({
-        id: `slide-${i + 1}`,
-        title: `Diapositive ${i + 1}`,
-        layout: 'title-content',
-        elements: [
-          {
-            id: `element-${i + 1}-1`,
-            type: 'text',
-            x: 10,
-            y: 10,
-            width: 80,
-            height: 20,
-            content: `Titre de la diapositive ${i + 1}`,
-          },
-          {
-            id: `element-${i + 1}-2`,
-            type: 'text',
-            x: 10,
-            y: 35,
-            width: 80,
-            height: 50,
-            content: 'Contenu de la diapositive...',
-          },
-        ],
-        notes: `Notes pour la diapositive ${i + 1}`,
-      })),
-    };
-
-    setParsedPresentation(mockPresentation);
-    setIsParsing(false);
   }, []);
 
+  const decodeXmlEntities = (text: string): string => {
+    return text
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'");
+  };
+
   const handleFilesUploaded = useCallback(
-    (files: UploadedFile[]) => {
+    async (files: UploadedFile[]) => {
       setImportedFiles(files);
       onFilesImported?.(files);
 
-      // If it's a PPTX file, simulate parsing
+      // If it's a PPTX file, parse it
       const pptxFile = files.find(
         (f) =>
-          f.mimeType ===
-          'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+          f.mimeType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
       );
       if (pptxFile && selectedOption === 'pptx') {
-        simulateParsing(files);
+        try {
+          const presentation = await parsePptxFile(pptxFile.file);
+          setParsedPresentation(presentation);
+        } catch (error) {
+          console.error('Failed to parse PPTX:', error);
+          setParseMessage('');
+          setIsParsing(false);
+        }
       }
     },
-    [onFilesImported, selectedOption, simulateParsing]
+    [onFilesImported, selectedOption, parsePptxFile]
   );
 
   const handleImport = useCallback(() => {
@@ -201,11 +268,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
 
   return (
     <div style={styles.overlay} onClick={handleClose}>
-      <div
-        style={styles.modal}
-        className={className}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div style={styles.modal} className={className} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={styles.header}>
           <h2 style={styles.title}>Importer</h2>
@@ -227,17 +290,13 @@ const ImportModal: React.FC<ImportModalProps> = ({
                     type="button"
                     style={{
                       ...styles.optionButton,
-                      ...(selectedOption === option.id
-                        ? styles.optionButtonActive
-                        : {}),
+                      ...(selectedOption === option.id ? styles.optionButtonActive : {}),
                     }}
                     onClick={() => handleOptionChange(option.id)}
                   >
                     <span style={styles.optionIcon}>{option.icon}</span>
                     <span style={styles.optionLabel}>{option.label}</span>
-                    <span style={styles.optionDescription}>
-                      {option.description}
-                    </span>
+                    <span style={styles.optionDescription}>{option.description}</span>
                   </button>
                 ))}
               </div>
@@ -283,22 +342,16 @@ const ImportModal: React.FC<ImportModalProps> = ({
               <div style={styles.previewInfo}>
                 <div style={styles.previewRow}>
                   <span style={styles.previewLabel}>Titre:</span>
-                  <span style={styles.previewValue}>
-                    {parsedPresentation.title}
-                  </span>
+                  <span style={styles.previewValue}>{parsedPresentation.title}</span>
                 </div>
                 <div style={styles.previewRow}>
                   <span style={styles.previewLabel}>Diapositives:</span>
-                  <span style={styles.previewValue}>
-                    {parsedPresentation.slides.length}
-                  </span>
+                  <span style={styles.previewValue}>{parsedPresentation.slides.length}</span>
                 </div>
                 {parsedPresentation.author && (
                   <div style={styles.previewRow}>
                     <span style={styles.previewLabel}>Auteur:</span>
-                    <span style={styles.previewValue}>
-                      {parsedPresentation.author}
-                    </span>
+                    <span style={styles.previewValue}>{parsedPresentation.author}</span>
                   </div>
                 )}
               </div>
@@ -313,9 +366,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
                         <span style={styles.slideTitle}>
                           {slide.title || `Diapositive ${index + 1}`}
                         </span>
-                        <span style={styles.slideElements}>
-                          {slide.elements.length} élément(s)
-                        </span>
+                        <span style={styles.slideElements}>{slide.elements.length} élément(s)</span>
                       </div>
                     </div>
                   ))}
@@ -333,11 +384,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
                 >
                   Annuler
                 </button>
-                <button
-                  type="button"
-                  style={styles.confirmImportButton}
-                  onClick={handleImport}
-                >
+                <button type="button" style={styles.confirmImportButton} onClick={handleImport}>
                   Importer la présentation
                 </button>
               </div>
@@ -352,11 +399,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
                 {importedFiles.map((file) => (
                   <div key={file.id} style={styles.imagePreviewItem}>
                     {file.thumbnail ? (
-                      <img
-                        src={file.thumbnail}
-                        alt={file.name}
-                        style={styles.imageThumbnail}
-                      />
+                      <img src={file.thumbnail} alt={file.name} style={styles.imageThumbnail} />
                     ) : (
                       <div style={styles.imagePlaceholder}>🖼️</div>
                     )}

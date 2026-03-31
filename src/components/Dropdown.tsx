@@ -56,7 +56,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
         {trigger}
       </div>
-      
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -76,9 +76,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           >
             {items.map((item, index) => (
               <React.Fragment key={item.id}>
-                {item.divider && index > 0 && (
-                  <div className="my-1.5 border-t border-[#1e3a5f]" />
-                )}
+                {item.divider && index > 0 && <div className="my-1.5 border-t border-[#1e3a5f]" />}
                 <button
                   onClick={() => {
                     if (!item.disabled) {
@@ -90,16 +88,15 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   className={`
                     w-full flex items-center justify-between px-4 py-2.5
                     text-sm transition-colors
-                    ${item.disabled 
-                      ? 'text-gray-600 cursor-not-allowed' 
-                      : 'text-gray-300 hover:text-white hover:bg-[#e91e63]/10 cursor-pointer'
+                    ${
+                      item.disabled
+                        ? 'text-gray-600 cursor-not-allowed'
+                        : 'text-gray-300 hover:text-white hover:bg-[#c9a84c]/10 cursor-pointer'
                     }
                   `}
                 >
                   <div className="flex items-center gap-3">
-                    {item.icon && (
-                      <span className="text-gray-400">{item.icon}</span>
-                    )}
+                    {item.icon && <span className="text-gray-400">{item.icon}</span>}
                     <span>{item.label}</span>
                   </div>
                   {item.shortcut && (
@@ -132,21 +129,18 @@ export const Select: React.FC<SelectProps> = ({
 }) => {
   return (
     <div>
-      {label && (
-        <label className="block text-sm font-medium text-gray-300 mb-2">
-          {label}
-        </label>
-      )}
+      {label && <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>}
       <div className="relative">
         <select
           className={`
             w-full appearance-none bg-[#0d1a2d] border rounded-lg px-4 py-2.5 pr-10
             text-white
             transition-all duration-200
-            focus:outline-none focus:ring-2 focus:ring-[#e91e63]/50
-            ${error 
-              ? 'border-red-500 focus:border-red-500' 
-              : 'border-[#1e3a5f] focus:border-[#e91e63] hover:border-[#3a5a7f]'
+            focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50
+            ${
+              error
+                ? 'border-red-500 focus:border-red-500'
+                : 'border-[#1e3a5f] focus:border-[#c9a84c] hover:border-[#3a5a7f]'
             }
             ${className}
           `}
@@ -160,12 +154,8 @@ export const Select: React.FC<SelectProps> = ({
         </select>
         <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
       </div>
-      {helperText && !error && (
-        <p className="mt-1.5 text-xs text-gray-500">{helperText}</p>
-      )}
-      {error && (
-        <p className="mt-1.5 text-xs text-red-400">{error}</p>
-      )}
+      {helperText && !error && <p className="mt-1.5 text-xs text-gray-500">{helperText}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
     </div>
   );
 };

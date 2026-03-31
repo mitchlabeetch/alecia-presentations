@@ -1,7 +1,3 @@
-Alecia Presentations/DEPLOY.md
-```
-
-```markdown
 # Alecia Presentations - Deployment Guide
 
 ## Overview
@@ -42,11 +38,11 @@ git push -u origin main
 
 ### 2. Deploy Frontend to Coolify
 1. Log in to Coolify
-2. Click "New Resource" → "Application"
+2. Click New Resource -> Application
 3. Select Git repository
 4. Configure:
-   - Build Command: `npm install && npm run build`
-   - Publish Directory: `dist`
+   - Build Command: npm install && npm run build
+   - Publish Directory: dist
    - Port: 3000 (or as configured)
    - Environment Variables: Add VITE_* vars
 5. Click Deploy
@@ -59,9 +55,9 @@ npx convex dev --once
 Or configure as separate Coolify service.
 
 ### 4. Configure Domain
-1. In Coolify → Resource → Settings → Domains
-2. Add `aleciasite.manuora.fr`
-3. Configure SSL (Let's Encrypt automatic)
+1. In Coolify -> Resource -> Settings -> Domains
+2. Add aleciasite.manuora.fr
+3. Configure SSL (automatic)
 
 ### 5. Verify Deployment
 - [ ] Frontend loads at aleciasite.manuora.fr

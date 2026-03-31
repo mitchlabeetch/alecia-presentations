@@ -43,7 +43,7 @@ interface DroppableCanvasProps {
 // Couleurs pour les différents types de blocs
 const blockColors: Record<BlockType, string> = {
   // Text Blocks
-  Titre: '#e91e63',
+  Titre: '#c9a84c',
   'Sous-titre': '#9c27b0',
   Paragraphe: '#2196f3',
   Liste: '#607d8b',
@@ -55,7 +55,7 @@ const blockColors: Record<BlockType, string> = {
   Timeline_Block: '#009688',
   // M&A Content Blocks
   Company_Overview: '#3f51b5',
-  Deal_Rationale: '#e91e63',
+  Deal_Rationale: '#c9a84c',
   SWOT: '#9c27b0',
   Key_Metrics: '#00bcd4',
   Process_Timeline: '#009688',
@@ -815,7 +815,7 @@ function renderBlockContent(block: BlockData): React.ReactNode {
           🖼️ Image
         </div>
       );
-    case 'Graphique':
+    case 'Chart_Block':
       return (
         <div
           style={{
@@ -834,7 +834,7 @@ function renderBlockContent(block: BlockData): React.ReactNode {
           <span style={{ color: '#666666', fontSize: '12px' }}>Graphique</span>
         </div>
       );
-    case 'Tableau':
+    case 'Table_Block':
       return (
         <div
           style={{
@@ -873,7 +873,7 @@ function renderBlockContent(block: BlockData): React.ReactNode {
           </table>
         </div>
       );
-    case 'Deux colonnes':
+    case 'Two_Column':
       return (
         <div style={{ display: 'flex', gap: '16px' }}>
           <div

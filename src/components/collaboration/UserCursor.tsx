@@ -241,6 +241,8 @@ export function useCursorTracking(options: UseCursorTrackingOptions) {
 
     const handleMouseMove = (e: Event) => {
       const mouseEvent = e as MouseEvent;
+      const now = Date.now();
+      if (now - lastMoveRef.current < throttleMs) return;
       lastMoveRef.current = now;
       onCursorMove(mouseEvent.clientX, mouseEvent.clientY, slideId);
     };

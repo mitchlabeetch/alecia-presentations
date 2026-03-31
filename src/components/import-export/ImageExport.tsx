@@ -1,8 +1,9 @@
-"use client";
+'use client';
 import { useState } from 'react';
 import { Doc } from '../../../convex/_generated/dataModel';
 import { toast } from 'sonner';
 import { createRoot } from 'react-dom/client';
+import { SlidePreview } from '../SlidePreview';
 
 interface Props {
   slides: Doc<'slides'>[];
@@ -45,11 +46,8 @@ export function ImageExport({ slides, theme, projectName }: Props) {
         await new Promise<void>((resolve) => {
           const root = createRoot(container);
           root.render(
-            <div style={{ width: '1280px', height: '720px', overflow: 'hidden', background: theme.primaryColor }}>
-              <div style={{ padding: '40px', color: 'white', fontFamily: theme.fontFamily }}>
-                <h1 style={{ fontSize: '48px', marginBottom: '20px' }}>{slide.title}</h1>
-                <p style={{ fontSize: '24px' }}>{slide.content}</p>
-              </div>
+            <div style={{ width: '1280px', height: '720px', overflow: 'hidden' }}>
+              <SlidePreview slide={slide} theme={theme} />
             </div>
           );
           setTimeout(resolve, 150);
@@ -120,7 +118,10 @@ export function ImageExport({ slides, theme, projectName }: Props) {
       </div>
       {exporting && progress > 0 && (
         <div className="w-full bg-gray-200 rounded-full h-1.5">
-          <div className="bg-alecia-navy h-1.5 rounded-full transition-all" style={{ width: `${progress}%` }} />
+          <div
+            className="bg-alecia-navy h-1.5 rounded-full transition-all"
+            style={{ width: `${progress}%` }}
+          />
         </div>
       )}
     </div>

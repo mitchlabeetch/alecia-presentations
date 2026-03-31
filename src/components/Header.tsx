@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  Bell, 
-  Share2, 
-  Download, 
+import {
+  Search,
+  Bell,
+  Share2,
+  Download,
   Play,
   MoreVertical,
   Users,
   MessageSquare,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { Input } from './Input';
 import { Button } from './Button';
@@ -89,11 +89,11 @@ export const Header: React.FC<HeaderProps> = ({
               onChange={(e) => setEditedTitle(e.target.value)}
               onBlur={handleTitleSubmit}
               onKeyDown={(e) => e.key === 'Enter' && handleTitleSubmit()}
-              className="bg-[#0d1a2d] border border-[#1e3a5f] rounded-lg px-3 py-1.5 text-white text-lg font-medium focus:outline-none focus:border-[#e91e63]"
+              className="bg-[#0d1a2d] border border-[#1e3a5f] rounded-lg px-3 py-1.5 text-white text-lg font-medium focus:outline-none focus:border-[#c9a84c]"
             />
           ) : (
-            <motion.h1 
-              className="text-lg font-medium text-white cursor-pointer hover:text-[#e91e63] transition-colors"
+            <motion.h1
+              className="text-lg font-medium text-white cursor-pointer hover:text-[#c9a84c] transition-colors"
               onClick={() => setIsEditingTitle(true)}
             >
               {title}
@@ -137,8 +137,8 @@ export const Header: React.FC<HeaderProps> = ({
             <Users className="w-4 h-4 text-gray-400" />
             <div className="flex -space-x-2">
               {collaborators.slice(0, 4).map((collab, index) => (
-                <Tooltip 
-                  key={collab.id} 
+                <Tooltip
+                  key={collab.id}
                   content={`${collab.name} ${collab.isActive ? '(actif)' : ''}`}
                   position="bottom"
                 >
@@ -153,7 +153,11 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{ backgroundColor: collab.color }}
                   >
                     {collab.avatar ? (
-                      <img src={collab.avatar} alt={collab.name} className="w-full h-full rounded-full object-cover" />
+                      <img
+                        src={collab.avatar}
+                        alt={collab.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
                     ) : (
                       collab.name.charAt(0).toUpperCase()
                     )}
@@ -179,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
         <Tooltip content="Assistant IA" position="bottom">
           <button
             onClick={onOpenChat}
-            className="p-2 rounded-lg text-gray-400 hover:text-[#e91e63] hover:bg-[#e91e63]/10 transition-colors"
+            className="p-2 rounded-lg text-gray-400 hover:text-[#c9a84c] hover:bg-[#c9a84c]/10 transition-colors"
           >
             <Sparkles className="w-5 h-5" />
           </button>
@@ -193,7 +197,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <MessageSquare className="w-5 h-5" />
             {notifications > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#e91e63] rounded-full text-[10px] flex items-center justify-center text-white font-medium">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#c9a84c] rounded-full text-[10px] flex items-center justify-center text-[#0a1628] font-medium">
                 {notifications}
               </span>
             )}
@@ -205,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors relative">
             <Bell className="w-5 h-5" />
             {notifications > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#e91e63] rounded-full" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#c9a84c] rounded-full" />
             )}
           </button>
         </Tooltip>
@@ -255,7 +259,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* User Avatar */}
         <Tooltip content={userName} position="bottom">
-          <button className="ml-2 w-9 h-9 rounded-full bg-gradient-to-br from-[#e91e63] to-[#9c27b0] flex items-center justify-center text-white font-medium text-sm overflow-hidden">
+          <button className="ml-2 w-9 h-9 rounded-full bg-gradient-to-br from-[#c9a84c] to-[#b8973d] flex items-center justify-center text-[#0a1628] font-medium text-sm overflow-hidden">
             {userAvatar ? (
               <img src={userAvatar} alt={userName} className="w-full h-full object-cover" />
             ) : (
