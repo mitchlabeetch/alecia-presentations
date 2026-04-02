@@ -6,17 +6,18 @@
 export interface Project {
   id: string;
   name: string;
-  pinHash: string | null;
-  userTag: string | null;
-  targetCompany: string;
-  targetSector: string;
-  dealType: 'cession_vente' | 'lbo_levee_fonds' | 'acquisition_achats' | 'custom';
-  potentialBuyers: string[];
-  keyIndividuals: string[];
-  theme: Theme;
-  templateId: string | null;
-  createdAt: number;
-  updatedAt: number;
+  pinHash?: string | null;
+  userTag?: string | null;
+  targetCompany?: string;
+  targetSector?: string;
+  dealType?: 'cession_vente' | 'lbo_levee_fonds' | 'acquisition_achats' | 'custom';
+  potentialBuyers?: string[];
+  keyIndividuals?: string[];
+  theme?: Theme;
+  templateId?: string | null;
+  createdAt: string | number;
+  updatedAt: string | number;
+  slides?: Slide[];
 }
 
 export interface Theme {
@@ -34,11 +35,11 @@ export interface Slide {
   type: BlockType;
   title: string;
   content: BlockContent;
-  notes: string;
-  imagePath: string | null;
-  data: SlideData | null;
-  createdAt: number;
-  updatedAt: number;
+  notes?: string | null;
+  imagePath?: string | null;
+  data?: SlideData | null;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 export type BlockType = 
@@ -337,12 +338,4 @@ export interface BlockLibraryItem {
   icon: string;
   category: 'text' | 'financial' | 'ma' | 'team' | 'visual' | 'layout' | 'navigation';
   defaultContent: Partial<BlockContent>;
-}
-
-// Section Navigator
-export interface Section {
-  roman: string;
-  number: number;
-  title: string;
-  slides: number[];
 }

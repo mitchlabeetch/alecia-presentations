@@ -281,8 +281,27 @@ export const useAppStore = create<AppState & AppActions>()(
   )
 );
 
-export const useSlides = () => useAppStore((state) => state.slides);
-export const useProjects = () => useAppStore((state) => state.projects);
+export const useSlides = () => {
+  const slides = useAppStore((state) => state.slides);
+  const activeSlideId = useAppStore((state) => state.activeSlideId);
+  const addSlide = useAppStore((state) => state.addSlide);
+  const updateSlide = useAppStore((state) => state.updateSlide);
+  const deleteSlide = useAppStore((state) => state.deleteSlide);
+  const reorderSlides = useAppStore((state) => state.reorderSlides);
+  const setActiveSlide = useAppStore((state) => state.setActiveSlide);
+  return { slides, activeSlideId, addSlide, updateSlide, deleteSlide, reorderSlides, setActiveSlide };
+};
+
+export const useProjects = () => {
+  const projects = useAppStore((state) => state.projects);
+  const currentProject = useAppStore((state) => state.currentProject);
+  const setCurrentProject = useAppStore((state) => state.setCurrentProject);
+  const createProject = useAppStore((state) => state.createProject);
+  const updateProject = useAppStore((state) => state.updateProject);
+  const deleteProject = useAppStore((state) => state.deleteProject);
+  return { projects, currentProject, setCurrentProject, createProject, updateProject, deleteProject };
+};
+
 export const useUI = () => useAppStore((state) => ({
   sidebarOpen: state.sidebarOpen,
   aiPanelOpen: state.aiPanelOpen,
@@ -293,6 +312,7 @@ export const useUI = () => useAppStore((state) => ({
   toggleVariablesPanel: state.toggleVariablesPanel,
   setToast: state.setToast,
 }));
+
 export const useHistory = () => {
   const slides = useAppStore((state) => state.slides);
   return { slides };

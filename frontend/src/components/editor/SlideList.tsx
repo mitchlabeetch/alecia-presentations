@@ -4,12 +4,10 @@ import {
   GripVertical,
   Copy,
   Trash2,
-  MoreHorizontal,
   ChevronDown,
   LayoutTemplate,
 } from 'lucide-react';
-import { useSlides, useProjects } from '@/store/useAppStore';
-import { api, handleApiError } from '@/lib/api';
+import { useSlides, useProjects, useAppStore } from '@/store/useAppStore';
 import type { Slide, BlockType } from '@/types';
 
 interface SlideListProps {
@@ -22,21 +20,14 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
   const { addSlide, deleteSlide, reorderSlides } = useSlides();
   const { currentProject } = useProjects();
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [contextMenu, setContextMenu] = useState<{
-    slideId: string;
-    x: number;
-    y: number;
-  } | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Handle drag start
   const handleDragStart = useCallback((e: React.DragEvent, index: number) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', String(index));
   }, []);
 
-  // Handle drag over
   const handleDragOver = useCallback(
     (e: React.DragEvent, index: number) => {
       e.preventDefault();
@@ -46,111 +37,68 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
       const [removed] = newSlides.splice(draggedIndex, 1);
       newSlides.splice(index, 0, removed);
 
-      // Update order indices
-      const updatedSlides = newSlides.map((slide, i) => ({
-        ...slide,
-        orderIndex: i,
-      }));
+      const [activeSlide] = slides.filter((s) => s.id === activeSlideId);
+      if (activeSlide) {
+        const newActiveIndex = newSlides.findIndex((s) => s.id === activeSlide.id);
+        if (newActiveIndex !== -1 && newActiveIndex !== index) {
+          reorderSlides(newSlides[draggedIndex].id, newSlides[index].id);
+        }
+      }
 
-      reorderSlides(updatedSlides);
       setDraggedIndex(index);
     },
-    [draggedIndex, slides, reorderSlides]
+    [draggedIndex, slides, activeSlideId, reorderSlides]
   );
 
-  // Handle drag end
   const handleDragEnd = useCallback(() => {
     setDraggedIndex(null);
+  }, []);
 
-    // Sync with server
-    if (currentProject && slides.length > 0) {
-      api.slides
-        .reorder(currentProject.id, slides.map((s) => s.id))
-        .catch(console.error);
+  const handleAddSlide = useCallback(() => {
+    const newSlide = addSlide('Titre', 'Nouvelle slide', {});
+    if (newSlide) {
+      onSelectSlide(newSlide.id);
     }
-  }, [currentProject, slides]);
+  }, [addSlide, onSelectSlide]);
 
-  // Handle add slide
-  const handleAddSlide = useCallback(async () => {
-    if (!currentProject) return;
-
-    const newSlide: Partial<Slide> = {
-      projectId: currentProject.id,
-      orderIndex: slides.length,
-      type: 'Titre' as BlockType,
-      title: 'Nouvelle slide',
-      content: {},
-      notes: '',
-      imagePath: null,
-      data: null,
-    };
-
-    const result = await handleApiError(
-      api.slides.create(currentProject.id, newSlide)
-    );
-
-    if (result.data) {
-      addSlide(result.data);
-    }
-  }, [currentProject, slides.length, addSlide]);
-
-  // Handle duplicate slide
   const handleDuplicateSlide = useCallback(
-    async (slideId: string) => {
-      if (!currentProject) return;
-
-      const result = await handleApiError(
-        api.slides.duplicate(currentProject.id, slideId)
-      );
-
-      if (result.data) {
-        addSlide(result.data);
+    (slideId: string) => {
+      const slideToDuplicate = slides.find((s) => s.id === slideId);
+      if (slideToDuplicate) {
+        const newSlide = addSlide(
+          slideToDuplicate.type,
+          `${slideToDuplicate.title} (copie)`,
+          slideToDuplicate.content
+        );
+        if (newSlide) {
+          onSelectSlide(newSlide.id);
+        }
       }
-      setContextMenu(null);
     },
-    [currentProject, addSlide]
+    [slides, addSlide, onSelectSlide]
   );
 
-  // Handle delete slide
   const handleDeleteSlide = useCallback(
-    async (slideId: string) => {
-      if (!currentProject) return;
+    (slideId: string) => {
       if (slides.length <= 1) {
         alert('Impossible de supprimer la dernière slide');
         return;
       }
 
       if (confirm('Êtes-vous sûr de vouloir supprimer cette slide ?')) {
-        const result = await handleApiError(
-          api.slides.delete(currentProject.id, slideId)
-        );
+        deleteSlide(slideId);
 
-        if (!result.error) {
-          deleteSlide(slideId);
+        const remainingSlides = slides.filter((s) => s.id !== slideId);
+        if (remainingSlides.length > 0 && activeSlideId === slideId) {
+          onSelectSlide(remainingSlides[0].id);
         }
       }
-      setContextMenu(null);
     },
-    [currentProject, slides.length, deleteSlide]
+    [slides, activeSlideId, deleteSlide, onSelectSlide]
   );
-
-  // Close context menu on outside click
-  const handleContextMenuClick = useCallback(
-    (e: React.MouseEvent, slideId: string) => {
-      e.preventDefault();
-      setContextMenu({ slideId, x: e.clientX, y: e.clientY });
-    },
-    []
-  );
-
-  // Close context menu
-  const closeContextMenu = useCallback(() => {
-    setContextMenu(null);
-  }, []);
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-alecia-silver/20">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -171,7 +119,6 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
         </button>
       </div>
 
-      {/* Slide List */}
       {!isCollapsed && (
         <div className="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1">
           {slides.map((slide, index) => {
@@ -186,14 +133,12 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDragEnd={handleDragEnd}
                 onClick={() => onSelectSlide(slide.id)}
-                onContextMenu={(e) => handleContextMenuClick(e, slide.id)}
                 className={`group relative flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all ${
                   isActive
                     ? 'bg-alecia-navy text-white'
                     : 'hover:bg-alecia-silver/10'
                 } ${isDragging ? 'opacity-50' : ''}`}
               >
-                {/* Drag Handle */}
                 <div
                   className={`opacity-0 group-hover:opacity-100 cursor-grab ${
                     isActive ? 'opacity-100 text-white/50' : 'text-alecia-silver'
@@ -202,7 +147,6 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
                   <GripVertical className="w-4 h-4" />
                 </div>
 
-                {/* Slide Number */}
                 <div
                   className={`w-6 h-6 rounded flex items-center justify-center text-xs font-medium flex-shrink-0 ${
                     isActive
@@ -213,7 +157,6 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
                   {index + 1}
                 </div>
 
-                {/* Slide Info */}
                 <div className="flex-1 min-w-0">
                   <p
                     className={`text-sm truncate ${
@@ -231,19 +174,40 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
                   </p>
                 </div>
 
-                {/* Type Icon */}
                 <div
-                  className={`flex-shrink-0 ${
+                  className={`flex-shrink-0 flex items-center gap-1 ${
                     isActive ? 'text-white/60' : 'text-alecia-silver'
                   }`}
                 >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDuplicateSlide(slide.id);
+                    }}
+                    className="p-1 hover:bg-white/10 rounded opacity-0 group-hover:opacity-100"
+                    title="Dupliquer"
+                  >
+                    <Copy className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteSlide(slide.id);
+                    }}
+                    className="p-1 hover:bg-white/10 rounded opacity-0 group-hover:opacity-100"
+                    title="Supprimer"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+
+                <div className={isActive ? 'text-white/60' : 'text-alecia-silver'}>
                   <LayoutTemplate className="w-4 h-4" />
                 </div>
               </div>
             );
           })}
 
-          {/* Empty State */}
           {slides.length === 0 && (
             <div className="text-center py-8">
               <LayoutTemplate className="w-8 h-8 mx-auto text-alecia-silver/50" />
@@ -260,51 +224,10 @@ export function SlideList({ slides, activeSlideId, onSelectSlide }: SlideListPro
           )}
         </div>
       )}
-
-      {/* Context Menu */}
-      {contextMenu && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={closeContextMenu}
-          />
-          <div
-            className="fixed bg-white rounded-xl shadow-lg border border-alecia-silver/20 py-2 min-w-[160px] z-50"
-            style={{ left: contextMenu.x, top: contextMenu.y }}
-          >
-            <button
-              onClick={() => {
-                onSelectSlide(contextMenu.slideId);
-                closeContextMenu();
-              }}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-alecia-silver/10 flex items-center gap-3"
-            >
-              <LayoutTemplate className="w-4 h-4 text-alecia-silver" />
-              Sélectionner
-            </button>
-            <button
-              onClick={() => handleDuplicateSlide(contextMenu.slideId)}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-alecia-silver/10 flex items-center gap-3"
-            >
-              <Copy className="w-4 h-4 text-alecia-silver" />
-              Dupliquer
-            </button>
-            <div className="border-t border-alecia-silver/20 my-2" />
-            <button
-              onClick={() => handleDeleteSlide(contextMenu.slideId)}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-alecia-red/10 text-alecia-red flex items-center gap-3"
-            >
-              <Trash2 className="w-4 h-4" />
-              Supprimer
-            </button>
-          </div>
-        </>
-      )}
     </div>
   );
 }
 
-// Helper function to get block type label
 function getBlockTypeLabel(type: BlockType): string {
   const labels: Partial<Record<BlockType, string>> = {
     Titre: 'Titre',

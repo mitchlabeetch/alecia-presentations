@@ -1,69 +1,51 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { SlideList } from './SlideList';
 import { SlideCanvas } from './SlideCanvas';
 import { Toolbar } from './Toolbar';
-import { useSlides, useProjects, useUI } from '@/store/useAppStore';
-import { api, handleApiError } from '@/lib/api';
+import { useSlides, useProjects, useUI, useAppStore } from '@/store/useAppStore';
 import type { Slide } from '@/types';
 
 export function ProjectEditor() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
 
-  const { slides, setSlides, activeSlideId, setActiveSlide, setSlidesLoading } = useSlides();
-  const { currentProject, setCurrentProject } = useProjects();
-  const { aiPanelOpen, variablesPanelOpen, commentsPanelOpen } = useUI();
+  const {
+    slides,
+    activeSlideId,
+    setActiveSlide,
+    updateSlide,
+  } = useSlides();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    currentProject,
+    setCurrentProject,
+    projects,
+    updateProject,
+  } = useProjects();
+
+  const {
+    aiPanelOpen,
+    variablesPanelOpen,
+  } = useUI();
+
   const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null);
 
-  // Fetch project and slides
   useEffect(() => {
-    const fetchData = async () => {
-      if (!projectId) return;
+    if (!projectId) {
+      navigate('/');
+      return;
+    }
 
-      setIsLoading(true);
+    const project = projects.find(p => p.id === projectId);
+    if (project) {
+      setCurrentProject(project);
+    } else {
+      navigate('/');
+    }
+  }, [projectId, projects, setCurrentProject, navigate]);
 
-      try {
-        // Fetch project
-        const projectResponse = await handleApiError(
-          api.projects.get(projectId)
-        );
-
-        if (projectResponse.data) {
-          setCurrentProject(projectResponse.data);
-        } else {
-          navigate('/gallery');
-          return;
-        }
-
-        // Fetch slides
-        setSlidesLoading(true);
-        const slidesResponse = await handleApiError(
-          api.slides.list(projectId)
-        );
-
-        if (slidesResponse.data) {
-          setSlides(slidesResponse.data);
-          if (slidesResponse.data.length > 0) {
-            setActiveSlide(slidesResponse.data[0].id);
-          }
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement:', error);
-        navigate('/gallery');
-      } finally {
-        setIsLoading(false);
-        setSlidesLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [projectId, navigate, setCurrentProject, setSlides, setActiveSlide, setSlidesLoading]);
-
-  // Update selected slide when activeSlideId changes
   useEffect(() => {
     if (activeSlideId && slides.length > 0) {
       const slide = slides.find((s) => s.id === activeSlideId);
@@ -73,38 +55,20 @@ export function ProjectEditor() {
     }
   }, [activeSlideId, slides]);
 
-  // Handle slide selection
-  const handleSelectSlide = useCallback(
-    (slideId: string) => {
-      setActiveSlide(slideId);
-    },
-    [setActiveSlide]
-  );
+  const handleSelectSlide = useCallback((slideId: string) => {
+    setActiveSlide(slideId);
+  }, [setActiveSlide]);
 
-  // Handle content change
-  const handleContentChange = useCallback(
-    async (content: Record<string, unknown>) => {
-      if (!currentProject || !activeSlideId) return;
+  const handleContentChange = useCallback((content: Record<string, unknown>) => {
+    if (!activeSlideId) return;
+    updateSlide(activeSlideId, { content });
+  }, [activeSlideId, updateSlide]);
 
-      const result = await handleApiError(
-        api.slides.update(currentProject.id, activeSlideId, { content })
-      );
-
-      if (result.data) {
-        setSlides(
-          slides.map((s) => (s.id === activeSlideId ? result.data! : s))
-        );
-      }
-    },
-    [currentProject, activeSlideId, slides, setSlides]
-  );
-
-  // Handle back to gallery
   const handleBack = useCallback(() => {
-    navigate('/gallery');
+    navigate('/');
   }, [navigate]);
 
-  if (isLoading) {
+  if (!currentProject) {
     return (
       <div className="h-screen flex items-center justify-center bg-alecia-off-white">
         <div className="text-center">
@@ -115,22 +79,8 @@ export function ProjectEditor() {
     );
   }
 
-  if (!currentProject) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-alecia-off-white">
-        <div className="text-center">
-          <p className="text-alecia-silver">Projet introuvable</p>
-          <button onClick={handleBack} className="mt-4 alecia-btn-primary">
-            Retour à la galerie
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-screen flex flex-col bg-alecia-off-white">
-      {/* Header */}
       <div className="bg-white border-b border-alecia-silver/20 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
@@ -154,14 +104,10 @@ export function ProjectEditor() {
             </p>
           </div>
         </div>
-
-        {/* Toolbar */}
         <Toolbar onShare={() => {}} />
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Slide List Sidebar */}
         <div className="w-64 bg-white border-r border-alecia-silver/20 flex flex-col">
           <SlideList
             slides={slides}
@@ -170,7 +116,6 @@ export function ProjectEditor() {
           />
         </div>
 
-        {/* Canvas Area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {selectedSlide ? (
             <SlideCanvas
@@ -189,7 +134,6 @@ export function ProjectEditor() {
           )}
         </div>
 
-        {/* Side Panels */}
         {aiPanelOpen && (
           <div className="w-80 bg-white border-l border-alecia-silver/20">
             <div className="p-4 border-b border-alecia-silver/20">
@@ -211,19 +155,6 @@ export function ProjectEditor() {
             <div className="flex-1 overflow-auto p-4">
               <p className="text-sm text-alecia-silver">
                 Panel de variables - À implémenter
-              </p>
-            </div>
-          </div>
-        )}
-
-        {commentsPanelOpen && (
-          <div className="w-80 bg-white border-l border-alecia-silver/20">
-            <div className="p-4 border-b border-alecia-silver/20">
-              <h3 className="font-semibold text-alecia-navy">Commentaires</h3>
-            </div>
-            <div className="flex-1 overflow-auto p-4">
-              <p className="text-sm text-alecia-silver">
-                Panel de commentaires - À implémenter
               </p>
             </div>
           </div>

@@ -16,8 +16,7 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
-import { api, handleApiError } from '@/lib/api';
-import { useProjects, useUI } from '@/store/useAppStore';
+import { useAppStore } from '@/store/useAppStore';
 import { TemplateSelector } from './TemplateSelector';
 import type { Project, Template } from '@/types';
 
@@ -51,18 +50,13 @@ const DEAL_TYPE_OPTIONS = [
 ];
 
 interface WizardData {
-  // Step 1: Project Info
   name: string;
   targetCompany: string;
   targetSector: string;
-  // Step 2: Deal Type
   dealType: DealType;
-  // Step 3: Template
   templateId: string | null;
-  // Step 4: PIN
   hasPin: boolean;
   projectPin: string;
-  // Step 5: User Tag
   userTag: string;
 }
 
@@ -79,8 +73,7 @@ const initialData: WizardData = {
 
 export function NewProjectWizard() {
   const navigate = useNavigate();
-  const { addProject } = useProjects();
-  const { newProjectWizardOpen, setNewProjectWizardOpen } = useUI();
+  const createProject = useAppStore((state) => state.createProject);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<WizardData>(initialData);
@@ -90,16 +83,13 @@ export function NewProjectWizard() {
 
   const totalSteps = 5;
 
-  // Reset wizard when closed
   const handleClose = useCallback(() => {
-    setNewProjectWizardOpen(false);
     setCurrentStep(1);
     setData(initialData);
     setError(null);
     setSelectedTemplate(null);
-  }, [setNewProjectWizardOpen]);
+  }, []);
 
-  // Update data helper
   const updateData = useCallback(<K extends keyof WizardData>(
     key: K,
     value: WizardData[K]
@@ -108,7 +98,6 @@ export function NewProjectWizard() {
     setError(null);
   }, []);
 
-  // Validate current step
   const validateStep = useCallback((step: number): boolean => {
     switch (step) {
       case 1:
@@ -117,24 +106,17 @@ export function NewProjectWizard() {
           return false;
         }
         return true;
-      case 2:
-        return true;
-      case 3:
-        return true;
       case 4:
         if (data.hasPin && data.projectPin.length < 4) {
           setError('Le code PIN doit contenir au moins 4 chiffres');
           return false;
         }
         return true;
-      case 5:
-        return true;
       default:
         return true;
     }
   }, [data]);
 
-  // Navigate steps
   const goToNextStep = useCallback(() => {
     if (validateStep(currentStep)) {
       setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
@@ -146,67 +128,39 @@ export function NewProjectWizard() {
     setError(null);
   }, []);
 
-  // Create project
-  const handleCreateProject = useCallback(async () => {
+  const handleCreateProject = useCallback(() => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const projectData: Partial<Project> = {
-        name: data.name,
-        targetCompany: data.targetCompany,
-        targetSector: data.targetSector,
-        dealType: data.dealType,
-        templateId: data.templateId,
-        pinHash: data.hasPin ? data.projectPin : null,
-        userTag: data.userTag || undefined,
-        theme: {
-          primaryColor: '#061a40',
-          accentColor: '#b80c09',
-          fontFamily: 'Bierstadt',
-          logoPath: null,
-        },
-        potentialBuyers: [],
-        keyIndividuals: [],
-      };
+      const project = createProject(data.name, data.userTag || undefined);
 
-      const result = await handleApiError(
-        api.projects.create(projectData)
-      );
-
-      if (result.data) {
-        addProject(result.data);
+      if (project) {
         handleClose();
-        navigate(`/editor/${result.data.id}`);
+        navigate(`/editor/${project.id}`);
       } else {
-        setError(result.error || 'Erreur lors de la création du projet');
+        setError('Erreur lors de la création du projet');
       }
     } catch (err) {
       setError('Une erreur inattendue est survenue');
     } finally {
       setIsLoading(false);
     }
-  }, [data, addProject, handleClose, navigate]);
+  }, [data, createProject, handleClose, navigate]);
 
-  // Handle template selection
   const handleTemplateSelect = useCallback((template: Template | null) => {
     setSelectedTemplate(template);
     updateData('templateId', template?.id || null);
   }, [updateData]);
 
-  if (!newProjectWizardOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-alecia-navy/60 backdrop-blur-sm"
         onClick={handleClose}
       />
 
-      {/* Wizard */}
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-alecia-silver/20">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
@@ -235,19 +189,15 @@ export function NewProjectWizard() {
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-auto p-6">
-          {/* Step 1: Project Info */}
           {currentStep === 1 && (
             <StepProjectInfo data={data} updateData={updateData} error={error} />
           )}
 
-          {/* Step 2: Deal Type */}
           {currentStep === 2 && (
             <StepDealType data={data} updateData={updateData} />
           )}
 
-          {/* Step 3: Template Selection */}
           {currentStep === 3 && (
             <StepTemplate
               data={data}
@@ -256,18 +206,15 @@ export function NewProjectWizard() {
             />
           )}
 
-          {/* Step 4: PIN Setup */}
           {currentStep === 4 && (
             <StepPinSetup data={data} updateData={updateData} error={error} />
           )}
 
-          {/* Step 5: User Tag */}
           {currentStep === 5 && (
             <StepUserTag data={data} updateData={updateData} />
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-alecia-silver/20 bg-alecia-silver/5">
           <button
             onClick={goToPrevStep}
@@ -307,10 +254,6 @@ export function NewProjectWizard() {
     </div>
   );
 }
-
-// ============================================
-// Step Components
-// ============================================
 
 function StepProjectInfo({
   data,
