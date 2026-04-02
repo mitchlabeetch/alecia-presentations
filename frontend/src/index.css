@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bierstadt font - fallback to Arial since it's a licensed font */
+@font-face {
+  font-family: 'Bierstadt';
+  src: local('Bierstadt'), local('Arial');
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+/* Base styles */
+@layer base {
+  :root {
+    /* Alecia CSS Variables */
+    --alecia-navy: #061a40;
+    --alecia-red: #b80c09;
+    --alecia-dark-blue: #0a2a68;
+    --alecia-silver: #aab1be;
+    --alecia-off-white: #fafafc;
+    --alecia-light-gray: #ecf0f6;
+    --alecia-green: #92d050;
+    
+    /* UI Colors */
+    --bg-primary: var(--alecia-off-white);
+    --bg-secondary: #ffffff;
+    --bg-dark: var(--alecia-navy);
+    --text-primary: var(--alecia-navy);
+    --text-secondary: var(--alecia-silver);
+    --text-on-dark: #ffffff;
+    --accent-primary: var(--alecia-red);
+    --border-color: var(--alecia-silver);
+    
+    /* Spacing */
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    
+    /* Shadows */
+    --shadow-card: 0 2px 8px rgba(6, 26, 64, 0.08);
+    --shadow-card-hover: 0 4px 16px rgba(6, 26, 64, 0.12);
+    --shadow-modal: 0 8px 32px rgba(6, 26, 64, 0.16);
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-inter text-alecia-navy bg-alecia-off-white;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+
+  /* Focus visible styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-alecia-red ring-offset-2;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-alecia-red/20 text-alecia-navy;
+  }
+}
+
+/* Component classes */
+@layer components {
+  /* Card styles */
+  .alecia-card {
+    @apply bg-white rounded-lg p-4 shadow-card transition-shadow;
+  }
+  
+  .alecia-card:hover {
+    @apply shadow-card-hover;
+  }
+
+  /* Button styles */
+  .alecia-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-alecia-red focus-visible:ring-offset-2;
+  }
+
+  .alecia-btn-primary {
+    @apply alecia-btn bg-alecia-navy text-white hover:bg-alecia-dark-blue;
+  }
+
+  .alecia-btn-secondary {
+    @apply alecia-btn bg-alecia-silver/20 text-alecia-navy hover:bg-alecia-silver/30;
+  }
+
+  .alecia-btn-accent {
+    @apply alecia-btn bg-alecia-red text-white hover:bg-alecia-red/90;
+  }
+
+  .alecia-btn-ghost {
+    @apply alecia-btn bg-transparent text-alecia-navy hover:bg-alecia-silver/10;
+  }
+
+  /* Input styles */
+  .alecia-input {
+    @apply w-full px-3 py-2 rounded-md border border-alecia-silver/50 bg-white text-alecia-navy placeholder:text-alecia-silver focus:border-alecia-navy focus:ring-1 focus:ring-alecia-navy transition-all;
+  }
+
+  /* Typography - Bierstadt for presentation content */
+  .text-presentation {
+    font-family: 'Bierstadt', Arial, sans-serif;
+  }
+
+  /* Navy background sections */
+  .bg-alecia-section {
+    @apply bg-alecia-navy text-white;
+  }
+
+  /* Block container for editor */
+  .block-container {
+    @apply relative rounded-lg border-2 border-transparent transition-all;
+  }
+
+  .block-container:hover {
+    @apply border-alecia-silver/30;
+  }
+
+  .block-container.selected {
+    @apply border-alecia-red;
+  }
+
+  /* Slide preview styles */
+  .slide-preview {
+    @apply aspect-[16/9] bg-white rounded-lg shadow-card overflow-hidden;
+  }
+
+  /* Gallery grid */
+  .gallery-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+
+  /* Scrollbar styling */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--alecia-silver) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--alecia-silver);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--alecia-navy);
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text truncation */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Aspect ratio for slides */
+  .aspect-slide {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md;
+  }
+
+  /* Dark mode glass */
+  .glass-dark {
+    @apply bg-alecia-navy/80 backdrop-blur-md;
+  }
+}

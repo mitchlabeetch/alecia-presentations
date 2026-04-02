@@ -1,0 +1,30 @@
+# =============================================================================
+# Alecia Presentation Builder - Python Sidecar Dependencies
+# =============================================================================
+
+# FastAPI et serveur
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+
+# Docling - Conversion de documents
+# Note: SimplePipeline (pas de dépendances torch/ML)
+docling==2.0.0
+
+# Manipulation PowerPoint
+python-pptx==0.6.23
+
+# Manipulation PDF (PyMuPDF)
+PyMuPDF==1.23.8
+
+# Utilitaires
+pydantic==2.6.1
+python-dotenv==1.0.0
+aiofiles==23.2.1
+
+# Traitement d'images
+Pillow==10.2.0
+
+# HTTP client pour appels externes
+httpx==0.26.0
+requests==2.31.0

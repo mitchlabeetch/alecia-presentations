@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=/api
+      - VITE_WS_URL=ws://localhost:3001
+    depends_on:
+      - backend
+    networks:
+      - alecia-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_PATH=/app/data/alecia.db
+      - APP_PIN_CODE=${APP_PIN_CODE:-1234}
+      - APP_MASTER_PASSWORD=${APP_MASTER_PASSWORD:-master123}
+      - FRONTEND_URL=http://localhost:3000
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DOCLING_SIDECAR_URL=http://docling:8000
+    volumes:
+      - alecia-data:/app/data
+      - alecia-uploads:/app/uploads
+    networks:
+      - alecia-network
+
+  docling:
+    build:
+      context: ./python-sidecar
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - alecia-uploads:/app/uploads
+    networks:
+      - alecia-network
+
+networks:
+  alecia-network:
+    driver: bridge
+
+volumes:
+  alecia-data:
+  alecia-uploads:

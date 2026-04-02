@@ -1,0 +1,21 @@
+# KEY PRINCIPLES FOR THE NEW VERSION  
+  
+- Fully self sufficient (SQLite DB)  
+- No Auth system with accounts - simply use a PINCODE entered in env variables  
+- System entirely in French UI and using alecia branding  
+- Use all ressources provided (both forks and previous projects)  
+- No use of convex for backend  
+- Previous projects must be used for cherry picking but not for implementation  
+- Previous project number 3 is the closest to requirements  
+- Native Pipedrive and MSOffice integration to edit, import and export projects  
+- Native AI assistance with custom BYOK support - either user activates on login since we use PIN simple code, or they can put a pwd (present in env vars) that enables use of the API keys that are saved in env vars (put openrouter, [minimax.io](http://minimax.io), kimi global, opencode go)  
+- Drag and Drop state of the art UI/UX for presentation creations  
+- Since PIN is centralized for tool access : a gallery of presentations must exist ; users name their project, can add a tag with their name, in a grid layout for loading projects, they must enter a pin code to enter a presentation edition : on new project creation, they are required to add a pincode. In editor, they can edit the PIN or delete project, or make public (no pin)  
+- WISYWIG live previews, PPTX import support, PPTX, PNG & PDF export support  
+- Tool must be fully ready and build in the designated folder  
+- No necessary other services for backend etc  
+- Zero english string on end user side and full Alecia Branding  
+- Seeded with templates and premade M&A relevant French UI blocs and presentations  
+- Presentation wide variables for blocs (clients, target, etc)  
+- Use thoroughly provided example of presentation from the team  
+- Every roadmap must be used, every feature added, every progress, every learning must be documented  

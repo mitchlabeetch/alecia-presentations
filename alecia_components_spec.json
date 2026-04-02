@@ -1,0 +1,444 @@
+{
+  "design_system": {
+    "name": "Alecia Presentation System",
+    "version": "1.0.0",
+    "aspect_ratio": "16:9",
+    "canvas_dimensions": {
+      "width": 4000,
+      "height": 2250
+    }
+  },
+  "colors": {
+    "primary": {
+      "navy_dark": "#061a40",
+      "navy_medium": "#0a2a68",
+      "navy_light": "#163e64"
+    },
+    "accent": {
+      "red": "#b80c09",
+      "red_bright": "#c00000",
+      "green": "#92d050"
+    },
+    "neutral": {
+      "white": "#ffffff",
+      "off_white": "#fafafc",
+      "light_gray": "#ecf0f6",
+      "medium_gray": "#e6e8ec",
+      "steel_gray": "#aab1be"
+    },
+    "semantic": {
+      "info_light": "#e3f2fd",
+      "info_medium": "#bfd7ea",
+      "info_dark": "#749ac7",
+      "info_deep": "#4370a7",
+      "error_light": "#fee9e8"
+    }
+  },
+  "typography": {
+    "font_family": "'Calibri', 'Arial', 'Segoe UI', sans-serif",
+    "sizes": {
+      "page_title": 42,
+      "section_header": 24,
+      "card_title": 18,
+      "body": 16,
+      "caption": 14,
+      "footnote": 12
+    },
+    "weights": {
+      "regular": 400,
+      "semibold": 600,
+      "bold": 700
+    },
+    "line_heights": {
+      "tight": 1.2,
+      "normal": 1.4,
+      "relaxed": 1.6
+    }
+  },
+  "spacing": {
+    "page_margins": {
+      "top": 80,
+      "bottom": 60,
+      "left": 80,
+      "right": 80
+    },
+    "component_gaps": {
+      "xs": 8,
+      "sm": 12,
+      "md": 16,
+      "lg": 24,
+      "xl": 32,
+      "xxl": 48
+    },
+    "card_padding": 24,
+    "section_spacing": 40
+  },
+  "layout_templates": [
+    {
+      "id": "cover",
+      "name": "Cover Slide",
+      "structure": {
+        "type": "split",
+        "left": {
+          "width": "40%",
+          "elements": ["diagonal_pattern_image"]
+        },
+        "right": {
+          "width": "60%",
+          "elements": ["logo_placeholder", "project_title"]
+        }
+      },
+      "footer": {
+        "style": "full_width_navy",
+        "height": 120
+      }
+    },
+    {
+      "id": "table_of_contents",
+      "name": "Table of Contents",
+      "structure": {
+        "type": "split",
+        "left": {
+          "width": "55%",
+          "elements": ["section_list"]
+        },
+        "right": {
+          "width": "45%",
+          "elements": ["visual_accent"]
+        }
+      }
+    },
+    {
+      "id": "two_column",
+      "name": "Two Column Content",
+      "structure": {
+        "type": "split",
+        "left": {
+          "width": "50%",
+          "elements": ["text_content"]
+        },
+        "right": {
+          "width": "50%",
+          "elements": ["visual_support"]
+        }
+      }
+    },
+    {
+      "id": "three_cards",
+      "name": "Three Column Cards",
+      "structure": {
+        "type": "grid",
+        "columns": 3,
+        "gap": 24,
+        "elements": ["card_with_icon", "card_with_icon", "card_with_icon"]
+      }
+    },
+    {
+      "id": "four_columns",
+      "name": "Four Column Grid",
+      "structure": {
+        "type": "grid",
+        "columns": 4,
+        "gap": 16,
+        "elements": ["methodology_card", "methodology_card", "methodology_card", "methodology_card"]
+      }
+    },
+    {
+      "id": "comparison",
+      "name": "Side-by-Side Comparison",
+      "structure": {
+        "type": "comparison",
+        "columns": 2,
+        "features": ["scenario_a", "scenario_b"]
+      }
+    },
+    {
+      "id": "data_table",
+      "name": "Data Table",
+      "structure": {
+        "type": "full_width",
+        "elements": ["table_component"]
+      }
+    },
+    {
+      "id": "process_flow",
+      "name": "Process Timeline",
+      "structure": {
+        "type": "timeline",
+        "orientation": "horizontal",
+        "elements": ["numbered_steps"]
+      }
+    },
+    {
+      "id": "logo_grid",
+      "name": "Logo Grid",
+      "structure": {
+        "type": "grid",
+        "columns": 2,
+        "rows": 2,
+        "gap": 20,
+        "elements": ["partner_card"]
+      }
+    },
+    {
+      "id": "full_content",
+      "name": "Full Width Content",
+      "structure": {
+        "type": "full_width",
+        "elements": ["rich_text_content"]
+      }
+    }
+  ],
+  "components": {
+    "section_header": {
+      "type": "header_bar",
+      "height": 48,
+      "elements": {
+        "pill": {
+          "width": 48,
+          "height": 32,
+          "border_radius": 16,
+          "background": "#b80c09",
+          "text_color": "#ffffff",
+          "font_size": 14,
+          "font_weight": 700
+        },
+        "title": {
+          "font_size": 16,
+          "font_weight": 600,
+          "color": "#061a40",
+          "margin_left": 12
+        },
+        "background_bar": {
+          "fill": "#e6e8ec",
+          "height": 32,
+          "border_radius": 4
+        }
+      }
+    },
+    "content_card": {
+      "type": "card",
+      "border_radius": 12,
+      "background": "#ffffff",
+      "shadow": "0 2px 8px rgba(0,0,0,0.08)",
+      "padding": 24,
+      "variants": {
+        "default": {
+          "header_background": "#061a40",
+          "header_text_color": "#ffffff"
+        },
+        "blue": {
+          "header_background": "#0a2a68",
+          "header_text_color": "#ffffff"
+        },
+        "light": {
+          "header_background": "#bfd7ea",
+          "header_text_color": "#061a40"
+        }
+      },
+      "accent_triangle": {
+        "color": "#b80c09",
+        "size": 24,
+        "position": "left_center"
+      }
+    },
+    "bullet_list": {
+      "type": "list",
+      "item_spacing": 12,
+      "indent": 0,
+      "bullet_styles": {
+        "chevron": {
+          "symbol": "›",
+          "color": "#b80c09",
+          "font_size": 16,
+          "margin_right": 8
+        },
+        "plus": {
+          "symbol": "+",
+          "color": "#92d050",
+          "font_size": 16,
+          "font_weight": 700,
+          "margin_right": 8
+        },
+        "minus": {
+          "symbol": "−",
+          "color": "#b80c09",
+          "font_size": 16,
+          "font_weight": 700,
+          "margin_right": 8
+        },
+        "arrow": {
+          "symbol": "→",
+          "color": "#aab1be",
+          "font_size": 14,
+          "margin_right": 8
+        }
+      },
+      "bold_keywords": true
+    },
+    "data_table": {
+      "type": "table",
+      "header": {
+        "background": "#061a40",
+        "text_color": "#ffffff",
+        "font_size": 14,
+        "font_weight": 600,
+        "padding": "12 16",
+        "text_align": "center"
+      },
+      "row": {
+        "odd_background": "#ffffff",
+        "even_background": "#bfd7ea",
+        "text_color": "#061a40",
+        "font_size": 14,
+        "padding": "10 16",
+        "border_bottom": "1px solid #e6e8ec"
+      },
+      "highlight": {
+        "border": "2px solid #061a40",
+        "background": "#ffff00"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "height": 60,
+      "separator_line": {
+        "color": "#e6e8ec",
+        "thickness": 1
+      },
+      "elements": {
+        "logo": {
+          "position": "left",
+          "size": "auto",
+          "max_height": 32
+        },
+        "confidentiality": {
+          "position": "center",
+          "font_size": 14,
+          "color": "#aab1be",
+          "text": "Projet XXX | Strictement confidentiel"
+        },
+        "page_number": {
+          "position": "right",
+          "font_size": 14,
+          "color": "#aab1be"
+        }
+      }
+    },
+    "pill_tag": {
+      "type": "tag",
+      "border_radius": 16,
+      "padding": "6 16",
+      "font_size": 14,
+      "variants": {
+        "active": {
+          "border": "2px solid #061a40",
+          "background": "transparent",
+          "text_color": "#061a40",
+          "font_weight": 600
+        },
+        "inactive": {
+          "border": "1px solid #e6e8ec",
+          "background": "transparent",
+          "text_color": "#aab1be",
+          "font_weight": 400
+        },
+        "red": {
+          "border": "none",
+          "background": "#b80c09",
+          "text_color": "#ffffff",
+          "font_weight": 600
+        },
+        "highlight": {
+          "border": "none",
+          "background": "#ffff00",
+          "text_color": "#061a40",
+          "font_weight": 600
+        }
+      }
+    },
+    "icon_container": {
+      "type": "icon_wrapper",
+      "size": 64,
+      "background": "#ffffff",
+      "icon_color": "#061a40",
+      "margin_bottom": 16
+    },
+    "flow_arrow": {
+      "type": "connector",
+      "color": "#e6e8ec",
+      "thickness": 2,
+      "arrowhead": "solid",
+      "size": 16
+    },
+    "process_step": {
+      "type": "step_indicator",
+      "circle_size": 48,
+      "circle_background": "#061a40",
+      "number_color": "#ffffff",
+      "number_font_size": 18,
+      "number_font_weight": 700,
+      "line_color": "#e6e8ec",
+      "line_thickness": 3
+    },
+    "info_box": {
+      "type": "callout",
+      "border_radius": 8,
+      "padding": 20,
+      "variants": {
+        "info": {
+          "background": "#e3f2fd",
+          "border_left": "4px solid #4370a7"
+        },
+        "warning": {
+          "background": "#fee9e8",
+          "border_left": "4px solid #b80c09"
+        },
+        "neutral": {
+          "background": "#ecf0f6",
+          "border_left": "4px solid #aab1be"
+        }
+      }
+    }
+  },
+  "patterns": {
+    "diagonal_chevron": {
+      "name": "Alecia Signature Pattern",
+      "description": "Layered diagonal chevrons in gradient colors",
+      "colors": ["#e83e8c", "#fd7e14", "#ffc107", "#20c997", "#6f42c1", "#6610f2"],
+      "angle": -45,
+      "opacity": 0.9
+    }
+  },
+  "text_formatting": {
+    "bold_keywords": {
+      "enabled": true,
+      "color": "#061a40",
+      "weight": 700
+    },
+    "italic_foreign": {
+      "enabled": true,
+      "terms": ["business model", "equity story", "current trading", "out of the box", "LBO", "EBITDA", "ARR"]
+    },
+    "section_numbering": {
+      "format": "roman",
+      "case": "upper"
+    }
+  },
+  "responsive_breakpoints": {
+    "note": "For preview/editor only - slides are fixed 16:9",
+    "preview": {
+      "sm": 640,
+      "md": 960,
+      "lg": 1280,
+      "xl": 1600
+    }
+  },
+  "export_settings": {
+    "format": "png",
+    "width": 4000,
+    "height": 2250,
+    "dpi": 300,
+    "transparent_background": false
+  }
+}
