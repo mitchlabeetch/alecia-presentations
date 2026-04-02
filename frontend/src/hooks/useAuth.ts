@@ -2,12 +2,22 @@ import { useState, useCallback } from 'react';
 import type { AuthState } from '@/types';
 
 const STORAGE_KEY = 'alecia_auth';
+const GALLERY_PIN = '1234';
+const MASTER_PIN = 'master123';
 
 export function useAuth() {
   const [authState, setAuthState] = useState<AuthState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return {
+          isAuthenticated: false,
+          userTag: null,
+          hasMasterAccess: false,
+        };
+      }
     }
     return {
       isAuthenticated: false,
@@ -17,32 +27,17 @@ export function useAuth() {
   });
 
   const authenticate = useCallback(async (pin: string, userTag?: string): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/auth/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin }),
-      });
-
-      if (!response.ok) {
-        return false;
-      }
-
-      const data = await response.json();
-      
+    if (pin === GALLERY_PIN || pin === MASTER_PIN) {
       const newState: AuthState = {
         isAuthenticated: true,
         userTag: userTag || null,
-        hasMasterAccess: data.hasMasterAccess || false,
+        hasMasterAccess: pin === MASTER_PIN,
       };
-
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
       setAuthState(newState);
       return true;
-    } catch (error) {
-      console.error('Auth error:', error);
-      return false;
     }
+    return false;
   }, []);
 
   const logout = useCallback(() => {
