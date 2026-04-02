@@ -59,7 +59,7 @@ export function KPI_Card({ content, data, isEditing = false, onChange }: KPI_Car
 
   const startEditing = (id: string, current: { label: string; value: string; unit: string; change: string }) => {
     setEditingKpiId(id);
-    setEditValues(current);
+    setEditValues({ ...current, value: String(current.value), change: String(current.change) });
   };
 
   const saveEditing = () => {

@@ -1,41 +1,46 @@
 import type { BlockContent, TimelineItem } from '@/types';
 import { Pencil } from 'lucide-react';
 
-interface Key_MetricsProps {
+interface Process_TimelineProps {
   content: BlockContent;
-  data?: { kpis?: { id: string; label: string; value: string | number; unit?: string; description?: string }[] } | null;
+  data?: { timeline?: TimelineItem[] } | null;
   isEditing?: boolean;
   onChange?: (content: BlockContent) => void;
 }
 
-export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_MetricsProps) {
-  const metrics = data?.kpis || [];
+export function Process_Timeline({ content, data, isEditing = false, onChange }: Process_TimelineProps) {
+  const steps = data?.timeline || [];
 
   // Ces blocs affichent des donnees - edition limitee
   if (isEditing) {
     return (
       <div className="w-full h-full p-8">
-        <h3 className="text-xl font-bold text-alecia-navy mb-6">Metriques cles</h3>
-        <div className="mb-4 flex items-center gap-2 text-sm text-alecia-silver">
+        <h3 className="text-xl font-bold text-alecia-navy mb-6 flex items-center gap-2">
           <Pencil className="w-4 h-4" />
-          <span>Les donnees de metriques doivent etre modifiees via le panneau de configuration</span>
+          Processus
+        </h3>
+        <div className="mb-4 flex items-center gap-2 text-sm text-alecia-silver">
+          <span>Les donnees de processus doivent etre modifiees via le panneau de configuration</span>
         </div>
-        <div className="space-y-4">
-          {metrics.map((metric) => (
-            <div key={metric.id} className="bg-alecia-silver/5 rounded-lg p-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-alecia-silver">{metric.label}</span>
-                <span className="text-xs text-alecia-silver">{metric.description}</span>
+        <div className="flex items-center justify-between gap-4">
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex-1 text-center relative">
+              <div className="w-12 h-12 rounded-full bg-alecia-navy text-white flex items-center justify-center text-xl font-bold mx-auto mb-3">
+                {index + 1}
               </div>
-              <div className="text-3xl font-bold text-alecia-navy">
-                {metric.value}
-                {metric.unit && <span className="text-lg font-normal ml-1">{metric.unit}</span>}
-              </div>
+              <h4 className="font-semibold text-alecia-navy">{step.title}</h4>
+              <p className="text-sm text-alecia-silver mt-1">{step.description}</p>
+              {step.duration && (
+                <span className="inline-block mt-2 text-xs bg-alecia-silver/10 px-2 py-1 rounded">{step.duration}</span>
+              )}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-6 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 bg-alecia-silver/20" />
+              )}
             </div>
           ))}
         </div>
-        {metrics.length === 0 && (
-          <p className="text-alecia-silver text-center">Aucune metrique definie</p>
+        {steps.length === 0 && (
+          <p className="text-alecia-silver text-center">Aucune etape definie</p>
         )}
       </div>
     );
@@ -43,25 +48,26 @@ export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_
 
   return (
     <div className="w-full h-full p-8">
-      <h3 className="text-xl font-bold text-alecia-navy mb-6">Metriques cles</h3>
-      <div className="space-y-4">
-        {metrics.map((metric) => (
-          <div key={metric.id} className="bg-alecia-silver/5 rounded-lg p-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-alecia-silver">{metric.label}</span>
-              {metric.description && (
-                <span className="text-xs text-alecia-silver">{metric.description}</span>
-              )}
+      <h3 className="text-xl font-bold text-alecia-navy mb-6">Processus</h3>
+      <div className="flex items-center justify-between gap-4">
+        {steps.map((step, index) => (
+          <div key={step.id} className="flex-1 text-center relative">
+            <div className="w-12 h-12 rounded-full bg-alecia-navy text-white flex items-center justify-center text-xl font-bold mx-auto mb-3">
+              {index + 1}
             </div>
-            <div className="text-3xl font-bold text-alecia-navy">
-              {metric.value}
-              {metric.unit && <span className="text-lg font-normal ml-1">{metric.unit}</span>}
-            </div>
+            <h4 className="font-semibold text-alecia-navy">{step.title}</h4>
+            <p className="text-sm text-alecia-silver mt-1">{step.description}</p>
+            {step.duration && (
+              <span className="inline-block mt-2 text-xs bg-alecia-silver/10 px-2 py-1 rounded">{step.duration}</span>
+            )}
+            {index < steps.length - 1 && (
+              <div className="hidden md:block absolute top-6 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 bg-alecia-silver/20" />
+            )}
           </div>
         ))}
       </div>
-      {metrics.length === 0 && (
-        <p className="text-alecia-silver text-center">Aucune metrique definie</p>
+      {steps.length === 0 && (
+        <p className="text-alecia-silver text-center">Aucune etape definie</p>
       )}
     </div>
   );

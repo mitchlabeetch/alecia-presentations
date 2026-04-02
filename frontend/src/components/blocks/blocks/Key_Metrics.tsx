@@ -1,4 +1,15 @@
-import type { BlockContent, KPI } from '@/types';
+import type { BlockContent } from '@/types';
+import { Pencil } from 'lucide-react';
+
+interface KPI {
+  id: string;
+  label: string;
+  value: string | number;
+  unit?: string;
+  change?: number;
+  trend?: 'up' | 'down' | 'neutral';
+  description?: string;
+}
 
 interface Key_MetricsProps {
   content: BlockContent;
@@ -10,10 +21,17 @@ interface Key_MetricsProps {
 export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_MetricsProps) {
   const metrics = data?.kpis || [];
 
+  // Ces blocs affichent des donnees - edition limitee
   if (isEditing) {
     return (
       <div className="w-full h-full p-8">
-        <h3 className="text-xl font-bold text-alecia-navy mb-6">Métriques clés</h3>
+        <h3 className="text-xl font-bold text-alecia-navy mb-6 flex items-center gap-2">
+          <Pencil className="w-4 h-4" />
+          Metriques cles
+        </h3>
+        <div className="mb-4 flex items-center gap-2 text-sm text-alecia-silver">
+          <span>Les donnees de metriques doivent etre modifiees via le panneau de configuration</span>
+        </div>
         <div className="space-y-4">
           {metrics.map((metric) => (
             <div key={metric.id} className="bg-alecia-silver/5 rounded-lg p-4">
@@ -29,7 +47,7 @@ export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_
           ))}
         </div>
         {metrics.length === 0 && (
-          <p className="text-alecia-silver text-center">Aucune métrique définie</p>
+          <p className="text-alecia-silver text-center">Aucune metrique definie</p>
         )}
       </div>
     );
@@ -37,7 +55,7 @@ export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_
 
   return (
     <div className="w-full h-full p-8">
-      <h3 className="text-xl font-bold text-alecia-navy mb-6">Métriques clés</h3>
+      <h3 className="text-xl font-bold text-alecia-navy mb-6">Metriques cles</h3>
       <div className="space-y-4">
         {metrics.map((metric) => (
           <div key={metric.id} className="bg-alecia-silver/5 rounded-lg p-4">
@@ -55,7 +73,7 @@ export function Key_Metrics({ content, data, isEditing = false, onChange }: Key_
         ))}
       </div>
       {metrics.length === 0 && (
-        <p className="text-alecia-silver text-center">Aucune métrique définie</p>
+        <p className="text-alecia-silver text-center">Aucune metrique definie</p>
       )}
     </div>
   );

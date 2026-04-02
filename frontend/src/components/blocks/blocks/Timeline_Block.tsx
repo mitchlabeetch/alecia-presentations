@@ -74,3 +74,7 @@ export function Timeline_Block({ content, data, isEditing = false, onChange }: T
       </div>
       {timeline.length === 0 && (
         <p className="text-alecia-silver text-center">Aucune etape definie</p>
+      )}
+    </div>
+  );
+}

@@ -1,4 +1,5 @@
 import type { BlockContent, TableData } from '@/types';
+import { Pencil } from 'lucide-react';
 
 interface Table_BlockProps {
   content: BlockContent;
@@ -13,6 +14,13 @@ export function Table_Block({ content, data, isEditing = false, onChange }: Tabl
   if (isEditing) {
     return (
       <div className="w-full h-full p-8 overflow-auto">
+        <h3 className="text-lg font-semibold text-alecia-navy mb-4 flex items-center gap-2">
+          <Pencil className="w-4 h-4" />
+          Tableau
+        </h3>
+        <div className="mb-4 flex items-center gap-2 text-sm text-alecia-silver">
+          <span>Les donnees de tableau doivent etre modifiees via le panneau de configuration</span>
+        </div>
         {tableData ? (
           <table className="w-full border-collapse">
             <thead>
@@ -37,7 +45,7 @@ export function Table_Block({ content, data, isEditing = false, onChange }: Tabl
             </tbody>
           </table>
         ) : (
-          <p className="text-alecia-silver text-center">Aucune donnée de tableau</p>
+          <p className="text-alecia-silver text-center">Aucune donnee de tableau</p>
         )}
       </div>
     );
@@ -78,7 +86,7 @@ export function Table_Block({ content, data, isEditing = false, onChange }: Tabl
           </tbody>
         </table>
       ) : (
-        <p className="text-alecia-silver text-center">Aucune donnée de tableau</p>
+        <p className="text-alecia-silver text-center">Aucune donnee de tableau</p>
       )}
     </div>
   );
