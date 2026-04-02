@@ -79,6 +79,7 @@ export type BlockType =
   | 'Cover'
   | 'Couverture'
   | 'Disclaimer'
+  | 'Disclaimer_Block'
   | 'Trackrecord_Block'
   | 'CSR_Block'
   | 'Contact_Block';

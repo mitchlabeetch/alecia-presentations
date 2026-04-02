@@ -21,7 +21,6 @@ export function SlideCanvas({
   const [isPanning, setIsPanning] = useState(false);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
 
-  // Handle zoom
   const handleZoomIn = useCallback(() => {
     setZoom((prev) => Math.min(prev + 25, 200));
   }, []);
@@ -35,7 +34,6 @@ export function SlideCanvas({
     setPanOffset({ x: 0, y: 0 });
   }, []);
 
-  // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === '+' || e.key === '=') {
@@ -51,7 +49,6 @@ export function SlideCanvas({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleZoomIn, handleZoomOut, handleZoomFit]);
 
-  // Handle panning
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (e.button === 1 || (e.button === 0 && e.altKey)) {
       setIsPanning(true);
@@ -74,66 +71,61 @@ export function SlideCanvas({
     setIsPanning(false);
   }, []);
 
-  // Calculate slide dimensions (16:9 aspect ratio)
   const baseWidth = 1280;
   const baseHeight = 720;
-  const scaledWidth = (baseWidth * zoom) / 100;
-  const scaledHeight = (baseHeight * zoom) / 100;
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Zoom Controls */}
-      <div className="flex items-center justify-center gap-2 mb-4">
+    <div className="h-full flex flex-col p-4">
+      {/* Zoom Controls - Compact */}
+      <div className="flex-shrink-0 flex items-center justify-center gap-1 mb-3">
         <button
           onClick={handleZoomOut}
-          className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors"
-          title="Zoom arrière ( - )"
+          className="p-1.5 hover:bg-alecia-silver/20 rounded transition-colors"
+          title="Zoom arriere ( - )"
         >
-          <ZoomOut className="w-5 h-5 text-alecia-navy" />
+          <ZoomOut className="w-4 h-4 text-alecia-navy" />
         </button>
 
-        <div className="flex items-center gap-2 px-3 py-1 bg-alecia-silver/10 rounded-lg">
-          <span className="text-sm font-medium text-alecia-navy w-12 text-center">
-            {zoom}%
-          </span>
+        <div className="flex items-center px-2 py-1 bg-alecia-silver/10 rounded min-w-[60px] justify-center">
+          <span className="text-xs font-medium text-alecia-navy">{zoom}%</span>
         </div>
 
         <button
           onClick={handleZoomIn}
-          className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors"
+          className="p-1.5 hover:bg-alecia-silver/20 rounded transition-colors"
           title="Zoom avant ( + )"
         >
-          <ZoomIn className="w-5 h-5 text-alecia-navy" />
+          <ZoomIn className="w-4 h-4 text-alecia-navy" />
         </button>
 
-        <div className="w-px h-6 bg-alecia-silver/30 mx-2" />
+        <div className="w-px h-5 bg-alecia-silver/30 mx-1" />
 
         <button
           onClick={handleZoomFit}
-          className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors"
+          className="p-1.5 hover:bg-alecia-silver/20 rounded transition-colors"
           title="Ajuster au zoom 100%"
         >
-          <Maximize2 className="w-5 h-5 text-alecia-navy" />
+          <Maximize2 className="w-4 h-4 text-alecia-navy" />
         </button>
 
-        <div className="w-px h-6 bg-alecia-silver/30 mx-2" />
+        <div className="w-px h-5 bg-alecia-silver/30 mx-1" />
 
         <button
           onClick={() => {
             setZoom(50);
             setPanOffset({ x: 0, y: 0 });
           }}
-          className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors"
+          className="p-1.5 hover:bg-alecia-silver/20 rounded transition-colors"
           title="Mode navigation"
         >
-          <Move className="w-5 h-5 text-alecia-navy" />
+          <Move className="w-4 h-4 text-alecia-navy" />
         </button>
       </div>
 
       {/* Canvas Container */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-hidden bg-alecia-silver/10 rounded-xl relative"
+        className="flex-1 overflow-hidden bg-alecia-silver/5 rounded-lg relative border border-alecia-silver/10"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -161,7 +153,6 @@ export function SlideCanvas({
 
             {/* Content Area */}
             <div className="absolute inset-0 pt-8 pb-16 px-16">
-              {/* Block Renderer */}
               <BlockRenderer
                 slide={slide}
                 isEditing={isEditing}
@@ -173,7 +164,6 @@ export function SlideCanvas({
 
             {/* Footer */}
             <div className="absolute bottom-0 left-0 right-0 h-12 px-16 flex items-center justify-between border-t border-alecia-silver/20">
-              {/* Logo */}
               <div className="flex items-center gap-2">
                 <AleciaLogo className="h-6 text-alecia-navy" />
                 <span className="text-xs text-alecia-silver">
@@ -181,7 +171,6 @@ export function SlideCanvas({
                 </span>
               </div>
 
-              {/* Page Number */}
               <div className="text-sm text-alecia-silver">
                 {slide.orderIndex + 1}
               </div>
@@ -218,15 +207,15 @@ export function SlideCanvas({
         />
       </div>
 
-      {/* Slide Info */}
-      <div className="flex items-center justify-between mt-4 text-sm text-alecia-silver">
-        <div>
+      {/* Slide Info - Compact */}
+      <div className="flex-shrink-0 flex items-center justify-between mt-2 text-xs text-alecia-silver px-1">
+        <div className="flex items-center gap-2">
           <span className="font-medium text-alecia-navy">{slide.title || 'Sans titre'}</span>
-          <span className="mx-2">•</span>
-          <span>Type: {slide.type}</span>
+          <span className="text-alecia-silver/50">•</span>
+          <span className="text-alecia-silver">{slide.type}</span>
         </div>
         <div>
-          {zoom}% • {baseWidth} x {baseHeight}px
+          {baseWidth}x{baseHeight}
         </div>
       </div>
     </div>

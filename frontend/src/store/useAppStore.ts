@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Project, Slide, Variable } from '@/types';
+import type { Project, Slide, Variable, VariablePreset, ChatMessage } from '@/types';
 
 interface AppState {
   isAuthenticated: boolean;
@@ -14,7 +14,10 @@ interface AppState {
   aiPanelOpen: boolean;
   variablesPanelOpen: boolean;
   variables: Variable[];
+  variablePresets: VariablePreset[];
   toast: { message: string; type: 'success' | 'error' | 'info' } | null;
+  // Chat state
+  chatMessages: Record<string, ChatMessage[]>;
 }
 
 interface AppActions {
@@ -34,6 +37,15 @@ interface AppActions {
   toggleAIPanel: () => void;
   toggleVariablesPanel: () => void;
   setToast: (toast: { message: string; type: 'success' | 'error' | 'info' } | null) => void;
+  // Variable actions
+  addVariable: (variable: Omit<Variable, 'id'>) => void;
+  updateVariable: (id: string, updates: Partial<Variable>) => void;
+  deleteVariable: (id: string) => void;
+  setVariablePreset: (preset: VariablePreset | null) => void;
+  variablePresets: VariablePreset[];
+  // Chat actions
+  addChatMessage: (projectId: string, message: Omit<ChatMessage, 'id' | 'createdAt'>) => void;
+  clearChatMessages: (projectId: string) => void;
 }
 
 const GALLERY_PIN = '1234';
@@ -55,7 +67,12 @@ const DEFAULT_SLIDES: Slide[] = [
     orderIndex: 1,
     type: 'SectionNavigator',
     title: 'Ordre du jour',
-    content: { sections: ['Contexte', 'Transaction', 'Valorisation', 'Conclusion'] },
+    content: { sections: [
+      { id: 's1', title: 'Contexte', page: 2 },
+      { id: 's2', title: 'Transaction', page: 3 },
+      { id: 's3', title: 'Valorisation', page: 4 },
+      { id: 's4', title: 'Conclusion', page: 5 },
+    ]},
     notes: null,
   },
   {
@@ -74,9 +91,9 @@ const DEFAULT_SLIDES: Slide[] = [
     type: 'KPI_Card',
     title: 'Indicateurs clés',
     content: { kpis: [
-      { label: 'CA', value: '0 M€', change: '' },
-      { label: 'EBITDA', value: '0 M€', change: '' },
-      { label: 'Multiple', value: 'x0.0', change: '' },
+      { id: 'kpi1', label: 'CA', value: '0 M€', change: 0 },
+      { id: 'kpi2', label: 'EBITDA', value: '0 M€', change: 0 },
+      { id: 'kpi3', label: 'Multiple', value: 'x0.0', change: 0 },
     ]},
     notes: null,
   },
@@ -111,7 +128,7 @@ const DEFAULT_SLIDES: Slide[] = [
     orderIndex: 6,
     type: 'Contact_Block',
     title: 'Contact',
-    content: { name: 'Nom', email: 'email@alecia.fr', phone: '+33 1 XX XX XX XX', company: 'alecia' },
+    content: { name: 'Nom', email: 'email@alecia.fr', phone: '+33 1 XX XX XX XX', company: { name: 'Alecia', sector: 'Conseil M&A' } },
     notes: null,
   },
 ];
@@ -134,9 +151,15 @@ export const useAppStore = create<AppState & AppActions>()(
         { id: 'v2', name: 'client_sector', value: '', type: 'text', description: 'Secteur' },
         { id: 'v3', name: 'deal_amount', value: '', type: 'currency', description: 'Montant' },
         { id: 'v4', name: 'ebitda', value: '', type: 'currency', description: 'EBITDA' },
-        { id: 'v5', name: 'advisor_name', value: '', type: 'text', description: 'Nom du conseiller' },
+        { id: 'v5', name: 'ebitda_multiple', value: '', type: 'number', description: 'Multiple EBITDA' },
+        { id: 'v6', name: 'advisor_name', value: '', type: 'text', description: 'Nom du conseiller' },
+        { id: 'v7', name: 'target_company', value: '', type: 'text', description: 'Entreprise cible' },
+        { id: 'v8', name: 'date', value: '', type: 'date', description: 'Date' },
+        { id: 'v9', name: 'confidentiality_level', value: 'Strictement confidentiel', type: 'text', description: 'Niveau de confidentialité' },
       ],
+      variablePresets: [],
       toast: null,
+      chatMessages: {},
 
       authenticate: (pin, userTag) => {
         if (pin === GALLERY_PIN || pin === MASTER_PIN) {
@@ -181,7 +204,7 @@ export const useAppStore = create<AppState & AppActions>()(
           targetCompany: '',
           targetSector: '',
           dealType: 'custom',
-          theme: { primaryColor: '#061a40', accentColor: '#b80c09', fontFamily: 'Bierstadt' },
+          theme: { primaryColor: '#061a40', accentColor: '#b80c09', fontFamily: 'Bierstadt', logoPath: null },
           createdAt: now,
           updatedAt: now,
           slides: DEFAULT_SLIDES.map((s, i) => ({ ...s, id: `${id}-slide-${i}`, projectId: id, orderIndex: i })),
@@ -225,7 +248,7 @@ export const useAppStore = create<AppState & AppActions>()(
           id: `slide-${Date.now()}`,
           projectId: project.id,
           orderIndex: get().slides.length,
-          type,
+          type: type as Slide['type'],
           title: title || `Nouvelle diapositive`,
           content: content || {},
           notes: null,
@@ -270,12 +293,73 @@ export const useAppStore = create<AppState & AppActions>()(
       toggleAIPanel: () => set((state) => ({ aiPanelOpen: !state.aiPanelOpen })),
       toggleVariablesPanel: () => set((state) => ({ variablesPanelOpen: !state.variablesPanelOpen })),
       setToast: (toast) => set({ toast }),
+      // Variable actions
+      addVariable: (variable) => {
+        const newVariable: Variable = {
+          ...variable,
+          id: `var-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        };
+        set((state) => ({ variables: [...state.variables, newVariable] }));
+      },
+      updateVariable: (id, updates) => {
+        set((state) => ({
+          variables: state.variables.map((v) =>
+            v.id === id ? { ...v, ...updates } : v
+          ),
+        }));
+      },
+      deleteVariable: (id) => {
+        set((state) => ({
+          variables: state.variables.filter((v) => v.id !== id),
+        }));
+      },
+      setVariablePreset: (preset) => {
+        if (!preset) {
+          set({ variablePresets: [] });
+          return;
+        }
+        set((state) => {
+          const exists = state.variablePresets.some((p) => p.id === preset.id);
+          if (exists) {
+            return {
+              variablePresets: state.variablePresets.map((p) =>
+                p.id === preset.id ? preset : p
+              ),
+            };
+          }
+          return { variablePresets: [...state.variablePresets, preset] };
+        });
+      },
+      // Chat actions
+      addChatMessage: (projectId, message) => {
+        const newMessage: ChatMessage = {
+          ...message,
+          id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          createdAt: Date.now(),
+        };
+        set((state) => ({
+          chatMessages: {
+            ...state.chatMessages,
+            [projectId]: [...(state.chatMessages[projectId] || []), newMessage],
+          },
+        }));
+      },
+      clearChatMessages: (projectId) => {
+        set((state) => ({
+          chatMessages: {
+            ...state.chatMessages,
+            [projectId]: [],
+          },
+        }));
+      },
     }),
     {
       name: 'alecia-storage',
       partialize: (state) => ({
         projects: state.projects,
         userTag: state.userTag,
+        variables: state.variables,
+        variablePresets: state.variablePresets,
       }),
     }
   )
@@ -316,4 +400,21 @@ export const useUI = () => useAppStore((state) => ({
 export const useHistory = () => {
   const slides = useAppStore((state) => state.slides);
   return { slides };
+};
+
+export const useVariables = () => {
+  const variables = useAppStore((state) => state.variables);
+  const variablePresets = useAppStore((state) => state.variablePresets);
+  const addVariable = useAppStore((state) => state.addVariable);
+  const updateVariable = useAppStore((state) => state.updateVariable);
+  const deleteVariable = useAppStore((state) => state.deleteVariable);
+  const setVariablePreset = useAppStore((state) => state.setVariablePreset);
+  return {
+    variables,
+    variablePresets,
+    addVariable,
+    updateVariable,
+    deleteVariable,
+    setVariablePreset,
+  };
 };

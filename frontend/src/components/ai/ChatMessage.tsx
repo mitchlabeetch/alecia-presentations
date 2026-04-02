@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
-import { frFR } from 'date-fns/locale';
+import { fr } from 'date-fns/locale';
 import { Copy, Check, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import type { ChatMessage as ChatMessageType } from '@/types';
@@ -21,7 +21,7 @@ export function ChatMessage({ message, onRegenerate }: ChatMessageProps) {
 
   const formatTime = (timestamp: number) => {
     try {
-      return formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: frFR });
+      return formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: fr });
     } catch {
       return '';
     }
