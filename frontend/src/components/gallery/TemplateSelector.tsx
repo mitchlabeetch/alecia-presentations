@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Check, Layers, Loader2 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { useState, useCallback } from 'react';
+import { Check, Layers } from 'lucide-react';
 import type { Template } from '@/types';
 
 interface TemplateSelectorProps {
@@ -9,35 +8,80 @@ interface TemplateSelectorProps {
   onSelectTemplate: (template: Template | null) => void;
 }
 
+const STATIC_TEMPLATES: Template[] = [
+  {
+    id: 'tpl-cession-1',
+    name: 'Pitch Cession Standard',
+    description: 'Modèle complet pour une présentation de cession d\'entreprise',
+    category: 'cession_vente',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+  {
+    id: 'tpl-lbo-1',
+    name: 'Deck Levée de Fonds',
+    description: 'Structure optimisée pour levées de capitaux',
+    category: 'lbo_levee_fonds',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+  {
+    id: 'tpl-acquisition-1',
+    name: 'Présentation Acquisition',
+    description: 'Modèle pour analyser et présenter une acquisition',
+    category: 'acquisition_achats',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+  {
+    id: 'tpl-mandat-1',
+    name: 'Mandat de Conseil',
+    description: 'Modèle pour mandate de conseil M&A',
+    category: 'cession_vente',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+  {
+    id: 'tpl-strategie-1',
+    name: 'Note de Stratégie',
+    description: 'Analyse stratégique et plan d\'action',
+    category: 'custom',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+  {
+    id: 'tpl-comite-1',
+    name: 'Note au Comité',
+    description: 'Présentation pour comité d\'investissement',
+    category: 'lbo_levee_fonds',
+    slides: [],
+    isCustom: false,
+    thumbnailPath: null,
+    createdAt: Date.now(),
+  },
+];
+
 export function TemplateSelector({
   category,
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateSelectorProps) {
-  const [templates, setTemplates] = useState<Template[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const templates = category && category !== 'custom'
+    ? STATIC_TEMPLATES.filter(t => t.category === category)
+    : STATIC_TEMPLATES;
+
   const [hoveredTemplate, setHoveredTemplate] = useState<Template | null>(null);
 
-  // Fetch templates
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.templates.list({ category });
-        if (response.data) {
-          setTemplates(response.data);
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des modèles:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTemplates();
-  }, [category]);
-
-  // Handle template selection
   const handleSelect = useCallback(
     (template: Template) => {
       if (selectedTemplateId === template.id) {
@@ -48,15 +92,6 @@ export function TemplateSelector({
     },
     [selectedTemplateId, onSelectTemplate]
   );
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-6 h-6 animate-spin text-alecia-silver" />
-        <span className="ml-2 text-alecia-silver">Chargement des modèles...</span>
-      </div>
-    );
-  }
 
   if (templates.length === 0) {
     return (
@@ -71,7 +106,6 @@ export function TemplateSelector({
 
   return (
     <div className="space-y-4">
-      {/* Template Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {templates.map((template) => {
           const isSelected = selectedTemplateId === template.id;
@@ -89,7 +123,6 @@ export function TemplateSelector({
                   : 'hover:shadow-lg'
               }`}
             >
-              {/* Preview */}
               <div className="aspect-video bg-gradient-to-br from-alecia-navy to-[#0a2a68] relative">
                 {template.thumbnailPath ? (
                   <img
@@ -105,14 +138,12 @@ export function TemplateSelector({
                   </div>
                 )}
 
-                {/* Selection indicator */}
                 {isSelected && (
                   <div className="absolute top-2 right-2 w-6 h-6 bg-alecia-red rounded-full flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
                 )}
 
-                {/* Hover overlay with slides count */}
                 {isHovered && !isSelected && (
                   <div className="absolute inset-0 bg-alecia-navy/60 flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
@@ -122,7 +153,6 @@ export function TemplateSelector({
                 )}
               </div>
 
-              {/* Info */}
               <div className="p-3 bg-white">
                 <h4 className="font-medium text-alecia-navy text-sm truncate">
                   {template.name}
@@ -136,7 +166,6 @@ export function TemplateSelector({
         })}
       </div>
 
-      {/* Template Details */}
       {hoveredTemplate && (
         <div className="bg-alecia-silver/5 rounded-xl p-4">
           <h4 className="font-medium text-alecia-navy">

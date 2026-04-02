@@ -1,8 +1,6 @@
 import { useState, useCallback } from 'react';
 import {
   Save,
-  Undo2,
-  Redo2,
   Download,
   Eye,
   MessageSquare,
@@ -13,12 +11,10 @@ import {
   Check,
   FileText,
   Image,
-  Columns,
   Sparkles,
   Settings,
 } from 'lucide-react';
-import { useHistory, useUI, useProjects } from '@/store/useAppStore';
-import { api, downloadBlob } from '@/lib/api';
+import { useProjects, useAppStore } from '@/store/useAppStore';
 
 interface ToolbarProps {
   onPreview?: () => void;
@@ -26,82 +22,40 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ onPreview, onShare }: ToolbarProps) {
-  const { undo, redo, canUndo, canRedo } = useHistory();
-  const { toggleAiPanel, toggleVariablesPanel, toggleCommentsPanel, addToast } = useUI();
   const { currentProject } = useProjects();
+  const toggleAiPanel = useAppStore((state) => state.toggleAIPanel);
+  const toggleVariablesPanel = useAppStore((state) => state.toggleVariablesPanel);
+  const setToast = useAppStore((state) => state.setToast);
 
   const [isSaving, setIsSaving] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
 
-  // Handle save
   const handleSave = useCallback(async () => {
-    if (!currentProject) return;
-
     setSaveStatus('saving');
     try {
-      // The slides are already being saved via the API on change
-      // This is just for visual feedback
       await new Promise((resolve) => setTimeout(resolve, 500));
       setSaveStatus('saved');
-      addToast('success', 'Projet enregistré');
-
-      // Reset status after 2 seconds
-      setTimeout(() => {
-        setSaveStatus('idle');
-      }, 2000);
+      setToast({ message: 'Projet enregistré', type: 'success' });
+      setTimeout(() => setSaveStatus('idle'), 2000);
     } catch {
       setSaveStatus('idle');
-      addToast('error', 'Erreur lors de l\'enregistrement');
+      setToast({ message: 'Erreur lors de l\'enregistrement', type: 'error' });
     }
-  }, [currentProject, addToast]);
+  }, [setToast]);
 
-  // Handle export
   const handleExport = useCallback(
     async (format: 'pptx' | 'pdf' | 'png') => {
       if (!currentProject) return;
-
-      setIsExporting(true);
       setShowExportMenu(false);
-
-      try {
-        let blob: Blob;
-        let filename: string;
-
-        switch (format) {
-          case 'pptx':
-            blob = await api.export.toPptx(currentProject.id);
-            filename = `${currentProject.name}.pptx`;
-            break;
-          case 'pdf':
-            blob = await api.export.toPdf(currentProject.id);
-            filename = `${currentProject.name}.pdf`;
-            break;
-          case 'png':
-            blob = await api.export.toImages(currentProject.id, { format: 'png' });
-            filename = `${currentProject.name}.zip`;
-            break;
-          default:
-            throw new Error('Format non supporté');
-        }
-
-        downloadBlob(blob, filename);
-        addToast('success', `Export ${format.toUpperCase()} réussi`);
-      } catch {
-        addToast('error', 'Erreur lors de l\'export');
-      } finally {
-        setIsExporting(false);
-      }
+      setToast({ message: `Export ${format.toUpperCase()} - Fonctionnalité à venir`, type: 'info' });
     },
-    [currentProject, addToast]
+    [currentProject, setToast]
   );
 
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-alecia-silver/20">
-      {/* Left Section - Project Name & Actions */}
       <div className="flex items-center gap-4">
-        {/* Save Button */}
         <button
           onClick={handleSave}
           disabled={saveStatus === 'saving'}
@@ -117,38 +71,12 @@ export function Toolbar({ onPreview, onShare }: ToolbarProps) {
           {saveStatus === 'saved' ? 'Enregistré' : 'Enregistrer'}
         </button>
 
-        {/* Undo/Redo */}
-        <div className="flex items-center gap-1 bg-alecia-silver/10 rounded-lg p-1">
-          <button
-            onClick={undo}
-            disabled={!canUndo()}
-            className="p-2 rounded hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Annuler (Ctrl+Z)"
-          >
-            <Undo2 className="w-4 h-4 text-alecia-navy" />
-          </button>
-          <button
-            onClick={redo}
-            disabled={!canRedo()}
-            className="p-2 rounded hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Rétablir (Ctrl+Shift+Z)"
-          >
-            <Redo2 className="w-4 h-4 text-alecia-navy" />
-          </button>
-        </div>
-
-        {/* Export Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowExportMenu(!showExportMenu)}
-            disabled={isExporting}
             className="alecia-btn-secondary gap-2"
           >
-            {isExporting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Download className="w-4 h-4" />
-            )}
+            <Download className="w-4 h-4" />
             Exporter
             <ChevronDown className="w-4 h-4" />
           </button>
@@ -186,16 +114,13 @@ export function Toolbar({ onPreview, onShare }: ToolbarProps) {
           )}
         </div>
 
-        {/* Preview */}
         <button onClick={onPreview} className="alecia-btn-secondary gap-2">
           <Eye className="w-4 h-4" />
           Aperçu
         </button>
       </div>
 
-      {/* Right Section - Panels */}
       <div className="flex items-center gap-2">
-        {/* AI Chat */}
         <button
           onClick={toggleAiPanel}
           className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors group"
@@ -204,7 +129,6 @@ export function Toolbar({ onPreview, onShare }: ToolbarProps) {
           <Sparkles className="w-5 h-5 text-alecia-navy group-hover:text-alecia-red transition-colors" />
         </button>
 
-        {/* Variables */}
         <button
           onClick={toggleVariablesPanel}
           className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors group"
@@ -213,24 +137,21 @@ export function Toolbar({ onPreview, onShare }: ToolbarProps) {
           <Variable className="w-5 h-5 text-alecia-navy group-hover:text-alecia-red transition-colors" />
         </button>
 
-        {/* Comments */}
         <button
-          onClick={toggleCommentsPanel}
           className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors group"
-          title="Commentaires"
+          title="Commentaires (Bientôt)"
+          disabled
         >
-          <MessageSquare className="w-5 h-5 text-alecia-navy group-hover:text-alecia-red transition-colors" />
+          <MessageSquare className="w-5 h-5 text-alecia-silver/30 group-hover:text-alecia-silver transition-colors" />
         </button>
 
         <div className="w-px h-6 bg-alecia-silver/30 mx-2" />
 
-        {/* Share */}
         <button onClick={onShare} className="alecia-btn-accent gap-2">
           <Share2 className="w-4 h-4" />
           Partager
         </button>
 
-        {/* Settings */}
         <button
           className="p-2 hover:bg-alecia-silver/10 rounded-lg transition-colors"
           title="Paramètres"

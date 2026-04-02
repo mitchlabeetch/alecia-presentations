@@ -7,6 +7,8 @@ import { EditorLayout } from './components/ui/EditorLayout';
 
 // Pages
 import { Gallery } from './components/gallery/Gallery';
+import { Templates } from './components/gallery/Templates';
+import { Help } from './components/ui/Help';
 import { ProjectEditor } from './components/editor/ProjectEditor';
 import { PresentationMode } from './components/editor/PresentationMode';
 import { PINScreen } from './components/auth/PINScreen';
@@ -19,7 +21,6 @@ function App() {
   const { isAuthenticated, authenticate } = useAuth();
   const { sensors, handleDragStart, handleDragEnd, activeId } = useDragAndDrop();
 
-  // Show PIN screen if not authenticated
   if (!isAuthenticated) {
     return <PINScreen onAuthenticate={authenticate} />;
   }
@@ -31,21 +32,19 @@ function App() {
       onDragEnd={handleDragEnd}
     >
       <Routes>
-        {/* Gallery Route */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Gallery />} />
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/help" element={<Help />} />
         </Route>
 
-        {/* Editor Routes */}
         <Route element={<EditorLayout />}>
           <Route path="/editor/:projectId" element={<ProjectEditor />} />
         </Route>
 
-        {/* Presentation Mode */}
         <Route path="/present/:projectId" element={<PresentationMode />} />
       </Routes>
 
-      {/* Drag Overlay for visual feedback */}
       <DragOverlay>
         {activeId ? <div className="opacity-50">Dragging {activeId}</div> : null}
       </DragOverlay>
