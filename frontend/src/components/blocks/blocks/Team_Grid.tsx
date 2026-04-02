@@ -23,11 +23,12 @@ const DEFAULT_MEMBERS: MemberData[] = [
 
 export function Team_Grid({ content, isEditing = false, onChange }: Team_GridProps) {
   // Charger les membres depuis le content ou utiliser les defauts
-  const storedMembers = content.advisors || content.members || content.items as unknown as Advisor[] | undefined;
-  const members: MemberData[] = storedMembers
-    ? storedMembers.map((a: Advisor | unknown) => {
+  const storedMembers = content.advisors || content.members || [];
+  const members: MemberData[] = Array.isArray(storedMembers) && storedMembers.length > 0
+    ? storedMembers.map((a) => {
         if (typeof a === 'object' && a !== null && 'name' in a) {
-          return { name: (a as Advisor).name, role: (a as Advisor).role, email: (a as Advisor).email };
+          const advisor = a as Advisor;
+          return { name: advisor.name, role: advisor.role, email: advisor.email };
         }
         return a as unknown as MemberData;
       })

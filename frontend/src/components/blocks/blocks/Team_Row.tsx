@@ -20,7 +20,10 @@ const DEFAULT_MEMBERS: MemberData[] = [
 ];
 
 export function Team_Row({ content, isEditing = false, onChange }: Team_RowProps) {
-  const members = content.items as unknown as MemberData[] || DEFAULT_MEMBERS;
+  const storedItems = content.items as unknown as MemberData[] | undefined;
+  const members: MemberData[] = (Array.isArray(storedItems) && storedItems.length > 0)
+    ? storedItems
+    : DEFAULT_MEMBERS;
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editValues, setEditValues] = useState<MemberData>({ name: '', role: '' });
 
@@ -28,7 +31,7 @@ export function Team_Row({ content, isEditing = false, onChange }: Team_RowProps
     if (onChange) {
       const newMembers = [...members];
       newMembers[index] = { ...newMembers[index], ...updates };
-      onChange({ ...content, items: newMembers });
+      onChange({ ...content, items: newMembers as unknown as import('@/types').ListItem[] });
     }
   };
 

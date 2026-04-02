@@ -28,12 +28,15 @@ const SWOT_LABELS = {
 const SWOT_KEYS: SWOTKey[] = ['strengths', 'weaknesses', 'opportunities', 'threats'];
 
 export function SWOTBlock({ content, data, isEditing = false, onChange }: SWOTBlockProps) {
-  const swot: SWOTData = data?.swot || content.swot || {
+  const getDefaultSwot = (): SWOTData => ({
     strengths: ['Force 1', 'Force 2'],
     weaknesses: ['Faiblesse 1', 'Faiblesse 2'],
     opportunities: ['Opportunite 1', 'Opportunite 2'],
     threats: ['Menace 1', 'Menace 2'],
-  };
+  });
+  
+  // Use type assertion to handle the union type
+  const swot: SWOTData = (data?.swot ?? content.swot ?? getDefaultSwot()) as SWOTData;
 
   const [editingKey, setEditingKey] = useState<SWOTKey | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);

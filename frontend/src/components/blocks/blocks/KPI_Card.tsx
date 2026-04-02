@@ -29,7 +29,7 @@ export function KPI_Card({ content, data, isEditing = false, onChange }: KPI_Car
     const newKpi: KPI = {
       id: `kpi-${Date.now()}`,
       label: 'Nouvel indicateur',
-      value: '0',
+      value: '0' as string | number,
       unit: '',
       change: 0,
       trend: 'neutral',
@@ -38,7 +38,7 @@ export function KPI_Card({ content, data, isEditing = false, onChange }: KPI_Car
       const newKpis = [...kpis, newKpi];
       onChange({ ...content, kpis: newKpis });
       // Demarrer l'edition du nouveau KPI
-      startEditing(newKpi.id, { label: newKpi.label, value: newKpi.value, unit: newKpi.unit, change: '' });
+      startEditing(newKpi.id, { label: newKpi.label, value: String(newKpi.value), unit: newKpi.unit || '', change: '' });
     }
   };
 
