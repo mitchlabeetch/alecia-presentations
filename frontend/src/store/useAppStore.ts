@@ -1,696 +1,282 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import type { Project, Slide, Comment, Variable, ChatMessage, AISettings } from '@/types';
-
-// ============================================
-// Type Definitions
-// ============================================
-
-interface HistoryState {
-  projects: Project[];
-  slides: Record<string, Slide[]>;
-  currentProject: Project | null;
-  activeSlideId: string | null;
-}
+import { persist } from 'zustand/middleware';
+import type { Project, Slide, Variable } from '@/types';
 
 interface AppState {
-  // Auth state
   isAuthenticated: boolean;
   userTag: string | null;
   hasMasterAccess: boolean;
-  masterPin: string | null;
-
-  // Project state
   currentProject: Project | null;
   projects: Project[];
-  projectsLoading: boolean;
-
-  // Slides state
   slides: Slide[];
   activeSlideId: string | null;
-  slidesLoading: boolean;
-
-  // UI state
   sidebarOpen: boolean;
   aiPanelOpen: boolean;
   variablesPanelOpen: boolean;
-  commentsPanelOpen: boolean;
-  exportModalOpen: boolean;
-  importModalOpen: boolean;
-  templateModalOpen: boolean;
-  newProjectWizardOpen: boolean;
-
-  // Undo/Redo history
-  history: HistoryState[];
-  historyIndex: number;
-  maxHistorySize: number;
-
-  // Comments
-  comments: Comment[];
-  commentsLoading: boolean;
-
-  // Variables
   variables: Variable[];
-  variablesLoading: boolean;
-
-  // Chat
-  chatMessages: ChatMessage[];
-  chatLoading: boolean;
-
-  // AI Settings
-  aiSettings: AISettings | null;
-
-  // Toast notifications
-  toasts: Array<{
-    id: string;
-    type: 'success' | 'error' | 'info';
-    message: string;
-  }>;
+  toast: { message: string; type: 'success' | 'error' | 'info' } | null;
 }
-
-// ============================================
-// Actions Type Definition
-// ============================================
 
 interface AppActions {
-  // Auth actions
-  authenticate: (pin: string, userTag?: string) => Promise<boolean>;
-  authenticateMaster: (pin: string) => Promise<boolean>;
+  authenticate: (pin: string, userTag?: string) => boolean;
+  authenticateMaster: (pin: string) => boolean;
   logout: () => void;
-
-  // Project actions
   setCurrentProject: (project: Project | null) => void;
-  setProjects: (projects: Project[]) => void;
-  addProject: (project: Project) => void;
-  updateProject: (project: Project) => void;
-  deleteProject: (projectId: string) => void;
-  setProjectsLoading: (loading: boolean) => void;
-
-  // Slides actions
-  setSlides: (slides: Slide[]) => void;
-  addSlide: (slide: Slide) => void;
-  updateSlide: (slide: Slide) => void;
-  deleteSlide: (slideId: string) => void;
-  reorderSlides: (slides: Slide[]) => void;
-  setActiveSlide: (slideId: string | null) => void;
-  setSlidesLoading: (loading: boolean) => void;
-
-  // UI actions
+  createProject: (name: string, userTag?: string) => Project;
+  updateProject: (id: string, updates: Partial<Project>) => void;
+  deleteProject: (id: string) => void;
+  addSlide: (type: string, title?: string, content?: Record<string, unknown>) => Slide;
+  updateSlide: (id: string, updates: Partial<Slide>) => void;
+  deleteSlide: (id: string) => void;
+  reorderSlides: (activeId: string, overId: string) => void;
+  setActiveSlide: (id: string | null) => void;
   toggleSidebar: () => void;
-  toggleAiPanel: () => void;
+  toggleAIPanel: () => void;
   toggleVariablesPanel: () => void;
-  toggleCommentsPanel: () => void;
-  setExportModalOpen: (open: boolean) => void;
-  setImportModalOpen: (open: boolean) => void;
-  setTemplateModalOpen: (open: boolean) => void;
-  setNewProjectWizardOpen: (open: boolean) => void;
-
-  // Undo/Redo actions
-  pushHistory: () => void;
-  undo: () => void;
-  redo: () => void;
-  canUndo: () => boolean;
-  canRedo: () => boolean;
-
-  // Comments actions
-  setComments: (comments: Comment[]) => void;
-  addComment: (comment: Comment) => void;
-  updateComment: (comment: Comment) => void;
-  deleteComment: (commentId: string) => void;
-  resolveComment: (commentId: string) => void;
-  setCommentsLoading: (loading: boolean) => void;
-
-  // Variables actions
-  setVariables: (variables: Variable[]) => void;
-  addVariable: (variable: Variable) => void;
-  updateVariable: (variable: Variable) => void;
-  deleteVariable: (variableId: string) => void;
-  setVariablesLoading: (loading: boolean) => void;
-
-  // Chat actions
-  setChatMessages: (messages: ChatMessage[]) => void;
-  addChatMessage: (message: ChatMessage) => void;
-  clearChatMessages: () => void;
-  setChatLoading: (loading: boolean) => void;
-
-  // AI Settings actions
-  setAiSettings: (settings: AISettings | null) => void;
-
-  // Toast actions
-  addToast: (type: 'success' | 'error' | 'info', message: string) => void;
-  removeToast: (id: string) => void;
+  setToast: (toast: { message: string; type: 'success' | 'error' | 'info' } | null) => void;
 }
 
-// ============================================
-// Initial State
-// ============================================
+const GALLERY_PIN = '1234';
+const MASTER_PIN = 'master123';
 
-const initialState: AppState = {
-  // Auth
-  isAuthenticated: false,
-  userTag: null,
-  hasMasterAccess: false,
-  masterPin: null,
-
-  // Projects
-  currentProject: null,
-  projects: [],
-  projectsLoading: false,
-
-  // Slides
-  slides: [],
-  activeSlideId: null,
-  slidesLoading: false,
-
-  // UI
-  sidebarOpen: true,
-  aiPanelOpen: false,
-  variablesPanelOpen: false,
-  commentsPanelOpen: false,
-  exportModalOpen: false,
-  importModalOpen: false,
-  templateModalOpen: false,
-  newProjectWizardOpen: false,
-
-  // History
-  history: [],
-  historyIndex: -1,
-  maxHistorySize: 50,
-
-  // Comments
-  comments: [],
-  commentsLoading: false,
-
-  // Variables
-  variables: [],
-  variablesLoading: false,
-
-  // Chat
-  chatMessages: [],
-  chatLoading: false,
-
-  // AI Settings
-  aiSettings: null,
-
-  // Toasts
-  toasts: [],
-};
-
-// ============================================
-// Store Creation
-// ============================================
+const DEFAULT_SLIDES: Slide[] = [
+  {
+    id: 'cover-1',
+    projectId: '',
+    orderIndex: 0,
+    type: 'Couverture',
+    title: 'Nouveau Projet',
+    content: { subtitle: 'Société cible | Secteur', targetCompany: '' },
+    notes: null,
+  },
+  {
+    id: 'agenda-1',
+    projectId: '',
+    orderIndex: 1,
+    type: 'SectionNavigator',
+    title: 'Ordre du jour',
+    content: { sections: ['Contexte', 'Transaction', 'Valorisation', 'Conclusion'] },
+    notes: null,
+  },
+  {
+    id: 'context-1',
+    projectId: '',
+    orderIndex: 2,
+    type: 'Titre',
+    title: 'Contexte de la transaction',
+    content: { text: 'Description du contexte M&A...' },
+    notes: null,
+  },
+  {
+    id: 'kpi-1',
+    projectId: '',
+    orderIndex: 3,
+    type: 'KPI_Card',
+    title: 'Indicateurs clés',
+    content: { kpis: [
+      { label: 'CA', value: '0 M€', change: '' },
+      { label: 'EBITDA', value: '0 M€', change: '' },
+      { label: 'Multiple', value: 'x0.0', change: '' },
+    ]},
+    notes: null,
+  },
+  {
+    id: 'swot-1',
+    projectId: '',
+    orderIndex: 4,
+    type: 'SWOT',
+    title: 'Analyse SWOT',
+    content: { swot: {
+      strengths: ['Force 1', 'Force 2'],
+      weaknesses: ['Faiblesse 1'],
+      opportunities: ['Opportunité 1'],
+      threats: ['Menace 1'],
+    }},
+    notes: null,
+  },
+  {
+    id: 'team-1',
+    projectId: '',
+    orderIndex: 5,
+    type: 'Team_Grid',
+    title: 'Équipe projet',
+    content: { advisors: [
+      { name: 'Nom du conseiller', role: 'Associé', firm: 'alecia' },
+    ]},
+    notes: null,
+  },
+  {
+    id: 'contact-1',
+    projectId: '',
+    orderIndex: 6,
+    type: 'Contact_Block',
+    title: 'Contact',
+    content: { name: 'Nom', email: 'email@alecia.fr', phone: '+33 1 XX XX XX XX', company: 'alecia' },
+    notes: null,
+  },
+];
 
 export const useAppStore = create<AppState & AppActions>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      isAuthenticated: false,
+      userTag: null,
+      hasMasterAccess: false,
+      currentProject: null,
+      projects: [],
+      slides: [],
+      activeSlideId: null,
+      sidebarOpen: true,
+      aiPanelOpen: false,
+      variablesPanelOpen: false,
+      variables: [
+        { id: 'v1', name: 'client_name', value: '', type: 'text', description: 'Nom du client' },
+        { id: 'v2', name: 'client_sector', value: '', type: 'text', description: 'Secteur' },
+        { id: 'v3', name: 'deal_amount', value: '', type: 'currency', description: 'Montant' },
+        { id: 'v4', name: 'ebitda', value: '', type: 'currency', description: 'EBITDA' },
+        { id: 'v5', name: 'advisor_name', value: '', type: 'text', description: 'Nom du conseiller' },
+      ],
+      toast: null,
 
-      // ============================================
-      // Auth Actions
-      // ============================================
-
-      authenticate: async (pin: string, userTag?: string) => {
-        try {
-          const response = await fetch('/api/auth/verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pin, userTag }),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            set({
-              isAuthenticated: true,
-              userTag: userTag || data.userTag || null,
-              hasMasterAccess: data.hasMasterAccess || false,
-            });
-            return true;
-          }
-          return false;
-        } catch {
-          return false;
+      authenticate: (pin, userTag) => {
+        if (pin === GALLERY_PIN || pin === MASTER_PIN) {
+          set({ isAuthenticated: true, userTag: userTag || null, hasMasterAccess: pin === MASTER_PIN });
+          return true;
         }
+        return false;
       },
 
-      authenticateMaster: async (pin: string) => {
-        try {
-          const response = await fetch('/api/auth/master', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pin }),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            set({
-              isAuthenticated: true,
-              hasMasterAccess: true,
-              masterPin: pin,
-            });
-            return true;
-          }
-          return false;
-        } catch {
-          return false;
+      authenticateMaster: (pin) => {
+        if (pin === MASTER_PIN) {
+          set({ hasMasterAccess: true });
+          return true;
         }
+        return false;
       },
 
       logout: () => {
-        set({
-          isAuthenticated: false,
-          userTag: null,
-          hasMasterAccess: false,
-          masterPin: null,
-          currentProject: null,
-          slides: [],
-          activeSlideId: null,
-          history: [],
-          historyIndex: -1,
-        });
+        set({ isAuthenticated: false, userTag: null, hasMasterAccess: false, currentProject: null, slides: [] });
       },
 
-      // ============================================
-      // Project Actions
-      // ============================================
-
       setCurrentProject: (project) => {
-        set({ currentProject: project });
-        // Reset slides when changing project
-        if (!project) {
-          set({ slides: [], activeSlideId: null });
+        if (project) {
+          const projectSlides = project.slides || DEFAULT_SLIDES.map((s, i) => ({
+            ...s,
+            id: `${project.id}-slide-${i}`,
+            projectId: project.id,
+          }));
+          set({ currentProject: project, slides: projectSlides, activeSlideId: projectSlides[0]?.id || null });
+        } else {
+          set({ currentProject: null, slides: [], activeSlideId: null });
         }
       },
 
-      setProjects: (projects) => set({ projects }),
-
-      addProject: (project) =>
+      createProject: (name, userTag) => {
+        const id = `project-${Date.now()}`;
+        const now = new Date().toISOString();
+        const project: Project = {
+          id,
+          name,
+          userTag: userTag || get().userTag || 'Anonyme',
+          targetCompany: '',
+          targetSector: '',
+          dealType: 'custom',
+          theme: { primaryColor: '#061a40', accentColor: '#b80c09', fontFamily: 'Bierstadt' },
+          createdAt: now,
+          updatedAt: now,
+          slides: DEFAULT_SLIDES.map((s, i) => ({ ...s, id: `${id}-slide-${i}`, projectId: id, orderIndex: i })),
+        };
+        
+        const slides = project.slides;
         set((state) => ({
           projects: [...state.projects, project],
-        })),
+          currentProject: project,
+          slides,
+          activeSlideId: slides[0]?.id || null,
+        }));
+        
+        return project;
+      },
 
-      updateProject: (project) =>
+      updateProject: (id, updates) => {
         set((state) => ({
           projects: state.projects.map((p) =>
-            p.id === project.id ? project : p
+            p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
           ),
-          currentProject:
-            state.currentProject?.id === project.id
-              ? project
-              : state.currentProject,
-        })),
-
-      deleteProject: (projectId) =>
-        set((state) => ({
-          projects: state.projects.filter((p) => p.id !== projectId),
-          currentProject:
-            state.currentProject?.id === projectId
-              ? null
-              : state.currentProject,
-        })),
-
-      setProjectsLoading: (loading) => set({ projectsLoading: loading }),
-
-      // ============================================
-      // Slides Actions
-      // ============================================
-
-      setSlides: (slides) => set({ slides }),
-
-      addSlide: (slide) => {
-        get().pushHistory();
-        set((state) => ({
-          slides: [...state.slides, slide],
+          currentProject: state.currentProject?.id === id
+            ? { ...state.currentProject, ...updates, updatedAt: new Date().toISOString() }
+            : state.currentProject,
         }));
       },
 
-      updateSlide: (slide) => {
-        get().pushHistory();
+      deleteProject: (id) => {
         set((state) => ({
-          slides: state.slides.map((s) => (s.id === slide.id ? slide : s)),
+          projects: state.projects.filter((p) => p.id !== id),
+          currentProject: state.currentProject?.id === id ? null : state.currentProject,
+          slides: state.currentProject?.id === id ? [] : state.slides,
         }));
       },
 
-      deleteSlide: (slideId) => {
-        get().pushHistory();
-        set((state) => ({
-          slides: state.slides.filter((s) => s.id !== slideId),
-          activeSlideId:
-            state.activeSlideId === slideId
-              ? state.slides[0]?.id || null
-              : state.activeSlideId,
-        }));
-      },
-
-      reorderSlides: (slides) => {
-        get().pushHistory();
-        set({ slides });
-      },
-
-      setActiveSlide: (slideId) => set({ activeSlideId: slideId }),
-
-      setSlidesLoading: (loading) => set({ slidesLoading: loading }),
-
-      // ============================================
-      // UI Actions
-      // ============================================
-
-      toggleSidebar: () =>
-        set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-
-      toggleAiPanel: () =>
-        set((state) => ({ aiPanelOpen: !state.aiPanelOpen })),
-
-      toggleVariablesPanel: () =>
-        set((state) => ({ variablesPanelOpen: !state.variablesPanelOpen })),
-
-      toggleCommentsPanel: () =>
-        set((state) => ({ commentsPanelOpen: !state.commentsPanelOpen })),
-
-      setExportModalOpen: (open) => set({ exportModalOpen: open }),
-
-      setImportModalOpen: (open) => set({ importModalOpen: open }),
-
-      setTemplateModalOpen: (open) => set({ templateModalOpen: open }),
-
-      setNewProjectWizardOpen: (open) => set({ newProjectWizardOpen: open }),
-
-      // ============================================
-      // Undo/Redo Actions
-      // ============================================
-
-      pushHistory: () => {
-        const state = get();
-        const historyState: HistoryState = {
-          projects: state.projects,
-          slides: { [state.currentProject?.id || '']: state.slides },
-          currentProject: state.currentProject,
-          activeSlideId: state.activeSlideId,
+      addSlide: (type, title, content) => {
+        const project = get().currentProject;
+        if (!project) return null as unknown as Slide;
+        
+        const newSlide: Slide = {
+          id: `slide-${Date.now()}`,
+          projectId: project.id,
+          orderIndex: get().slides.length,
+          type,
+          title: title || `Nouvelle diapositive`,
+          content: content || {},
+          notes: null,
         };
-
-        set((state) => {
-          // Remove any redo states
-          const newHistory = state.history.slice(0, state.historyIndex + 1);
-          newHistory.push(historyState);
-
-          // Limit history size
-          if (newHistory.length > state.maxHistorySize) {
-            newHistory.shift();
-          }
-
-          return {
-            history: newHistory,
-            historyIndex: newHistory.length - 1,
-          };
-        });
-      },
-
-      undo: () => {
-        const { history, historyIndex } = get();
-        if (historyIndex <= 0) return;
-
-        const prevState = history[historyIndex - 1];
-        set({
-          projects: prevState.projects,
-          slides: prevState.slides[get().currentProject?.id || ''] || [],
-          currentProject: prevState.currentProject,
-          activeSlideId: prevState.activeSlideId,
-          historyIndex: historyIndex - 1,
-        });
-      },
-
-      redo: () => {
-        const { history, historyIndex } = get();
-        if (historyIndex >= history.length - 1) return;
-
-        const nextState = history[historyIndex + 1];
-        set({
-          projects: nextState.projects,
-          slides: nextState.slides[get().currentProject?.id || ''] || [],
-          currentProject: nextState.currentProject,
-          activeSlideId: nextState.activeSlideId,
-          historyIndex: historyIndex + 1,
-        });
-      },
-
-      canUndo: () => get().historyIndex > 0,
-
-      canRedo: () => {
-        const { history, historyIndex } = get();
-        return historyIndex < history.length - 1;
-      },
-
-      // ============================================
-      // Comments Actions
-      // ============================================
-
-      setComments: (comments) => set({ comments }),
-
-      addComment: (comment) =>
+        
         set((state) => ({
-          comments: [...state.comments, comment],
-        })),
-
-      updateComment: (comment) =>
-        set((state) => ({
-          comments: state.comments.map((c) =>
-            c.id === comment.id ? comment : c
-          ),
-        })),
-
-      deleteComment: (commentId) =>
-        set((state) => ({
-          comments: state.comments.filter((c) => c.id !== commentId),
-        })),
-
-      resolveComment: (commentId) =>
-        set((state) => ({
-          comments: state.comments.map((c) =>
-            c.id === commentId ? { ...c, resolved: true } : c
-          ),
-        })),
-
-      setCommentsLoading: (loading) => set({ commentsLoading: loading }),
-
-      // ============================================
-      // Variables Actions
-      // ============================================
-
-      setVariables: (variables) => set({ variables }),
-
-      addVariable: (variable) =>
-        set((state) => ({
-          variables: [...state.variables, variable],
-        })),
-
-      updateVariable: (variable) =>
-        set((state) => ({
-          variables: state.variables.map((v) =>
-            v.id === variable.id ? variable : v
-          ),
-        })),
-
-      deleteVariable: (variableId) =>
-        set((state) => ({
-          variables: state.variables.filter((v) => v.id !== variableId),
-        })),
-
-      setVariablesLoading: (loading) => set({ variablesLoading: loading }),
-
-      // ============================================
-      // Chat Actions
-      // ============================================
-
-      setChatMessages: (messages) => set({ chatMessages: messages }),
-
-      addChatMessage: (message) =>
-        set((state) => ({
-          chatMessages: [...state.chatMessages, message],
-        })),
-
-      clearChatMessages: () => set({ chatMessages: [] }),
-
-      setChatLoading: (loading) => set({ chatLoading: loading }),
-
-      // ============================================
-      // AI Settings Actions
-      // ============================================
-
-      setAiSettings: (settings) => set({ aiSettings: settings }),
-
-      // ============================================
-      // Toast Actions
-      // ============================================
-
-      addToast: (type, message) => {
-        const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-        set((state) => ({
-          toasts: [...state.toasts, { id, type, message }],
+          slides: [...state.slides, newSlide],
         }));
-
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-          get().removeToast(id);
-        }, 5000);
+        
+        return newSlide;
       },
 
-      removeToast: (id) =>
+      updateSlide: (id, updates) => {
         set((state) => ({
-          toasts: state.toasts.filter((t) => t.id !== id),
-        })),
+          slides: state.slides.map((s) => (s.id === id ? { ...s, ...updates } : s)),
+        }));
+      },
+
+      deleteSlide: (id) => {
+        set((state) => ({
+          slides: state.slides.filter((s) => s.id !== id),
+          activeSlideId: state.activeSlideId === id ? state.slides[0]?.id : state.activeSlideId,
+        }));
+      },
+
+      reorderSlides: (activeId, overId) => {
+        set((state) => {
+          const oldIndex = state.slides.findIndex((s) => s.id === activeId);
+          const newIndex = state.slides.findIndex((s) => s.id === overId);
+          if (oldIndex === -1 || newIndex === -1) return state;
+          
+          const newSlides = [...state.slides];
+          const [removed] = newSlides.splice(oldIndex, 1);
+          newSlides.splice(newIndex, 0, removed);
+          
+          return { slides: newSlides.map((s, i) => ({ ...s, orderIndex: i })) };
+        });
+      },
+
+      setActiveSlide: (id) => set({ activeSlideId: id }),
+      toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+      toggleAIPanel: () => set((state) => ({ aiPanelOpen: !state.aiPanelOpen })),
+      toggleVariablesPanel: () => set((state) => ({ variablesPanelOpen: !state.variablesPanelOpen })),
+      setToast: (toast) => set({ toast }),
     }),
     {
-      name: 'alecia-app-storage',
-      storage: createJSONStorage(() => localStorage),
+      name: 'alecia-storage',
       partialize: (state) => ({
-        // Only persist auth and UI preferences
-        isAuthenticated: state.isAuthenticated,
+        projects: state.projects,
         userTag: state.userTag,
-        hasMasterAccess: state.hasMasterAccess,
-        masterPin: state.masterPin,
-        sidebarOpen: state.sidebarOpen,
-        variables: state.variables,
-        aiSettings: state.aiSettings,
       }),
     }
   )
 );
-
-// ============================================
-// Selectors
-// ============================================
-
-export const selectIsAuthenticated = (state: AppState) => state.isAuthenticated;
-export const selectCurrentProject = (state: AppState) => state.currentProject;
-export const selectActiveSlide = (state: AppState) =>
-  state.slides.find((s) => s.id === state.activeSlideId);
-export const selectUnresolvedComments = (state: AppState) =>
-  state.comments.filter((c) => !c.resolved);
-export const selectCanUndo = (state: AppState) => state.historyIndex > 0;
-export const selectCanRedo = (state: AppState) =>
-  state.historyIndex < state.history.length - 1;
-
-// ============================================
-// Hooks
-// ============================================
-
-export const useAuth = () => {
-  const isAuthenticated = useAppStore((state) => state.isAuthenticated);
-  const userTag = useAppStore((state) => state.userTag);
-  const hasMasterAccess = useAppStore((state) => state.hasMasterAccess);
-  const logout = useAppStore((state) => state.logout);
-  const authenticate = useAppStore((state) => state.authenticate);
-  const authenticateMaster = useAppStore((state) => state.authenticateMaster);
-
-  return {
-    isAuthenticated,
-    userTag,
-    hasMasterAccess,
-    logout,
-    authenticate,
-    authenticateMaster,
-  };
-};
-
-export const useProjects = () => {
-  const projects = useAppStore((state) => state.projects);
-  const currentProject = useAppStore((state) => state.currentProject);
-  const projectsLoading = useAppStore((state) => state.projectsLoading);
-  const setProjects = useAppStore((state) => state.setProjects);
-  const setCurrentProject = useAppStore((state) => state.setCurrentProject);
-  const addProject = useAppStore((state) => state.addProject);
-  const updateProject = useAppStore((state) => state.updateProject);
-  const deleteProject = useAppStore((state) => state.deleteProject);
-  const setProjectsLoading = useAppStore((state) => state.setProjectsLoading);
-
-  return {
-    projects,
-    currentProject,
-    projectsLoading,
-    setProjects,
-    setCurrentProject,
-    addProject,
-    updateProject,
-    deleteProject,
-    setProjectsLoading,
-  };
-};
-
-export const useSlides = () => {
-  const slides = useAppStore((state) => state.slides);
-  const activeSlideId = useAppStore((state) => state.activeSlideId);
-  const slidesLoading = useAppStore((state) => state.slidesLoading);
-  const setSlides = useAppStore((state) => state.setSlides);
-  const addSlide = useAppStore((state) => state.addSlide);
-  const updateSlide = useAppStore((state) => state.updateSlide);
-  const deleteSlide = useAppStore((state) => state.deleteSlide);
-  const reorderSlides = useAppStore((state) => state.reorderSlides);
-  const setActiveSlide = useAppStore((state) => state.setActiveSlide);
-  const setSlidesLoading = useAppStore((state) => state.setSlidesLoading);
-
-  return {
-    slides,
-    activeSlideId,
-    slidesLoading,
-    setSlides,
-    addSlide,
-    updateSlide,
-    deleteSlide,
-    reorderSlides,
-    setActiveSlide,
-    setSlidesLoading,
-  };
-};
-
-export const useUI = () => {
-  const sidebarOpen = useAppStore((state) => state.sidebarOpen);
-  const aiPanelOpen = useAppStore((state) => state.aiPanelOpen);
-  const variablesPanelOpen = useAppStore((state) => state.variablesPanelOpen);
-  const commentsPanelOpen = useAppStore((state) => state.commentsPanelOpen);
-  const exportModalOpen = useAppStore((state) => state.exportModalOpen);
-  const importModalOpen = useAppStore((state) => state.importModalOpen);
-  const templateModalOpen = useAppStore((state) => state.templateModalOpen);
-  const newProjectWizardOpen = useAppStore((state) => state.newProjectWizardOpen);
-  const toasts = useAppStore((state) => state.toasts);
-  const toggleSidebar = useAppStore((state) => state.toggleSidebar);
-  const toggleAiPanel = useAppStore((state) => state.toggleAiPanel);
-  const toggleVariablesPanel = useAppStore((state) => state.toggleVariablesPanel);
-  const toggleCommentsPanel = useAppStore((state) => state.toggleCommentsPanel);
-  const setExportModalOpen = useAppStore((state) => state.setExportModalOpen);
-  const setImportModalOpen = useAppStore((state) => state.setImportModalOpen);
-  const setTemplateModalOpen = useAppStore((state) => state.setTemplateModalOpen);
-  const setNewProjectWizardOpen = useAppStore((state) => state.setNewProjectWizardOpen);
-  const addToast = useAppStore((state) => state.addToast);
-  const removeToast = useAppStore((state) => state.removeToast);
-
-  return {
-    sidebarOpen,
-    aiPanelOpen,
-    variablesPanelOpen,
-    commentsPanelOpen,
-    exportModalOpen,
-    importModalOpen,
-    templateModalOpen,
-    newProjectWizardOpen,
-    toasts,
-    toggleSidebar,
-    toggleAiPanel,
-    toggleVariablesPanel,
-    toggleCommentsPanel,
-    setExportModalOpen,
-    setImportModalOpen,
-    setTemplateModalOpen,
-    setNewProjectWizardOpen,
-    addToast,
-    removeToast,
-  };
-};
-
-export const useHistory = () => {
-  const undo = useAppStore((state) => state.undo);
-  const redo = useAppStore((state) => state.redo);
-  const canUndo = useAppStore((state) => state.canUndo);
-  const canRedo = useAppStore((state) => state.canRedo);
-  const pushHistory = useAppStore((state) => state.pushHistory);
-
-  return { undo, redo, canUndo, canRedo, pushHistory };
-};
