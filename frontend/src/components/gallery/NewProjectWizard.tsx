@@ -7,7 +7,7 @@ import {
   Check,
   Building2,
   TrendingUp,
-  Handshake,
+  Briefcase,
   Sparkles,
   Lock,
   Eye,
@@ -28,7 +28,7 @@ const DEAL_TYPE_OPTIONS = [
     value: 'cession_vente' as DealType,
     label: 'Cession',
     description: 'Vente d\'une entreprise ou d\'un actif',
-    icon: <Handshake className="w-6 h-6" />,
+    icon: <Briefcase className="w-6 h-6" />,
   },
   {
     value: 'lbo_levee_fonds' as DealType,

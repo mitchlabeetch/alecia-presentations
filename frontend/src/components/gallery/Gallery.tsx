@@ -14,7 +14,7 @@ import {
   SortDesc,
   Building2,
   TrendingUp,
-  Handshake,
+  Briefcase,
   Sparkles,
   X,
   MoreHorizontal,
@@ -40,7 +40,7 @@ const DEAL_TYPE_LABELS: Record<string, string> = {
 };
 
 const DEAL_TYPE_ICONS: Record<string, React.ReactNode> = {
-  cession_vente: <Handshake className="w-4 h-4" />,
+  cession_vente: <Briefcase className="w-4 h-4" />,
   lbo_levee_fonds: <TrendingUp className="w-4 h-4" />,
   acquisition_achats: <Building2 className="w-4 h-4" />,
   custom: <Sparkles className="w-4 h-4" />,
