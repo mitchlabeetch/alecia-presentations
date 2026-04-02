@@ -280,3 +280,20 @@ export const useAppStore = create<AppState & AppActions>()(
     }
   )
 );
+
+export const useSlides = () => useAppStore((state) => state.slides);
+export const useProjects = () => useAppStore((state) => state.projects);
+export const useUI = () => useAppStore((state) => ({
+  sidebarOpen: state.sidebarOpen,
+  aiPanelOpen: state.aiPanelOpen,
+  variablesPanelOpen: state.variablesPanelOpen,
+  toast: state.toast,
+  toggleSidebar: state.toggleSidebar,
+  toggleAIPanel: state.toggleAIPanel,
+  toggleVariablesPanel: state.toggleVariablesPanel,
+  setToast: state.setToast,
+}));
+export const useHistory = () => {
+  const slides = useAppStore((state) => state.slides);
+  return { slides };
+};

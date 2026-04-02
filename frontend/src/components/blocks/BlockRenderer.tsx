@@ -97,33 +97,34 @@ export function BlockRenderer({
 
       // Layout blocks
       case 'Two_Column':
+      case 'TwoColumn':
         return (
           <TwoColumn
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
         );
       case 'Section_Navigator':
+      case 'SectionNavigator':
         return (
           <SectionNavigator
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
         );
       case 'Cover':
+      case 'Couverture':
         return (
           <Cover
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
         );
       case 'Section_Divider':
+      case 'SectionDivider':
         return (
           <SectionDivider
             content={slide.content}
@@ -137,7 +138,6 @@ export function BlockRenderer({
         return (
           <KPI_Card
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -146,7 +146,6 @@ export function BlockRenderer({
         return (
           <Table_Block
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -155,7 +154,6 @@ export function BlockRenderer({
         return (
           <Chart_Block
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -164,7 +162,6 @@ export function BlockRenderer({
         return (
           <Timeline_Block
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -175,7 +172,6 @@ export function BlockRenderer({
         return (
           <Company_Overview
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -192,7 +188,6 @@ export function BlockRenderer({
         return (
           <SWOTBlock
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -201,7 +196,6 @@ export function BlockRenderer({
         return (
           <Key_Metrics
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -210,7 +204,6 @@ export function BlockRenderer({
         return (
           <Process_Timeline
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -221,7 +214,6 @@ export function BlockRenderer({
         return (
           <Team_Grid
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -230,7 +222,6 @@ export function BlockRenderer({
         return (
           <Team_Row
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -239,7 +230,6 @@ export function BlockRenderer({
         return (
           <Advisor_List
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -258,7 +248,6 @@ export function BlockRenderer({
         return (
           <Logo_Grid
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />
@@ -275,7 +264,6 @@ export function BlockRenderer({
         return (
           <Trackrecord_Block
             content={slide.content}
-            data={slide.data}
             isEditing={isEditing}
             onChange={onContentChange}
           />

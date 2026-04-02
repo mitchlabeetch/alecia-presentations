@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
-import { Check, MessageSquare, Sparkles, MoreVertical } from 'lucide-react';
+import { frFR } from 'date-fns/locale';
+import { Check, Sparkles, MoreVertical } from 'lucide-react';
 import { useState } from 'react';
 import type { Comment } from '@/types';
 
@@ -16,7 +16,7 @@ export function CommentItem({ comment, onUpdate, onDelete, onResolve }: CommentI
 
   const formatTime = (timestamp: number) => {
     try {
-      return formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: fr });
+      return formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: frFR });
     } catch {
       return '';
     }

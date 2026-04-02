@@ -69,13 +69,18 @@ export type BlockType =
   | 'Icon_Text'
   // Layout blocks
   | 'Two_Column'
+  | 'TwoColumn'
   // Navigation blocks
   | 'Section_Navigator'
+  | 'SectionNavigator'
   | 'Section_Divider'
+  | 'SectionDivider'
   | 'Cover'
+  | 'Couverture'
   | 'Disclaimer'
   | 'Trackrecord_Block'
-  | 'CSR_Block';
+  | 'CSR_Block'
+  | 'Contact_Block';
 
 export interface BlockContent {
   text?: string;
@@ -83,6 +88,47 @@ export interface BlockContent {
   imageUrl?: string;
   caption?: string;
   layout?: 'left' | 'center' | 'right';
+  subtitle?: string;
+  sections?: Section[];
+  id?: string;
+  alt?: string;
+  icon?: string;
+  value?: string;
+  kpis?: KPI[];
+  advisor?: Advisor;
+  advisors?: Advisor[];
+  targetCompany?: string;
+  company?: CompanyInfo;
+  contact?: ContactInfo;
+  [key: string]: unknown;
+}
+
+export interface Section {
+  id?: string;
+  title: string;
+  page?: number;
+}
+
+export interface Advisor {
+  name: string;
+  role: string;
+  firm?: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface CompanyInfo {
+  name?: string;
+  sector?: string;
+  description?: string;
+  logo?: string;
+}
+
+export interface ContactInfo {
+  name?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
 }
 
 export interface ListItem {
@@ -223,8 +269,10 @@ export interface Comment {
   slideId: string;
   projectId: string;
   authorTag: string | null;
+  authorName?: string;
   field: 'title' | 'content' | 'notes';
   text: string;
+  content?: string;
   resolved: boolean;
   aiResponse: string | null;
   parentCommentId: string | null;
