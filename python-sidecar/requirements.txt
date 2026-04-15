@@ -5,7 +5,7 @@
 # FastAPI et serveur
 fastapi==0.110.0
 uvicorn[standard]==0.27.1
-python-multipart==0.0.9
+python-multipart==0.0.22
 
 # Docling - Conversion de documents
 # Note: SimplePipeline (pas de dépendances torch/ML)
@@ -23,8 +23,8 @@ python-dotenv==1.0.0
 aiofiles==23.2.1
 
 # Traitement d'images
-Pillow==10.2.0
+Pillow==12.1.1
 
 # HTTP client pour appels externes
 httpx==0.26.0
-requests==2.31.0
+requests==2.33.0
